@@ -1,28 +1,24 @@
-/**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Copyright (c) 2019, to individual contributors by the @author tags.
+ * See the COPYRIGHT.txt in the distribution for a full listing of individual contributors.
+ *
+ * This file is part of Waarp Project.
+ *
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with Waarp . If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility;
 
 import java.lang.management.ManagementFactory;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -76,7 +72,7 @@ public final class LongUuid {
 
         // copy pid to uuid
         uuid[0] = (byte) (JVMPID >> 8);
-        uuid[1] = (byte) (JVMPID);
+        uuid[1] = (byte) JVMPID;
 
         // copy timestamp into uuid (up to 2^36 s = 2 years rolling)
         uuid[2] = (byte) (time >> 28);
@@ -84,9 +80,9 @@ public final class LongUuid {
         uuid[4] = (byte) (time >> 12);
 
         // Keep 4 first bytes, 4 bytes coming from Timestamp => 2^20 (at most 1M / 1/2s)
-        uuid[5] = (byte) (((count >> 16) & 0x0F) | ((time >> 4) & 0xF0));
+        uuid[5] = (byte) (count >> 16 & 0x0F | time >> 4 & 0xF0);
         uuid[6] = (byte) (count >> 8);
-        uuid[7] = (byte) (count);
+        uuid[7] = (byte) count;
     }
 
     /**
@@ -96,9 +92,9 @@ public final class LongUuid {
      *            UUID content
      */
     public LongUuid(final byte[] bytes) {
-        if (bytes.length != UUIDSIZE)
+        if (bytes.length != UUIDSIZE) {
             throw new RuntimeException("Attempted to parse malformed UUID: " + Arrays.toString(bytes));
-
+        }
         uuid = Arrays.copyOf(bytes, UUIDSIZE);
     }
 
@@ -111,15 +107,15 @@ public final class LongUuid {
         uuid[4] = (byte) (value >> 24);
         uuid[5] = (byte) (value >> 16);
         uuid[6] = (byte) (value >> 8);
-        uuid[7] = (byte) (value);
+        uuid[7] = (byte) value;
     }
 
     public LongUuid(final String idsource) {
         final String id = idsource.trim();
 
-        if (id.length() != UUIDSIZE * 2)
+        if (id.length() != UUIDSIZE * 2) {
             throw new RuntimeException("Attempted to parse malformed UUID: " + id);
-
+        }
         uuid = Hexa.fromHex(id);
     }
 
@@ -143,7 +139,7 @@ public final class LongUuid {
      * @return id of process that generated the UUID
      */
     public int getProcessId() {
-        return ((uuid[0] & 0xFF) << 8) | (uuid[1] & 0xFF);
+        return (uuid[0] & 0xFF) << 8 | uuid[1] & 0xFF;
     }
 
     /**
@@ -162,9 +158,10 @@ public final class LongUuid {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof LongUuid))
+        if (o == null || !(o instanceof LongUuid)) {
             return false;
-        return (this == o) || Arrays.equals(this.uuid, ((LongUuid) o).uuid);
+        }
+        return this == o || Arrays.equals(uuid, ((LongUuid) o).uuid);
     }
 
     @Override
@@ -184,7 +181,7 @@ public final class LongUuid {
         value |= ((long) uuid[4] & 0xFF) << 24;
         value |= ((long) uuid[5] & 0xFF) << 16;
         value |= ((long) uuid[6] & 0xFF) << 8;
-        value |= ((long) uuid[7] & 0xFF);
+        value |= (long) uuid[7] & 0xFF;
         return value;
     }
 
@@ -217,98 +214,5 @@ public final class LongUuid {
             e.printStackTrace();
             return RANDOM.nextInt(MAX_PID);
         }
-    }
-
-    @SuppressWarnings("unused")
-    public static void main(String[] args) {
-        long pseudoMax = Long.MAX_VALUE >> 16;
-        System.out.println(new Date(pseudoMax));
-        System.out.println(new LongUuid().toString());
-
-        for (int i = 0; i < 10; i++) {
-            LongUuid uuid = new LongUuid();
-            System.out.println(System.currentTimeMillis() + " " + uuid + "=" + uuid.getLong() + ":"
-                    + uuid.getProcessId() + ":" + uuid.getTimestamp());
-        }
-        for (int i = 0; i < 10; i++) {
-            LongUuid uuid = new LongUuid();
-            System.out.println(System.currentTimeMillis() + " " + uuid + "=" + uuid.getLong() + ":"
-                    + uuid.getProcessId() + ":" + uuid.getTimestamp());
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
-        }
-
-        final int n = 100000000;
-
-        for (int i = 0; i < n; i++) {
-            LongUuid uuid = new LongUuid();
-        }
-
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++) {
-            LongUuid uuid = new LongUuid();
-        }
-        long stop = System.currentTimeMillis();
-        System.out.println("TimeW = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s");
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++) {
-            LongUuid uuid = new LongUuid();
-            uuid.getLong();
-        }
-        stop = System.currentTimeMillis();
-        System.out.println("TimeW+getLong = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s");
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++) {
-            LongUuid uuid = new LongUuid();
-            uuid = new LongUuid(uuid.getLong());
-        }
-        stop = System.currentTimeMillis();
-        System.out.println("TimeW+reloadFromgetLong = " + (stop - start) + " so " + (n * 1000 / (stop - start))
-                + " Uuids/s");
-
-        int count = 0;
-        start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++) {
-            LongUuid uuid = new LongUuid();
-            LongUuid uuid2 = new LongUuid(uuid.getLong());
-            if (uuid2.equals(uuid))
-                count++;
-        }
-        stop = System.currentTimeMillis();
-        System.out.println("TimeWAndTest = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s "
-                + count);
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++) {
-            LongUuid uuid = new LongUuid();
-            uuid.getBytes();
-        }
-        stop = System.currentTimeMillis();
-        System.out.println("TimeW+getBytes = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s");
-
-        start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++) {
-            LongUuid uuid = new LongUuid();
-            uuid = new LongUuid(uuid.getBytes());
-        }
-        stop = System.currentTimeMillis();
-        System.out.println("TimeW+reloadFromgetBytes = " + (stop - start) + " so " + (n * 1000 / (stop - start))
-                + " Uuids/s");
-
-        count = 0;
-        start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++) {
-            LongUuid uuid = new LongUuid();
-            LongUuid uuid2 = new LongUuid(uuid.getBytes());
-            if (uuid2.equals(uuid))
-                count++;
-        }
-        stop = System.currentTimeMillis();
-        System.out.println("TimeWAndTest = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s "
-                + count);
     }
 }

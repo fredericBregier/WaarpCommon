@@ -1,29 +1,24 @@
-/**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Copyright (c) 2019, to individual contributors by the @author tags.
+ * See the COPYRIGHT.txt in the distribution for a full listing of individual contributors.
+ *
+ * This file is part of Waarp Project.
+ *
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with Waarp . If not, see
+ * <http://www.gnu.org/licenses/>.
  */
-package org.waarp.common.utility.test;
+package org.waarp.common.utility;
 
 import org.junit.Test;
-import org.waarp.common.utility.UUID;
 
-import java.net.NetworkInterface;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -33,8 +28,8 @@ import java.util.TreeSet;
 import static org.junit.Assert.*;
 
 public class UUIDTest {
-    private static final int VERSION = (1 & 0x0F);
-    private static int NB = 1000000;
+    private static final int VERSION = 1 & 0x0F;
+    private static final int NB = 1000000;
 
     @Test
     public void testStructure() {
@@ -44,6 +39,11 @@ public class UUIDTest {
         assertEquals('0', str.charAt(0));
         assertEquals('0', str.charAt(1));
         assertEquals(40, str.length());
+        long least = id.getLeastSignificantBits();
+        long most = id.getMostSignificantBits();
+        UUID id2 = new UUID(most, least);
+        assertTrue(id2.getLeastSignificantBits() == least);
+        assertTrue(id2.getMostSignificantBits() == most);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class UUIDTest {
         }
 
         for (int i = 1; i < n; i++) {
-            assertTrue(!ids[i - 1].equals(ids[i]));
+            assertFalse(ids[i - 1].equals(ids[i]));
         }
     }
 
@@ -88,7 +88,7 @@ public class UUIDTest {
         bytes[1] = 0;
         bytes[2] = 0;
 
-        assertTrue(Arrays.equals(id.getBytes(), original));
+        assertArrayEquals(id.getBytes(), original);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class UUIDTest {
         bytes[0] = 0;
         bytes[1] = 0;
 
-        assertTrue(Arrays.equals(id2.getBytes(), original));
+        assertArrayEquals(id2.getBytes(), original);
     }
 
     @Test
@@ -150,7 +150,7 @@ public class UUIDTest {
         assertEquals(mac[5], field[5]);
     }
     
-    private void checkConsecutive(final UUID[] UUIDArray) {
+    private static void checkConsecutive(final UUID[] UUIDArray) {
         final int n = UUIDArray.length;
         int i = 1;
         int largest = 0;
@@ -159,7 +159,7 @@ public class UUIDTest {
                 int j = i + 1;
                 final long time = UUIDArray[i].getTimestamp();
                 for (; j < n; j++) {
-                    if (UUIDArray[i].compareTo(UUIDArray[j]) != -1) {
+                    if (UUIDArray[i].compareTo(UUIDArray[j]) >= 0) {
                         for (int k = i; k <= j; k++) {
                             System.out.println(k+"="+UUIDArray[k].getId()+":"+UUIDArray[k].getCounter()+":"+UUIDArray[k].getTimestamp()+":"+UUIDArray[k].getVersion()+":"+UUIDArray[k].getProcessId());
                         }
@@ -174,7 +174,7 @@ public class UUIDTest {
                     }
                 }
             } else {
-                if (UUIDArray[i-1].compareTo(UUIDArray[i]) != -1) {
+                if (UUIDArray[i-1].compareTo(UUIDArray[i]) >= 0) {
                     for (int k = i-1; k <= i; k++) {
                         System.out.println(k+"="+UUIDArray[k].getId()+":"+UUIDArray[k].getCounter()+":"+UUIDArray[k].getTimestamp()+":"+UUIDArray[k].getVersion()+":"+UUIDArray[k].getProcessId());
                     }
@@ -183,7 +183,7 @@ public class UUIDTest {
                 int j = i + 1;
                 final long time = UUIDArray[i].getTimestamp();
                 for (; j < n; j++) {
-                    if (UUIDArray[i-1].compareTo(UUIDArray[j]) != -1) {
+                    if (UUIDArray[i-1].compareTo(UUIDArray[j]) >= 0) {
                         for (int k = i-1; k <= j; k++) {
                             System.out.println(k+"="+UUIDArray[k].getId()+":"+UUIDArray[k].getCounter()+":"+UUIDArray[k].getTimestamp()+":"+UUIDArray[k].getVersion()+":"+UUIDArray[k].getProcessId());
                         }
@@ -213,7 +213,7 @@ public class UUIDTest {
             uuidArray[i] = new UUID();
         }
         long stop = System.currentTimeMillis();
-        System.out.println("Time = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s");
+        System.out.println("Time = " + (stop - start) + " so " + n * 1000 / (stop - start) + " Uuids/s");
 
         for (int i = 0; i < n; i++) {
             uuids.add(uuidArray[i]);
@@ -222,27 +222,6 @@ public class UUIDTest {
         System.out.println("Create " + n + " and get: " + uuids.size());
         assertEquals(n, uuids.size());
         checkConsecutive(uuidArray);
-    }
-
-    private static class Generator extends Thread {
-        private UUID[] uuids;
-        int id;
-        int n;
-        int numThreads;
-
-        public Generator(int n, UUID[] uuids, int id, int numThreads) {
-            this.n = n;
-            this.uuids = uuids;
-            this.id = id;
-            this.numThreads = numThreads;
-        }
-
-        @Override
-        public void run() {
-            for (int i = 0; i < n; i++) {
-                uuids[numThreads * i + id] = new UUID();
-            }
-        }
     }
 
     @Test
@@ -266,17 +245,40 @@ public class UUIDTest {
         Set<UUID> uuidSet = new HashSet<UUID>();
 
         int effectiveN = n / numThreads * numThreads;
-        for (int i = 0; i < effectiveN; i++)
+        for (int i = 0; i < effectiveN; i++) {
             uuidSet.add(uuids[i]);
+        }
 
         assertEquals(effectiveN, uuidSet.size());
         uuidSet.clear();
-        System.out.println("TimeConcurrent = " + (stop - start) + " so " + (uuids.length * 1000 / (stop - start)) + " UUIDs/s");
+        System.out.println(
+                "TimeConcurrent = " + (stop - start) + " so " + uuids.length * 1000 / (stop - start) + " UUIDs/s");
         final TreeSet<UUID> set = new TreeSet<UUID>();
         for (int i = 0; i < uuids.length; i++) {
             set.add(uuids[i]);
         }
         checkConsecutive(set.toArray(new UUID[0]));
 
+    }
+
+    private static class Generator extends Thread {
+        private final UUID[] uuids;
+        int id;
+        int n;
+        int numThreads;
+
+        public Generator(int n, UUID[] uuids, int id, int numThreads) {
+            this.n = n;
+            this.uuids = uuids;
+            this.id = id;
+            this.numThreads = numThreads;
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < n; i++) {
+                uuids[numThreads * i + id] = new UUID();
+            }
+        }
     }
 }
