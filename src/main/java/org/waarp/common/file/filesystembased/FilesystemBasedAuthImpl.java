@@ -1,17 +1,17 @@
-/**
+/*
+ * Copyright (c) 2019, to individual contributors by the @author tags.
+ * See the COPYRIGHT.txt in the distribution for a full listing of individual contributors.
+ *
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
+ *
  * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
  * the GNU General Public License as published by the Free Software Foundation, either version 3 of
  * the License, or (at your option) any later version.
- * 
+ *
  * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -21,9 +21,12 @@ import org.waarp.common.command.NextCommandReply;
 import org.waarp.common.command.ReplyCode;
 import org.waarp.common.command.exception.Reply421Exception;
 import org.waarp.common.command.exception.Reply530Exception;
+import org.waarp.common.file.AbstractDir;
 import org.waarp.common.file.AuthInterface;
 import org.waarp.common.file.DirInterface;
 import org.waarp.common.file.SessionInterface;
+
+import java.util.regex.Pattern;
 
 /**
  * Authentication implementation for Filesystem Based
@@ -35,17 +38,17 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     /**
      * User name
      */
-    protected String user = null;
+    protected String user;
 
     /**
      * Password
      */
-    protected String password = null;
+    protected String password;
 
     /**
      * Is Identified
      */
-    protected boolean isIdentified = false;
+    protected boolean isIdentified;
 
     /**
      * SessionInterface
@@ -55,7 +58,7 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     /**
      * Relative Path after Authentication
      */
-    protected String rootFromAuth = null;
+    protected String rootFromAuth;
 
     /**
      * @param session
@@ -68,6 +71,7 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     /**
      * @return the session
      */
+    @Override
     public SessionInterface getSession() {
         return session;
     }
@@ -97,8 +101,9 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
      * @throws Reply530Exception
      *             if there is a problem during the authentication
      */
+    @Override
     public NextCommandReply setUser(String user) throws Reply421Exception,
-            Reply530Exception {
+                                                        Reply530Exception {
         NextCommandReply next = setBusinessUser(user);
         this.user = user;
         if (next.reply == ReplyCode.REPLY_230_USER_LOGGED_IN) {
@@ -111,6 +116,7 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     /**
      * @return the user
      */
+    @Override
     public String getUser() {
         return user;
     }
@@ -140,6 +146,7 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
      * @throws Reply530Exception
      *             if there is a problem during the authentication
      */
+    @Override
     public NextCommandReply setPassword(String password)
             throws Reply421Exception, Reply530Exception {
         NextCommandReply next = setBusinessPassword(password);
@@ -169,6 +176,7 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
      * 
      * @return True if the user has a positive login, else False
      */
+    @Override
     public boolean isIdentified() {
         return isIdentified;
     }
@@ -198,6 +206,7 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
         }
     }
 
+    @Override
     public String getBusinessPath() {
         return rootFromAuth;
     }
@@ -212,6 +221,7 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
      * Clean object
      * 
      */
+    @Override
     public void clear() {
         businessClean();
         user = null;
@@ -231,10 +241,11 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
         if (path == null || path.isEmpty()) {
             return getBaseDirectory();
         }
-        return FilesystemBasedDirImpl.normalizePath(getBaseDirectory() +
-                DirInterface.SEPARATOR + path);
+        return AbstractDir.normalizePath(getBaseDirectory() +
+                                         DirInterface.SEPARATOR + path);
     }
 
+    private static final Pattern DOUBLE_SLASH = Pattern.compile("//");
     /**
      * Return the relative path from a file (without mount point)
      * 
@@ -242,9 +253,10 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
      *            (full path with mount point)
      * @return the relative path from a file
      */
+    @Override
     public String getRelativePath(String file) {
         // Work around Windows path '\'
-        return file.replaceFirst(FilesystemBasedDirImpl
-                .normalizePath(getBaseDirectory()), "");
+        return DOUBLE_SLASH.matcher(file.replaceFirst(AbstractDir.normalizePath(getBaseDirectory()), ""))
+                           .replaceAll("/");
     }
 }
