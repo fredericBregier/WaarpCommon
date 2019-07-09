@@ -1,21 +1,26 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility;
+
+import org.dom4j.Node;
+import org.waarp.common.exception.FileTransferException;
+import org.waarp.common.exception.InvalidArgumentException;
+import org.waarp.common.logging.WaarpLogger;
+import org.waarp.common.logging.WaarpLoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,21 +34,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.dom4j.Node;
-import org.waarp.common.exception.FileTransferException;
-import org.waarp.common.exception.InvalidArgumentException;
-import org.waarp.common.logging.WaarpLogger;
-import org.waarp.common.logging.WaarpLoggerFactory;
-
 /**
  * Various utilities for reading files, transforming dates, ...
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class WaarpStringUtils {
     public static final String UTF_8 = "UTF-8";
-
+    /**
+     * Format used for Files
+     */
+    public static final Charset UTF8 = Charset.forName(UTF_8);
     /**
      * Internal Logger
      */
@@ -51,13 +53,8 @@ public class WaarpStringUtils {
             .getLogger(WaarpStringUtils.class);
 
     /**
-     * Format used for Files
-     */
-    public static final Charset UTF8 = Charset.forName(UTF_8);
-
-    /**
      * Read a file and return its content in String format
-     * 
+     *
      * @param filename
      * @return the content of the File in String format
      * @throws InvalidArgumentException
@@ -66,12 +63,12 @@ public class WaarpStringUtils {
      *             for reading exception
      */
     public static String readFileException(String filename) throws InvalidArgumentException,
-            FileTransferException {
+                                                                   FileTransferException {
         File file = new File(filename);
         // Check for size of file
         if (file.length() > Integer.MAX_VALUE) {
             throw new FileTransferException("File is too big for this convenience method (" + file.length()
-                    + " bytes).");
+                                            + " bytes).");
         }
         char[] chars = new char[(int) file.length()];
         FileReader fileReader;
@@ -102,7 +99,7 @@ public class WaarpStringUtils {
 
     /**
      * Read file and return "" if an error occurs
-     * 
+     *
      * @param filename
      * @return the string associated with the file, or "" if an error occurs
      */
@@ -120,7 +117,7 @@ public class WaarpStringUtils {
 
     /**
      * Get a date in String and return the corresponding Timestamp
-     * 
+     *
      * @param date
      * @return the corresponding Timestamp
      */
@@ -151,7 +148,7 @@ public class WaarpStringUtils {
      * if before = null as date<br>
      * if before != null and before < date, as date<br>
      * if before != null and before >= date, as before end of day (23:59:59:9999)
-     * 
+     *
      * @param date
      * @param before
      * @return the end date
@@ -195,7 +192,7 @@ public class WaarpStringUtils {
 
     /**
      * Read a boolean value (0,1,true,false) from a node
-     * 
+     *
      * @param node
      * @return the corresponding value
      */
@@ -204,7 +201,7 @@ public class WaarpStringUtils {
         boolean bval;
         try {
             int ival = Integer.parseInt(val);
-            bval = (ival == 1) ? true : false;
+            bval = (ival == 1)? true : false;
         } catch (NumberFormatException e) {
             bval = Boolean.parseBoolean(val);
         }
@@ -213,14 +210,15 @@ public class WaarpStringUtils {
 
     /**
      * Read an integer value from a node
-     * 
+     *
      * @param node
      * @return the corresponding value
      * @throws InvalidArgumentException
      */
     public static int getInteger(Node node) throws InvalidArgumentException {
-        if (node == null)
+        if (node == null) {
             throw new InvalidArgumentException("Node empty");
+        }
         String val = node.getText();
         int ival;
         try {
@@ -233,7 +231,7 @@ public class WaarpStringUtils {
 
     /**
      * Make a replacement of first "find" string by "replace" string into the StringBuilder
-     * 
+     *
      * @param builder
      * @param find
      * @param replace
@@ -258,7 +256,7 @@ public class WaarpStringUtils {
 
     /**
      * Make replacement of all "find" string by "replace" string into the StringBuilder
-     * 
+     *
      * @param builder
      * @param find
      * @param replace
@@ -270,7 +268,7 @@ public class WaarpStringUtils {
 
     /**
      * Build a String with count chars using fillChar
-     * 
+     *
      * @param fillChar
      * @param count
      * @return the String of length count filled with fillChar
@@ -288,7 +286,7 @@ public class WaarpStringUtils {
      */
     public final static String cleanJsonForHtml(String json) {
         return json.replaceAll("([^\\\\])\\\\n", "$1").replaceAll("([^\\\\])\\\\r", "$1")
-                .replaceAll("([^\\\\])\\\\\"", "$1")
-                .replace("\\\\", "\\\\\\\\");
+                   .replaceAll("([^\\\\])\\\\\"", "$1")
+                   .replace("\\\\", "\\\\\\\\");
     }
 }

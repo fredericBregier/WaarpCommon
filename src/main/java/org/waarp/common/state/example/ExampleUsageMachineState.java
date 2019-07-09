@@ -1,24 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.state.example;
-
-import java.util.EnumSet;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.waarp.common.exception.IllegalFiniteStateException;
 import org.waarp.common.logging.WaarpLoggerFactory;
@@ -26,20 +22,24 @@ import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
 import org.waarp.common.state.MachineState;
 import org.waarp.common.state.example.ExampleEnumState.ExampleTransition;
 
+import java.util.EnumSet;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Example of usage for MachineState based on ExampleEnumState enum class
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class ExampleUsageMachineState {
     /**
      * An example of usage.
-     * 
+     *
      * @param args
      */
     @SuppressWarnings({
-            "unchecked", "rawtypes" })
+            "unchecked", "rawtypes"
+    })
     public static void main(String[] args) {
         WaarpLoggerFactory.setDefaultFactory(new WaarpSlf4JLoggerFactory(null));
 
@@ -49,7 +49,7 @@ public class ExampleUsageMachineState {
         ConcurrentHashMap<ExampleEnumState, EnumSet<ExampleEnumState>> stateMap =
                 new ConcurrentHashMap<ExampleEnumState, EnumSet<ExampleEnumState>>();
         stateMap.put(ExampleTransition.tRUNNING.elt.getState(),
-                (EnumSet<ExampleEnumState>) ExampleTransition.tRUNNING.elt.getSet());
+                     (EnumSet<ExampleEnumState>) ExampleTransition.tRUNNING.elt.getSet());
         // Second create the MachineState with the right Map
         MachineState<ExampleEnumState> machineState1 =
                 new MachineState(ExampleEnumState.PAUSED, stateMap);
@@ -86,7 +86,7 @@ public class ExampleUsageMachineState {
     }
 
     static private void changeState(MachineState<ExampleEnumState> mach,
-            ExampleEnumState desired) {
+                                    ExampleEnumState desired) {
         try {
             printState(mach);
             mach.setCurrent(desired);
@@ -101,7 +101,7 @@ public class ExampleUsageMachineState {
     }
 
     static private void printWrongState(MachineState<ExampleEnumState> mach,
-            ExampleEnumState desired) {
+                                        ExampleEnumState desired) {
         System.out.println("Cannot go from State " + mach.getCurrent() + " to State " + desired);
     }
 

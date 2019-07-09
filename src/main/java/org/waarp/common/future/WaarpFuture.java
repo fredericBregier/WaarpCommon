@@ -1,32 +1,31 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.future;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
 import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.*;
 
 /**
  * Ftp Future operation<br>
  * Completely inspired from the excellent ChannelFuture of Netty, but without any channel inside.
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class WaarpFuture {
     private static final Throwable CANCELLED = new Throwable();
@@ -41,7 +40,7 @@ public class WaarpFuture {
 
     /**
      * Creates a new instance.
-     * 
+     *
      */
     public WaarpFuture() {
         cancellable = false;
@@ -49,7 +48,7 @@ public class WaarpFuture {
 
     /**
      * Creates a new instance.
-     * 
+     *
      * @param cancellable
      *            {@code true} if and only if this future can be canceled
      */
@@ -60,7 +59,7 @@ public class WaarpFuture {
     /**
      * Returns {@code true} if and only if this future is complete, regardless of whether the
      * operation was successful, failed, or canceled.
-     * 
+     *
      * @return True if the future is complete
      */
     public synchronized boolean isDone() {
@@ -69,7 +68,7 @@ public class WaarpFuture {
 
     /**
      * Returns {@code true} if and only if the operation was completed successfully.
-     * 
+     *
      * @return True if the future is successful
      */
     public synchronized boolean isSuccess() {
@@ -78,7 +77,7 @@ public class WaarpFuture {
 
     /**
      * Returns {@code true} if and only if the operation was completed but unsuccessfully.
-     * 
+     *
      * @return True if the future is done but unsuccessful
      */
     public synchronized boolean isFailed() {
@@ -87,7 +86,7 @@ public class WaarpFuture {
 
     /**
      * Returns the cause of the failed operation if the operation has failed.
-     * 
+     *
      * @return the cause of the failure. {@code null} if succeeded or this future is not completed
      *         yet.
      */
@@ -100,7 +99,7 @@ public class WaarpFuture {
 
     /**
      * Returns {@code true} if and only if this future was canceled by a {@link #cancel()} method.
-     * 
+     *
      * @return True if the future was canceled
      */
     public synchronized boolean isCancelled() {
@@ -133,9 +132,9 @@ public class WaarpFuture {
 
     /**
      * Waits for this future to be completed.
-     * 
+     *
      * @return The WaarpFuture
-     * 
+     *
      * @throws InterruptedException
      *             if the current thread was interrupted
      */
@@ -159,12 +158,12 @@ public class WaarpFuture {
 
     /**
      * Waits for this future to be completed within the specified time limit.
-     * 
+     *
      * @param timeout
      * @param unit
-     * 
+     *
      * @return {@code true} if and only if the future was completed within the specified time limit
-     * 
+     *
      * @throws InterruptedException
      *             if the current thread was interrupted
      */
@@ -175,11 +174,11 @@ public class WaarpFuture {
 
     /**
      * Waits for this future to be completed within the specified time limit.
-     * 
+     *
      * @param timeoutMillis
-     * 
+     *
      * @return {@code true} if and only if the future was completed within the specified time limit
-     * 
+     *
      * @throws InterruptedException
      *             if the current thread was interrupted
      */
@@ -190,7 +189,7 @@ public class WaarpFuture {
     /**
      * Waits for this future to be completed without interruption. This method catches an {@link InterruptedException} and
      * discards it silently.
-     * 
+     *
      * @return The WaarpFuture
      */
     public WaarpFuture awaitUninterruptibly() {
@@ -218,10 +217,10 @@ public class WaarpFuture {
     /**
      * Waits for this future to be completed within the specified time limit without interruption.
      * This method catches an {@link InterruptedException} and discards it silently.
-     * 
+     *
      * @param timeout
      * @param unit
-     * 
+     *
      * @return {@code true} if and only if the future was completed within the specified time limit
      */
     public boolean awaitUninterruptibly(long timeout, TimeUnit unit) {
@@ -235,9 +234,9 @@ public class WaarpFuture {
     /**
      * Waits for this future to be completed within the specified time limit without interruption.
      * This method catches an {@link InterruptedException} and discards it silently.
-     * 
+     *
      * @param timeoutMillis
-     * 
+     *
      * @return {@code true} if and only if the future was completed within the specified time limit
      */
     public boolean awaitUninterruptibly(long timeoutMillis) {
@@ -254,7 +253,7 @@ public class WaarpFuture {
             throw new InterruptedException();
         }
 
-        long startTime = timeoutNanos <= 0 ? 0 : System.nanoTime();
+        long startTime = timeoutNanos <= 0? 0 : System.nanoTime();
         long waitTime = timeoutNanos;
         boolean interrupted = false;
 
@@ -268,10 +267,10 @@ public class WaarpFuture {
 
                 waiters++;
                 try {
-                    for (;;) {
+                    for (; ; ) {
                         try {
                             this.wait(waitTime / 1000000,
-                                    (int) (waitTime % 1000000));
+                                      (int) (waitTime % 1000000));
                         } catch (InterruptedException e) {
                             if (interruptable) {
                                 throw e;
@@ -301,7 +300,7 @@ public class WaarpFuture {
 
     /**
      * Marks this future as a success and notifies all listeners.
-     * 
+     *
      * @return {@code true} if and only if successfully marked this future as a success. Otherwise {@code false} because this
      *         future is already marked as either a success or a failure.
      */
@@ -322,7 +321,7 @@ public class WaarpFuture {
 
     /**
      * Marks this future as a failure and notifies all listeners.
-     * 
+     *
      * @param cause
      * @return {@code true} if and only if successfully marked this future as a failure. Otherwise {@code false} because this
      *         future is already marked as either a success or a failure.
@@ -346,7 +345,7 @@ public class WaarpFuture {
     /**
      * Cancels the operation associated with this future and notifies all listeners if canceled
      * successfully.
-     * 
+     *
      * @return {@code true} if and only if the operation has been canceled. {@code false} if the
      *         operation can't be canceled or is already completed.
      */

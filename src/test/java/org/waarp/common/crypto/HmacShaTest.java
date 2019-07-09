@@ -1,28 +1,24 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.crypto;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * @author "Frederic Bregier"
@@ -35,7 +31,8 @@ public class HmacShaTest {
      */
     @Test
     public void testToCrypt() {
-        String plaintext = "This is a try for a very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long String";
+        String plaintext =
+                "This is a try for a very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long String";
         HmacSha256 hmacSha256 = new HmacSha256();
         // Generate a key
         try {
@@ -75,7 +72,7 @@ public class HmacShaTest {
         }
         long time2 = System.currentTimeMillis();
         System.out.println("SHA256 Total time in ms: " + (time2 - time1) + " or "
-                + (nb * 1000 / (time2 - time1)) + " crypt/s for " + (k / nb));
+                           + (nb * 1000 / (time2 - time1)) + " crypt/s for " + (k / nb));
 
         HmacSha1 hmacSha1 = new HmacSha1();
         // Generate a key
@@ -114,7 +111,7 @@ public class HmacShaTest {
         }
         time2 = System.currentTimeMillis();
         System.out.println("SHA1 Total time in ms: " + (time2 - time1) + " or "
-                + (nb * 1000 / (time2 - time1)) + " crypt/s for " + (k / nb));
+                           + (nb * 1000 / (time2 - time1)) + " crypt/s for " + (k / nb));
         assertTrue(true);
     }
 

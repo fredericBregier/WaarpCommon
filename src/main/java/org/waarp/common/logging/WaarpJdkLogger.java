@@ -11,28 +11,20 @@
  * under the License.
  */
 /**
- * Copyright (c) 2004-2011 QOS.ch
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS  IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * Copyright (c) 2004-2011 QOS.ch All rights reserved.
+ * <p>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * <p>
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ * <p>
+ * THE SOFTWARE IS PROVIDED "AS  IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package org.waarp.common.logging;
 
@@ -46,13 +38,50 @@ import java.util.logging.Logger;
  */
 public class WaarpJdkLogger extends AbstractWaarpLogger {
 
+    static final String SELF = WaarpJdkLogger.class.getName();
+    static final String SUPER = AbstractWaarpLogger.class.getName();
     private static final long serialVersionUID = -1767272577989225979L;
-
     final transient Logger logger;
 
     WaarpJdkLogger(final Logger logger) {
         super(logger.getName());
         this.logger = logger;
+    }
+
+    /**
+     * Fill in caller data if possible.
+     *
+     * @param record
+     *            The record to update
+     */
+    private static void fillCallerData(final String callerFQCN, final LogRecord record) {
+        final StackTraceElement[] steArray = new Throwable().getStackTrace();
+
+        int selfIndex = -1;
+        for (int i = 0; i < steArray.length; i++) {
+            final String className = steArray[i].getClassName();
+            if (className.equals(callerFQCN) || className.equals(SUPER)) {
+                selfIndex = i;
+                break;
+            }
+        }
+
+        int found = -1;
+        for (int i = selfIndex + 1; i < steArray.length; i++) {
+            final String className = steArray[i].getClassName();
+            if (!(className.equals(callerFQCN) || className.equals(SUPER))) {
+                found = i;
+                break;
+            }
+        }
+
+        if (found != -1) {
+            final StackTraceElement ste = steArray[found];
+            // setting the class name has the side effect of setting
+            // the needToInferCaller variable to false.
+            record.setSourceClassName(ste.getClassName());
+            record.setSourceMethodName(ste.getMethodName());
+        }
     }
 
     /**
@@ -586,44 +615,5 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
         record.setThrown(t);
         fillCallerData(callerFQCN, record);
         logger.log(record);
-    }
-
-    static final String SELF = WaarpJdkLogger.class.getName();
-    static final String SUPER = AbstractWaarpLogger.class.getName();
-
-    /**
-     * Fill in caller data if possible.
-     *
-     * @param record
-     *            The record to update
-     */
-    private static void fillCallerData(final String callerFQCN, final LogRecord record) {
-        final StackTraceElement[] steArray = new Throwable().getStackTrace();
-
-        int selfIndex = -1;
-        for (int i = 0; i < steArray.length; i++) {
-            final String className = steArray[i].getClassName();
-            if (className.equals(callerFQCN) || className.equals(SUPER)) {
-                selfIndex = i;
-                break;
-            }
-        }
-
-        int found = -1;
-        for (int i = selfIndex + 1; i < steArray.length; i++) {
-            final String className = steArray[i].getClassName();
-            if (!(className.equals(callerFQCN) || className.equals(SUPER))) {
-                found = i;
-                break;
-            }
-        }
-
-        if (found != -1) {
-            final StackTraceElement ste = steArray[found];
-            // setting the class name has the side effect of setting
-            // the needToInferCaller variable to false.
-            record.setSourceClassName(ste.getClassName());
-            record.setSourceMethodName(ste.getMethodName());
-        }
     }
 }

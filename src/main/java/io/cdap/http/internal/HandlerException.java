@@ -25,29 +25,29 @@ import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 
 /**
- *Creating Http Response for Exception messages.
+ * Creating Http Response for Exception messages.
  */
 final class HandlerException extends Exception {
 
-  private final HttpResponseStatus failureStatus;
-  private final String message;
+    private final HttpResponseStatus failureStatus;
+    private final String message;
 
-  HandlerException(HttpResponseStatus failureStatus, String message) {
-    super(message);
-    this.failureStatus = failureStatus;
-    this.message = message;
-  }
+    HandlerException(HttpResponseStatus failureStatus, String message) {
+        super(message);
+        this.failureStatus = failureStatus;
+        this.message = message;
+    }
 
-  HandlerException(HttpResponseStatus failureStatus, String message, Throwable cause) {
-    super(message, cause);
-    this.failureStatus = failureStatus;
-    this.message = message;
-  }
+    HandlerException(HttpResponseStatus failureStatus, String message, Throwable cause) {
+        super(message, cause);
+        this.failureStatus = failureStatus;
+        this.message = message;
+    }
 
-  HttpResponse createFailureResponse() {
-    FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, failureStatus,
-                                                            Unpooled.copiedBuffer(message, InternalUtil.UTF_8));
-    HttpUtil.setContentLength(response, response.content().readableBytes());
-    return response;
-  }
+    HttpResponse createFailureResponse() {
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, failureStatus,
+                                                                Unpooled.copiedBuffer(message, InternalUtil.UTF_8));
+        HttpUtil.setContentLength(response, response.content().readableBytes());
+        return response;
+    }
 }

@@ -1,17 +1,16 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -21,9 +20,9 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * Main object implementing Data Block whaveter the mode, type, structure used.
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class DataBlock {
     private static final int EOR = 128;
@@ -81,6 +80,35 @@ public class DataBlock {
     }
 
     /**
+     * Translate the given array of byte into a string in binary format
+     *
+     * @param bytes
+     * @param cutted
+     *            True if each Byte should be 'blank' separated or not
+     * @return the string
+     */
+    public static String toBinaryString(byte[] bytes, boolean cutted) {
+        StringBuilder buffer = new StringBuilder();
+        boolean first = true;
+        for (byte b : bytes) {
+            if (cutted) {
+                if (first) {
+                    first = false;
+                } else {
+                    buffer.append(' ');
+                }
+            }
+            String bin = Integer.toBinaryString(b & 0xFF);
+            bin = bin.substring(0, Math.min(bin.length(), 8));
+            for (int j = 0; j < 8 - bin.length(); j++) {
+                buffer.append('0');
+            }
+            buffer.append(bin);
+        }
+        return buffer.toString();
+    }
+
+    /**
      * @return the block
      */
     public ByteBuf getBlock() {
@@ -89,7 +117,7 @@ public class DataBlock {
 
     /**
      * Set the block and the byte count according to the block
-     * 
+     *
      * @param block
      *            the block to set
      */
@@ -137,7 +165,7 @@ public class DataBlock {
     }
 
     /**
-     * 
+     *
      * @return the Upper byte of the byte count
      */
     public byte getByteCountUpper() {
@@ -145,7 +173,7 @@ public class DataBlock {
     }
 
     /**
-     * 
+     *
      * @return the Lower byte of the byte count
      */
     public byte getByteCountLower() {
@@ -255,7 +283,18 @@ public class DataBlock {
     }
 
     /**
-     * 
+     * Set the markers and the byte count
+     *
+     * @param markers
+     *            the markers to set
+     */
+    public void setMarkers(int[] markers) {
+        this.markers = markers;
+        byteCount = 6;
+    }
+
+    /**
+     *
      * @return the 6 bytes representation of the markers
      */
     public byte[] getByteMarkers() {
@@ -273,19 +312,8 @@ public class DataBlock {
     }
 
     /**
-     * Set the markers and the byte count
-     * 
-     * @param markers
-     *            the markers to set
-     */
-    public void setMarkers(int[] markers) {
-        this.markers = markers;
-        byteCount = 6;
-    }
-
-    /**
      * Clear the object
-     * 
+     *
      */
     public void clear() {
         block = null;
@@ -300,7 +328,7 @@ public class DataBlock {
 
     /**
      * Is this Block cleared
-     * 
+     *
      * @return True if this Block is cleared
      */
     public boolean isCleared() {
@@ -310,35 +338,6 @@ public class DataBlock {
     @Override
     public String toString() {
         return "DataBlock Length:" + byteCount + " isEof:" + isEOF + " isEOR:" + isEOR + " isERROR:" + isERROR
-                + " isRESTART:" + isRESTART;
-    }
-
-    /**
-     * Translate the given array of byte into a string in binary format
-     * 
-     * @param bytes
-     * @param cutted
-     *            True if each Byte should be 'blank' separated or not
-     * @return the string
-     */
-    public static String toBinaryString(byte[] bytes, boolean cutted) {
-        StringBuilder buffer = new StringBuilder();
-        boolean first = true;
-        for (byte b : bytes) {
-            if (cutted) {
-                if (first) {
-                    first = false;
-                } else {
-                    buffer.append(' ');
-                }
-            }
-            String bin = Integer.toBinaryString(b & 0xFF);
-            bin = bin.substring(0, Math.min(bin.length(), 8));
-            for (int j = 0; j < 8 - bin.length(); j++) {
-                buffer.append('0');
-            }
-            buffer.append(bin);
-        }
-        return buffer.toString();
+               + " isRESTART:" + isRESTART;
     }
 }

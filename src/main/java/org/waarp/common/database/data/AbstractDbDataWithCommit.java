@@ -1,17 +1,16 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -25,13 +24,13 @@ import org.waarp.common.database.exception.WaarpDatabaseNoDataException;
 /**
  * Abstract database table implementation with explicit COMMIT.<br>
  * <br>
- * 
+ *
  * If the connection is in autocommit, this abstract should not be used.<br>
  * If the connection is not in autocommit, one could use this implementation to implicitly commit
  * when needed automatically as should do an autocommit connection.
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public abstract class AbstractDbDataWithCommit extends AbstractDbData {
     /**
@@ -48,7 +47,7 @@ public abstract class AbstractDbDataWithCommit extends AbstractDbData {
 
     /**
      * Abstract constructor to set the DbSession to use
-     * 
+     *
      * @param dbSession
      */
     public AbstractDbDataWithCommit(DbSession dbSession) {
@@ -58,7 +57,7 @@ public abstract class AbstractDbDataWithCommit extends AbstractDbData {
 
     /**
      * Insert object into table
-     * 
+     *
      * @throws WaarpDatabaseException
      */
     public void insert() throws WaarpDatabaseException {
@@ -74,7 +73,7 @@ public abstract class AbstractDbDataWithCommit extends AbstractDbData {
                 dbSession);
         try {
             preparedStatement.createPrepareStatement("INSERT INTO " + getTable() +
-                    " (" + getSelectAllFields() + ") VALUES " + getInsertAllValues());
+                                                     " (" + getSelectAllFields() + ") VALUES " + getInsertAllValues());
             setValues(preparedStatement, allFields);
             int count = preparedStatement.executeUpdate();
             if (count <= 0) {
@@ -89,7 +88,7 @@ public abstract class AbstractDbDataWithCommit extends AbstractDbData {
 
     /**
      * Update object to table
-     * 
+     *
      * @throws WaarpDatabaseException
      */
     public void update() throws WaarpDatabaseException {
@@ -105,8 +104,8 @@ public abstract class AbstractDbDataWithCommit extends AbstractDbData {
                 dbSession);
         try {
             preparedStatement.createPrepareStatement("UPDATE " + getTable() +
-                    " SET " + getUpdateAllFields() + " WHERE " +
-                    getWherePrimaryKey());
+                                                     " SET " + getUpdateAllFields() + " WHERE " +
+                                                     getWherePrimaryKey());
             setValues(preparedStatement, allFields);
             int count = preparedStatement.executeUpdate();
             if (count <= 0) {
@@ -121,7 +120,7 @@ public abstract class AbstractDbDataWithCommit extends AbstractDbData {
 
     /**
      * Delete object from table
-     * 
+     *
      * @throws WaarpDatabaseException
      */
     public void delete() throws WaarpDatabaseException {
@@ -132,7 +131,7 @@ public abstract class AbstractDbDataWithCommit extends AbstractDbData {
                 dbSession);
         try {
             preparedStatement.createPrepareStatement("DELETE FROM " + getTable() +
-                    " WHERE " + getWherePrimaryKey());
+                                                     " WHERE " + getWherePrimaryKey());
             setPrimaryKey();
             setValues(preparedStatement, primaryKey);
             int count = preparedStatement.executeUpdate();

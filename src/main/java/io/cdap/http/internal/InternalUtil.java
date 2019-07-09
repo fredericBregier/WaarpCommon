@@ -20,15 +20,15 @@ import java.nio.charset.Charset;
 
 /**
  * Some utilities
- *
  */
 public class InternalUtil {
-    private InternalUtil() {
-        // Empty
-    }
     /**
      * Java 6 compatibility
      */
     public static final Charset UTF_8 = Charset.forName("UTF-8");
+
+    private InternalUtil() {
+        // Empty
+    }
 
 }

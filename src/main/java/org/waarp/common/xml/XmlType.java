@@ -1,17 +1,16 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -22,9 +21,9 @@ import java.sql.Timestamp;
 
 /**
  * Type of Classes supported in Enum type
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public enum XmlType {
     BOOLEAN(Boolean.TYPE), INTEGER(Integer.TYPE), FLOAT(Float.TYPE), CHARACTER(
@@ -43,7 +42,7 @@ public enum XmlType {
     }
 
     /**
-     * 
+     *
      * @return the associated Native Java class
      */
     public Class<?> getClassType() {
@@ -51,53 +50,53 @@ public enum XmlType {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return True if the Object is natively compatible with the internal Type
      */
     public boolean isNativelyCompatible(Object value) {
         Class<?> type = value.getClass();
         switch (this) {
-            case BOOLEAN:
-                return (type.equals(Boolean.TYPE) || Boolean.class
-                        .isAssignableFrom(type));
-            case INTEGER:
-                return (type.equals(Integer.TYPE) || Integer.class
-                        .isAssignableFrom(type));
-            case FLOAT:
-                return (type.equals(Float.TYPE) || Float.class
-                        .isAssignableFrom(type));
-            case CHARACTER:
-                return (type.equals(Character.TYPE) || Character.class
-                        .isAssignableFrom(type));
-            case BYTE:
-                return (type.equals(Byte.TYPE) || Byte.class
-                        .isAssignableFrom(type));
-            case LONG:
-                return (type.equals(Long.TYPE) || Long.class
-                        .isAssignableFrom(type));
-            case DOUBLE:
-                return (type.equals(Double.TYPE) || Double.class
-                        .isAssignableFrom(type));
-            case SHORT:
-                return (type.equals(Short.TYPE) || Short.class
-                        .isAssignableFrom(type));
-            case SQLDATE:
-                return (java.sql.Date.class.isAssignableFrom(type));
-            case TIMESTAMP:
-                return (Timestamp.class.isAssignableFrom(type));
-            case STRING:
-                return (String.class.isAssignableFrom(type));
-            case XVAL:
-                if (type.isArray() &&
-                        type.getName().contains(XmlValue.class.getName())) {
-                    return true;
-                }
-                return false;
-            case EMPTY:
-                return false;
-            default:
-                return false;
+        case BOOLEAN:
+            return (type.equals(Boolean.TYPE) || Boolean.class
+                    .isAssignableFrom(type));
+        case INTEGER:
+            return (type.equals(Integer.TYPE) || Integer.class
+                    .isAssignableFrom(type));
+        case FLOAT:
+            return (type.equals(Float.TYPE) || Float.class
+                    .isAssignableFrom(type));
+        case CHARACTER:
+            return (type.equals(Character.TYPE) || Character.class
+                    .isAssignableFrom(type));
+        case BYTE:
+            return (type.equals(Byte.TYPE) || Byte.class
+                    .isAssignableFrom(type));
+        case LONG:
+            return (type.equals(Long.TYPE) || Long.class
+                    .isAssignableFrom(type));
+        case DOUBLE:
+            return (type.equals(Double.TYPE) || Double.class
+                    .isAssignableFrom(type));
+        case SHORT:
+            return (type.equals(Short.TYPE) || Short.class
+                    .isAssignableFrom(type));
+        case SQLDATE:
+            return (java.sql.Date.class.isAssignableFrom(type));
+        case TIMESTAMP:
+            return (Timestamp.class.isAssignableFrom(type));
+        case STRING:
+            return (String.class.isAssignableFrom(type));
+        case XVAL:
+            if (type.isArray() &&
+                type.getName().contains(XmlValue.class.getName())) {
+                return true;
+            }
+            return false;
+        case EMPTY:
+            return false;
+        default:
+            return false;
         }
     }
 

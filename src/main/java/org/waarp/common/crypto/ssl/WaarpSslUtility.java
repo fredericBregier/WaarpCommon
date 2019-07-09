@@ -1,26 +1,20 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.crypto.ssl;
-
-import java.util.NoSuchElementException;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -34,14 +28,15 @@ import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.utility.WaarpThreadFactory;
 
+import java.util.NoSuchElementException;
+
 /**
  * Utilities for SSL support
- * 
+ *
  * @author "Frederic Bregier"
  *
  */
@@ -54,15 +49,28 @@ public class WaarpSslUtility {
     /**
      * EventExecutor associated with Ssl utility
      */
-    private static final EventExecutor SSL_EVENT_EXECUTOR = new DefaultEventExecutor(new WaarpThreadFactory("SSLEVENT"));
+    private static final EventExecutor SSL_EVENT_EXECUTOR =
+            new DefaultEventExecutor(new WaarpThreadFactory("SSLEVENT"));
     /**
      * ChannelGroup for SSL
      */
     private static final ChannelGroup sslChannelGroup = new DefaultChannelGroup("SslChannelGroup", SSL_EVENT_EXECUTOR);
+    /**
+     * Closing channel with SSL close at first step
+     */
+    public static ChannelFutureListener SSLCLOSE = new ChannelFutureListener() {
+
+        public void operationComplete(ChannelFuture future) throws Exception {
+            if (future.channel().isActive()) {
+                SSLTHREAD thread = new SSLTHREAD(future.channel());
+                thread.start();
+            }
+        }
+    };
 
     /**
      * Add the Channel as SSL handshake will start soon
-     * 
+     *
      * @param channel
      */
     public static void addSslOpenedChannel(Channel channel) {
@@ -71,7 +79,7 @@ public class WaarpSslUtility {
 
     /**
      * Add a SslHandler in a pipeline when the channel is already active
-     * 
+     *
      * @param future
      *            might be null, condition to start to add the handler to the pipeline
      * @param pipeline
@@ -81,8 +89,8 @@ public class WaarpSslUtility {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void addSslHandler(ChannelFuture future, final ChannelPipeline pipeline,
-            final ChannelHandler sslHandler,
-            final GenericFutureListener<? extends Future<? super Channel>> listener) {
+                                     final ChannelHandler sslHandler,
+                                     final GenericFutureListener<? extends Future<? super Channel>> listener) {
         if (future == null) {
             logger.debug("Add SslHandler: " + pipeline.channel());
             pipeline.addFirst("SSL", sslHandler);
@@ -101,7 +109,7 @@ public class WaarpSslUtility {
 
     /**
      * Wait for the handshake on the given channel (better to use addSslHandler when handler is added after channel is active)
-     * 
+     *
      * @param channel
      * @return True if the Handshake is done correctly
      */
@@ -131,7 +139,7 @@ public class WaarpSslUtility {
 
     /**
      * Waiting for the channel to be opened and ready (Client side) (blocking call)
-     * 
+     *
      * @param future
      *            a future on connect only
      * @return the channel if correctly associated, else return null
@@ -166,7 +174,7 @@ public class WaarpSslUtility {
 
     /**
      * Utility method to close a channel in SSL mode correctly (if any)
-     * 
+     *
      * @param channel
      */
     public static ChannelFuture closingSslChannel(Channel channel) {
@@ -181,7 +189,7 @@ public class WaarpSslUtility {
 
     /**
      * Remove the SslHandler (if any) cleanly
-     * 
+     *
      * @param future
      *            if not null, wait for this future to be done to removed the sslhandler
      * @param channel
@@ -231,8 +239,32 @@ public class WaarpSslUtility {
     }
 
     /**
+     * Wait for the channel with SSL to be closed
+     *
+     * @param channel
+     * @param delay
+     */
+    public static boolean waitForClosingSslChannel(Channel channel, long delay) {
+        try {
+            if (!channel.closeFuture().await(delay)) {
+                try {
+                    channel.pipeline().remove(WaarpSslHandler.class);
+                    logger.debug("try to close anyway");
+                    channel.close().await(delay);
+                    return false;
+                } catch (NoSuchElementException e) {
+                    // ignore;
+                    channel.closeFuture().await(delay);
+                }
+            }
+        } catch (InterruptedException e) {
+        }
+        return true;
+    }
+
+    /**
      * Thread used to ensure we are not in IO thread when waiting
-     * 
+     *
      * @author "Frederic Bregier"
      *
      */
@@ -253,43 +285,6 @@ public class WaarpSslUtility {
             closingSslChannel(channel);
         }
 
-    }
-
-    /**
-     * Closing channel with SSL close at first step
-     */
-    public static ChannelFutureListener SSLCLOSE = new ChannelFutureListener() {
-
-        public void operationComplete(ChannelFuture future) throws Exception {
-            if (future.channel().isActive()) {
-                SSLTHREAD thread = new SSLTHREAD(future.channel());
-                thread.start();
-            }
-        }
-    };
-
-    /**
-     * Wait for the channel with SSL to be closed
-     * 
-     * @param channel
-     * @param delay
-     */
-    public static boolean waitForClosingSslChannel(Channel channel, long delay) {
-        try {
-            if (!channel.closeFuture().await(delay)) {
-                try {
-                    channel.pipeline().remove(WaarpSslHandler.class);
-                    logger.debug("try to close anyway");
-                    channel.close().await(delay);
-                    return false;
-                } catch (NoSuchElementException e) {
-                    // ignore;
-                    channel.closeFuture().await(delay);
-                }
-            }
-        } catch (InterruptedException e) {
-        }
-        return true;
     }
 
 }

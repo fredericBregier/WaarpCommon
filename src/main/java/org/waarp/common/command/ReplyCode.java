@@ -1,17 +1,16 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -21,9 +20,9 @@ import org.waarp.common.exception.InvalidArgumentException;
 
 /**
  * Reply code references by different RFC.
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public enum ReplyCode {
     /**
@@ -281,25 +280,13 @@ public enum ReplyCode {
     REPLY_553_REQUESTED_ACTION_NOT_TAKEN_FILE_NAME_NOT_ALLOWED(553);
 
     /**
-     * Numerical code
-     */
-    private int code;
-
-    /**
-     * Message associated
-     */
-    private String mesg;
-
-    /**
      * LF
      */
     public static final String LF = "\n";
-
     /**
      * CR NUL
      */
     public static final String CRNUL = "\r\0";
-
     /**
      * CR LF<br>
      * A User Telnet MUST be able to send any of the forms: CR LF, CR NUL, and LF. A User Telnet on
@@ -307,10 +294,18 @@ public enum ReplyCode {
      * user presses the "end-of-line" key, and CR LF SHOULD be the default.
      */
     public static final String CRLF = "\r\n";
+    /**
+     * Numerical code
+     */
+    private int code;
+    /**
+     * Message associated
+     */
+    private String mesg;
 
     /**
      * Construct a Reply code from specific message
-     * 
+     *
      * @param code
      * @param mesg
      */
@@ -320,8 +315,18 @@ public enum ReplyCode {
     }
 
     /**
+     * Construct a Reply Code from its name in Enum structure
+     *
+     * @param code
+     */
+    private ReplyCode(int code) {
+        this.code = code;
+        mesg = name().substring(6).replace('_', ' ') + ReplyCode.CRLF;
+    }
+
+    /**
      * Return the final message formatted as needed from the code and the message
-     * 
+     *
      * @param code
      * @param msg
      * @return the final formatted message
@@ -360,13 +365,114 @@ public enum ReplyCode {
     }
 
     /**
-     * Construct a Reply Code from its name in Enum structure
-     * 
+     *
      * @param code
+     * @return the associated ReplyCode from the given numerical code
+     * @throws InvalidArgumentException
      */
-    private ReplyCode(int code) {
-        this.code = code;
-        mesg = name().substring(6).replace('_', ' ') + ReplyCode.CRLF;
+    public static ReplyCode getReplyCode(int code) throws InvalidArgumentException {
+        switch (code) {
+        case 0:
+            return REPLY_000_SPECIAL_NOSTATUS;
+        case 110:
+            return REPLY_110_RESTART_MARKER_REPLY;
+        case 120:
+            return REPLY_120_SERVICE_READY_IN_NNN_MINUTES;
+        case 125:
+            return REPLY_125_DATA_CONNECTION_ALREADY_OPEN;
+        case 150:
+            return REPLY_150_FILE_STATUS_OKAY;
+        case 200:
+            return REPLY_200_COMMAND_OKAY;
+        case 202:
+            return REPLY_202_COMMAND_NOT_IMPLEMENTED;
+        case 211:
+            return REPLY_211_SYSTEM_STATUS_REPLY;
+        case 212:
+            return REPLY_212_DIRECTORY_STATUS;
+        case 213:
+            return REPLY_213_FILE_STATUS;
+        case 214:
+            return REPLY_214_HELP_MESSAGE;
+        case 215:
+            return REPLY_215_NAME_SYSTEM_TYPE;
+        case 220:
+            return REPLY_220_SERVICE_READY;
+        case 221:
+            return REPLY_221_CLOSING_CONTROL_CONNECTION;
+        case 225:
+            return REPLY_225_DATA_CONNECTION_OPEN_NO_TRANSFER_IN_PROGRESS;
+        case 226:
+            return REPLY_226_CLOSING_DATA_CONNECTION;
+        case 227:
+            return REPLY_227_ENTERING_PASSIVE_MODE;
+        case 229:
+            return REPLY_229_ENTERING_PASSIVE_MODE;
+        case 230:
+            return REPLY_230_USER_LOGGED_IN;
+        case 232:
+            return REPLY_232_USER_LOGGED_IN;
+        case 234:
+            return REPLY_234_SECURITY_DATA_EXCHANGE_COMPLETE;
+        case 250:
+            return REPLY_250_REQUESTED_FILE_ACTION_OKAY;
+        case 257:
+            return REPLY_257_PATHNAME_CREATED;
+        case 331:
+            return REPLY_331_USER_NAME_OKAY_NEED_PASSWORD;
+        case 332:
+            return REPLY_332_NEED_ACCOUNT_FOR_LOGIN;
+        case 350:
+            return REPLY_350_REQUESTED_FILE_ACTION_PENDING_FURTHER_INFORMATION;
+        case 421:
+            return REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION;
+        case 425:
+            return REPLY_425_CANT_OPEN_DATA_CONNECTION;
+        case 426:
+            return REPLY_426_CONNECTION_CLOSED_TRANSFER_ABORTED;
+        case 431:
+            return REPLY_431_NEED_UNAVAILABLE_RESOURCE_TO_PROCESS_SECURITY;
+        case 450:
+            return REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN;
+        case 451:
+            return REPLY_451_REQUESTED_ACTION_ABORTED;
+        case 452:
+            return REPLY_452_REQUESTED_ACTION_NOT_TAKEN;
+        case 500:
+            return REPLY_500_SYNTAX_ERROR_COMMAND_UNRECOGNIZED;
+        case 501:
+            return REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS;
+        case 502:
+            return REPLY_502_COMMAND_NOT_IMPLEMENTED;
+        case 503:
+            return REPLY_503_BAD_SEQUENCE_OF_COMMANDS;
+        case 504:
+            return REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER;
+        case 522:
+            return REPLY_522_EXTENDED_PORT_FAILURE_UNKNOWN_NETWORK_PROTOCOL;
+        case 530:
+            return REPLY_530_NOT_LOGGED_IN;
+        case 532:
+            return REPLY_532_NEED_ACCOUNT_FOR_STORING_FILES;
+        case 533:
+            return REPLY_533_COMMAND_PROTECTION_LEVEL_DENIED_FOR_POLICY_REASONS;
+        case 534:
+            return REPLY_534_REQUEST_DENIED_FOR_POLICY_REASONS;
+        case 535:
+            return REPLY_535_FAILED_SECURITY_CHECK;
+        case 536:
+            return REPLY_536_REQUESTED_PROT_LEVEL_NOT_SUPPORTED;
+        case 550:
+            return REPLY_550_REQUESTED_ACTION_NOT_TAKEN;
+        case 551:
+            return REPLY_551_REQUESTED_ACTION_ABORTED_PAGE_TYPE_UNKNOWN;
+        case 552:
+            return REPLY_552_REQUESTED_FILE_ACTION_ABORTED_EXCEEDED_STORAGE;
+        case 553:
+            return REPLY_553_REQUESTED_ACTION_NOT_TAKEN_FILE_NAME_NOT_ALLOWED;
+        default:
+            throw new InvalidArgumentException("Unknown ReplyCode " + code);
+        }
     }
 
     /**
@@ -381,116 +487,5 @@ public enum ReplyCode {
      */
     public String getMesg() {
         return mesg;
-    }
-
-    /**
-     * 
-     * @param code
-     * @return the associated ReplyCode from the given numerical code
-     * @throws InvalidArgumentException
-     */
-    public static ReplyCode getReplyCode(int code) throws InvalidArgumentException {
-        switch (code) {
-            case 0:
-                return REPLY_000_SPECIAL_NOSTATUS;
-            case 110:
-                return REPLY_110_RESTART_MARKER_REPLY;
-            case 120:
-                return REPLY_120_SERVICE_READY_IN_NNN_MINUTES;
-            case 125:
-                return REPLY_125_DATA_CONNECTION_ALREADY_OPEN;
-            case 150:
-                return REPLY_150_FILE_STATUS_OKAY;
-            case 200:
-                return REPLY_200_COMMAND_OKAY;
-            case 202:
-                return REPLY_202_COMMAND_NOT_IMPLEMENTED;
-            case 211:
-                return REPLY_211_SYSTEM_STATUS_REPLY;
-            case 212:
-                return REPLY_212_DIRECTORY_STATUS;
-            case 213:
-                return REPLY_213_FILE_STATUS;
-            case 214:
-                return REPLY_214_HELP_MESSAGE;
-            case 215:
-                return REPLY_215_NAME_SYSTEM_TYPE;
-            case 220:
-                return REPLY_220_SERVICE_READY;
-            case 221:
-                return REPLY_221_CLOSING_CONTROL_CONNECTION;
-            case 225:
-                return REPLY_225_DATA_CONNECTION_OPEN_NO_TRANSFER_IN_PROGRESS;
-            case 226:
-                return REPLY_226_CLOSING_DATA_CONNECTION;
-            case 227:
-                return REPLY_227_ENTERING_PASSIVE_MODE;
-            case 229:
-                return REPLY_229_ENTERING_PASSIVE_MODE;
-            case 230:
-                return REPLY_230_USER_LOGGED_IN;
-            case 232:
-                return REPLY_232_USER_LOGGED_IN;
-            case 234:
-                return REPLY_234_SECURITY_DATA_EXCHANGE_COMPLETE;
-            case 250:
-                return REPLY_250_REQUESTED_FILE_ACTION_OKAY;
-            case 257:
-                return REPLY_257_PATHNAME_CREATED;
-            case 331:
-                return REPLY_331_USER_NAME_OKAY_NEED_PASSWORD;
-            case 332:
-                return REPLY_332_NEED_ACCOUNT_FOR_LOGIN;
-            case 350:
-                return REPLY_350_REQUESTED_FILE_ACTION_PENDING_FURTHER_INFORMATION;
-            case 421:
-                return REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION;
-            case 425:
-                return REPLY_425_CANT_OPEN_DATA_CONNECTION;
-            case 426:
-                return REPLY_426_CONNECTION_CLOSED_TRANSFER_ABORTED;
-            case 431:
-                return REPLY_431_NEED_UNAVAILABLE_RESOURCE_TO_PROCESS_SECURITY;
-            case 450:
-                return REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN;
-            case 451:
-                return REPLY_451_REQUESTED_ACTION_ABORTED;
-            case 452:
-                return REPLY_452_REQUESTED_ACTION_NOT_TAKEN;
-            case 500:
-                return REPLY_500_SYNTAX_ERROR_COMMAND_UNRECOGNIZED;
-            case 501:
-                return REPLY_501_SYNTAX_ERROR_IN_PARAMETERS_OR_ARGUMENTS;
-            case 502:
-                return REPLY_502_COMMAND_NOT_IMPLEMENTED;
-            case 503:
-                return REPLY_503_BAD_SEQUENCE_OF_COMMANDS;
-            case 504:
-                return REPLY_504_COMMAND_NOT_IMPLEMENTED_FOR_THAT_PARAMETER;
-            case 522:
-                return REPLY_522_EXTENDED_PORT_FAILURE_UNKNOWN_NETWORK_PROTOCOL;
-            case 530:
-                return REPLY_530_NOT_LOGGED_IN;
-            case 532:
-                return REPLY_532_NEED_ACCOUNT_FOR_STORING_FILES;
-            case 533:
-                return REPLY_533_COMMAND_PROTECTION_LEVEL_DENIED_FOR_POLICY_REASONS;
-            case 534:
-                return REPLY_534_REQUEST_DENIED_FOR_POLICY_REASONS;
-            case 535:
-                return REPLY_535_FAILED_SECURITY_CHECK;
-            case 536:
-                return REPLY_536_REQUESTED_PROT_LEVEL_NOT_SUPPORTED;
-            case 550:
-                return REPLY_550_REQUESTED_ACTION_NOT_TAKEN;
-            case 551:
-                return REPLY_551_REQUESTED_ACTION_ABORTED_PAGE_TYPE_UNKNOWN;
-            case 552:
-                return REPLY_552_REQUESTED_FILE_ACTION_ABORTED_EXCEEDED_STORAGE;
-            case 553:
-                return REPLY_553_REQUESTED_ACTION_NOT_TAKEN_FILE_NAME_NOT_ALLOWED;
-            default:
-                throw new InvalidArgumentException("Unknown ReplyCode " + code);
-        }
     }
 }

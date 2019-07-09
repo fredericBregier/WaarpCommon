@@ -1,22 +1,18 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility;
 
@@ -30,7 +26,8 @@ public class Hexa {
      */
     private static final char[] HEX_CHARS = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f', };
+            'a', 'b', 'c', 'd', 'e', 'f',
+    };
 
     public static final byte asByte(char a, char b) {
         if (a >= HEX_CHARS[10]) {
@@ -49,7 +46,7 @@ public class Hexa {
     public static final byte[] fromHex(final char[] hex) {
         final int size = hex.length / 2;
         final byte[] bytes = new byte[size];
-        for (int i = 0, j = 0; i < size;) {
+        for (int i = 0, j = 0; i < size; ) {
             bytes[i++] = asByte(hex[j++], hex[j++]);
         }
         return bytes;
@@ -59,7 +56,7 @@ public class Hexa {
         final char[] chars = hex.toCharArray();
         final int size = chars.length / 2;
         final byte[] bytes = new byte[size];
-        for (int i = 0, j = 0; i < size;) {
+        for (int i = 0, j = 0; i < size; ) {
             bytes[i++] = asByte(chars[j++], chars[j++]);
         }
         return bytes;

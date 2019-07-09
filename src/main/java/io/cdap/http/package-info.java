@@ -15,25 +15,19 @@
  */
 
 /**
- * Service and components to build Netty based Http web service.
- * {@code NettyHttpService} sets up the necessary pipeline and manages starting, stopping,
- * state-management of the web service.
+ * Service and components to build Netty based Http web service. {@code NettyHttpService} sets up the necessary pipeline
+ * and manages starting, stopping, state-management of the web service.
  *
  * <p>
- * In-order to handle http requests, {@code HttpHandler} must be implemented. The methods
- * in the classes implemented from {@code HttpHandler} must be annotated with Jersey annotations to
- * specify http uri paths and http methods.
- * Note: Only supports the following annotations:
- * {@link javax.ws.rs.Path Path},
- * {@link javax.ws.rs.PathParam PathParam},
- * {@link javax.ws.rs.GET GET},
- * {@link javax.ws.rs.PUT PUT},
- * {@link javax.ws.rs.POST POST},
- * {@link javax.ws.rs.DELETE DELETE}.
- *
- * Note: Doesn't support getting Annotations from base class if the HttpHandler implements also extends
- * a class with annotation.
- *
+ * In-order to handle http requests, {@code HttpHandler} must be implemented. The methods in the classes implemented
+ * from {@code HttpHandler} must be annotated with Jersey annotations to specify http uri paths and http methods. Note:
+ * Only supports the following annotations: {@link javax.ws.rs.Path Path}, {@link javax.ws.rs.PathParam PathParam},
+ * {@link javax.ws.rs.GET GET}, {@link javax.ws.rs.PUT PUT}, {@link javax.ws.rs.POST POST}, {@link javax.ws.rs.DELETE
+ * DELETE}.
+ * <p>
+ * Note: Doesn't support getting Annotations from base class if the HttpHandler implements also extends a class with
+ * annotation.
+ * <p>
  * Sample usage Handlers and Netty service setup:
  *
  * <pre>

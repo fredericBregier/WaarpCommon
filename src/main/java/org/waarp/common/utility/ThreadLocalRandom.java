@@ -1,22 +1,18 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility;
 
@@ -53,26 +49,6 @@ public final class ThreadLocalRandom extends Random {
     private static final long multiplier = 0x5DEECE66DL;
     private static final long addend = 0xBL;
     private static final long mask = (1L << 48) - 1;
-
-    /**
-     * The random seed. We can't use super.seed.
-     */
-    private long rnd;
-
-    /**
-     * Initialization flag to permit the first and only allowed call
-     * to setSeed (inside Random constructor) to succeed. We can't
-     * allow others since it would cause setting seed in one part of a
-     * program to unintentionally impact other usages by the thread.
-     */
-    private boolean initialized;
-
-    // Padding to help avoid memory contention among seed updates in
-    // different TLRs in the common case that they are located near
-    // each other.
-    @SuppressWarnings("unused")
-    private long pad0, pad1, pad2, pad3, pad4, pad5, pad6, pad7;
-
     /**
      * The actual ThreadLocal
      */
@@ -83,6 +59,23 @@ public final class ThreadLocalRandom extends Random {
                     return new ThreadLocalRandom();
                 }
             };
+    private static final long serialVersionUID = -5851777807851030925L;
+    /**
+     * The random seed. We can't use super.seed.
+     */
+    private long rnd;
+    /**
+     * Initialization flag to permit the first and only allowed call
+     * to setSeed (inside Random constructor) to succeed. We can't
+     * allow others since it would cause setting seed in one part of a
+     * program to unintentionally impact other usages by the thread.
+     */
+    private boolean initialized;
+    // Padding to help avoid memory contention among seed updates in
+    // different TLRs in the common case that they are located near
+    // each other.
+    @SuppressWarnings("unused")
+    private long pad0, pad1, pad2, pad3, pad4, pad5, pad6, pad7;
 
     /**
      * Returns the current thread's {@code ThreadLocalRandom}.
@@ -116,6 +109,4 @@ public final class ThreadLocalRandom extends Random {
         rnd = rnd * multiplier + addend & mask;
         return (int) (rnd >>> 48 - bits);
     }
-
-    private static final long serialVersionUID = -5851777807851030925L;
 }

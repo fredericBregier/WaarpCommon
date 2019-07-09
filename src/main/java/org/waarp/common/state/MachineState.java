@@ -1,38 +1,37 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.state;
 
-import java.util.EnumSet;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.waarp.common.exception.IllegalFiniteStateException;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
+
+import java.util.EnumSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This is the base class for the basic support of Finite State Machine in GoldenGate. One need to
  * implement an Enum class to use with it. <br>
  * <br>
  * Note: the type EnumSet< ? > is in fact of type EnumSet< EnumState >
- * 
+ *
  * @author Frederic Bregier
  * @param <EnumState>
- * 
+ *
  */
 public class MachineState<EnumState> {
     /**
@@ -46,7 +45,7 @@ public class MachineState<EnumState> {
 
     /**
      * Initialize with an initialState
-     * 
+     *
      * @param initialState
      *            initial MachineState
      * @param map
@@ -59,7 +58,7 @@ public class MachineState<EnumState> {
 
     /**
      * Initialize with an initialState but no association (Machine State is empty)
-     * 
+     *
      * @param initialState
      *            initial MachineState
      */
@@ -71,7 +70,7 @@ public class MachineState<EnumState> {
     /**
      * Add a new association from one state to a set of acceptable following states (can replace an
      * existing association)
-     * 
+     *
      * @param state
      * @param set
      *            the new association
@@ -84,7 +83,7 @@ public class MachineState<EnumState> {
     /**
      * Add a new association from one state to a set of acceptable following states (can replace an
      * existing association)
-     * 
+     *
      * @param elt
      * @return the previous association if any
      */
@@ -94,7 +93,7 @@ public class MachineState<EnumState> {
 
     /**
      * Remove an association from one state to any acceptable following states
-     * 
+     *
      * @param state
      *            the state to remove any acceptable following states
      * @return the previous association if any
@@ -105,7 +104,7 @@ public class MachineState<EnumState> {
 
     /**
      * Return the current application state.
-     * 
+     *
      * @return the current State
      */
     public EnumState getCurrent() {
@@ -114,7 +113,7 @@ public class MachineState<EnumState> {
 
     /**
      * Sets the current application state.
-     * 
+     *
      * @param desiredState
      * @return the requested state, if it was reachable
      * @throws IllegalFiniteStateException
@@ -124,14 +123,14 @@ public class MachineState<EnumState> {
         if (!isReachable(desiredState)) {
             logger.debug("State " + desiredState + " not reachable from: " + currentState);
             throw new IllegalFiniteStateException(desiredState + " not allowed from "
-                    + currentState);
+                                                  + currentState);
         }
         return setAsFinal(desiredState);
     }
 
     /**
      * Sets the current application state, but no exception if not compatible.
-     * 
+     *
      * @param desiredState
      * @return the requested state, even if it was not reachable
      */
@@ -141,7 +140,7 @@ public class MachineState<EnumState> {
 
     /**
      * Determine if the given state is allowed to be next.
-     * 
+     *
      * @param desiredState
      *            desired MachineState
      * @return True if the desiredState is valid from currentState
@@ -159,7 +158,7 @@ public class MachineState<EnumState> {
 
     /**
      * Finalizes the new requested state
-     * 
+     *
      * @param desiredState
      * @return the requested state
      */

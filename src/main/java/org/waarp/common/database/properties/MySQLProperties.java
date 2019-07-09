@@ -14,8 +14,8 @@ public class MySQLProperties extends DbProperties {
     private final String DRIVER_NAME = "com.mysql.jdbc.Driver";
     private final String VALIDATION_QUERY = "select 1";
     private final String MAX_CONNECTION_QUERY = "select GLOBAL_VALUE " +
-            "from INFORMATION_SCHEMA.SYSTEM_VARIABLES " +
-            "where VARIABLE_NAME LIKE 'max_connections'";
+                                                "from INFORMATION_SCHEMA.SYSTEM_VARIABLES " +
+                                                "where VARIABLE_NAME LIKE 'max_connections'";
 
     public MySQLProperties() {
     }

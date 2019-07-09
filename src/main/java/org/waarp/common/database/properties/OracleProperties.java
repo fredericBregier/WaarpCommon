@@ -14,8 +14,8 @@ public class OracleProperties extends DbProperties {
     private final String DRIVER_NAME = "oracle.jdbc.OracleDriver";
     private final String VALIDATION_QUERY = "select 1 from dual";
     private final String MAX_CONNECTION_QUERY = "select limit_value " +
-            "from v$resource_limit " +
-            "where resource_name='sessions'";
+                                                "from v$resource_limit " +
+                                                "where resource_name='sessions'";
 
     public OracleProperties() {
     }

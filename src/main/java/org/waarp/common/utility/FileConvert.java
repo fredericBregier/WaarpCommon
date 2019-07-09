@@ -1,22 +1,18 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility;
 
@@ -25,6 +21,11 @@ package org.waarp.common.utility;
  * @author "Frederic Bregier"
  *
  */
+
+import org.waarp.common.logging.WaarpLogger;
+import org.waarp.common.logging.WaarpLoggerFactory;
+import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,10 +36,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import org.waarp.common.logging.WaarpLogger;
-import org.waarp.common.logging.WaarpLoggerFactory;
-import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
 
 public class FileConvert extends Thread {
     /**
@@ -52,7 +49,7 @@ public class FileConvert extends Thread {
     private List<File> files = null;
 
     /**
-     * 
+     *
      * @param files
      *            list of files
      * @param unix2dos
@@ -76,7 +73,7 @@ public class FileConvert extends Thread {
 
     /**
      * Direct call
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -92,7 +89,7 @@ public class FileConvert extends Thread {
             if (Pattern.compile("^-(u|-unix2dos|-unixtodos)$", Pattern.CASE_INSENSITIVE).matcher(args[i]).matches()) {
                 unix2dos = true;
             } else if (Pattern.compile("^-(d|-dos2unix|-dostounix)$", Pattern.CASE_INSENSITIVE).matcher(args[i])
-                    .matches()) {
+                              .matches()) {
                 dos2unix = true;
             } else if (Pattern.compile("^-(r|-recursive)$", Pattern.CASE_INSENSITIVE).matcher(args[i]).matches()) {
                 recursive = true;
@@ -114,6 +111,11 @@ public class FileConvert extends Thread {
         fileConvert.run();
     }
 
+    private static void syntax() {
+        logger.error(
+                "Syntax: Covnert -(u|-nix2dos|-unixtodos) | -(d|-dos2unix|-dostounix) -(t|-temporary) directory  -(r|-recursive) file directory");
+    }
+
     /**
      * Use parameters given in instantiation
      */
@@ -121,7 +123,7 @@ public class FileConvert extends Thread {
         if (files == null) {
             return;
         }
-        for (Iterator<File> i = files.iterator(); i.hasNext();) {
+        for (Iterator<File> i = files.iterator(); i.hasNext(); ) {
             File file = i.next();
             if (file.isDirectory()) {
                 if (recursive) {
@@ -196,7 +198,7 @@ public class FileConvert extends Thread {
 
     /**
      * Convert Unix2Dos or Dos2Unix file in place, according to second argument
-     * 
+     *
      * @param input
      *            File to change
      * @param unix2dos
@@ -289,10 +291,6 @@ public class FileConvert extends Thread {
                 }
             }
         }
-    }
-
-    private static void syntax() {
-        logger.error("Syntax: Covnert -(u|-nix2dos|-unixtodos) | -(d|-dos2unix|-dostounix) -(t|-temporary) directory  -(r|-recursive) file directory");
     }
 
 }

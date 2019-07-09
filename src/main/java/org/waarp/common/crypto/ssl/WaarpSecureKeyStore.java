@@ -1,22 +1,27 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.crypto.ssl;
 
+import org.waarp.common.exception.CryptoException;
+import org.waarp.common.logging.WaarpLogger;
+import org.waarp.common.logging.WaarpLoggerFactory;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -30,18 +35,11 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
-
-import org.waarp.common.exception.CryptoException;
-import org.waarp.common.logging.WaarpLogger;
-import org.waarp.common.logging.WaarpLoggerFactory;
-
 /**
  * SecureKeyStore for SLL
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class WaarpSecureKeyStore {
     /**
@@ -62,7 +60,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Initialize empty KeyStore. No TrustStore is internally created.
-     * 
+     *
      * @param _keyStorePasswd
      * @param _keyPassword
      * @throws CryptoException
@@ -79,7 +77,7 @@ public class WaarpSecureKeyStore {
         try {
             // Empty keyStore created so null for the InputStream
             keyStore.load(null,
-                    getKeyStorePassword());
+                          getKeyStorePassword());
         } catch (NoSuchAlgorithmException e) {
             logger.error("Cannot create KeyStore Instance", e);
             throw new CryptoException("Cannot create KeyStore Instance", e);
@@ -98,7 +96,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Initialize the SecureKeyStore with no TrustStore from file
-     * 
+     *
      * @param keyStoreFilename
      * @param _keyStorePasswd
      * @param _keyPassword
@@ -112,7 +110,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Initialize the SecureKeyStore and TrustStore from files
-     * 
+     *
      * @param keyStoreFilename
      * @param _keyStorePasswd
      * @param _keyPassword
@@ -138,8 +136,30 @@ public class WaarpSecureKeyStore {
     }
 
     /**
+     * Load a certificate from a filename
+     *
+     * @param filename
+     * @return the X509 Certificate from filename
+     * @throws CertificateException
+     * @throws FileNotFoundException
+     */
+    public static Certificate loadX509Certificate(String filename)
+            throws CertificateException, FileNotFoundException {
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        FileInputStream in = new FileInputStream(filename);
+        try {
+            return cf.generateCertificate(in);
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    /**
      * Initialize the SecureKeyStore with no TrustStore from file
-     * 
+     *
      * @param _keyStoreFilename
      * @param _keyStorePasswd
      * @param _keyPassword
@@ -186,7 +206,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Init KeyManagerFactory
-     * 
+     *
      * @throws CryptoException
      */
     void initKeyManagerFactory() throws CryptoException {
@@ -214,7 +234,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Delete a Key from the KeyStore based on its alias
-     * 
+     *
      * @param alias
      * @return True if entry is deleted
      */
@@ -230,7 +250,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Add a Key and its certificates into the KeyStore based on its alias
-     * 
+     *
      * @param alias
      * @param key
      * @param chain
@@ -248,7 +268,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Save a KeyStore to a file
-     * 
+     *
      * @param filename
      * @return True if keyStore is saved to file
      */
@@ -287,7 +307,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Initialize the TrustStore from a filename and its password
-     * 
+     *
      * @param _trustStoreFilename
      * @param _trustStorePasswd
      * @param needClientAuthent
@@ -295,7 +315,7 @@ public class WaarpSecureKeyStore {
      * @throws CryptoException
      */
     public void initTrustStore(String _trustStoreFilename, String _trustStorePasswd,
-            boolean needClientAuthent) throws CryptoException {
+                               boolean needClientAuthent) throws CryptoException {
         trustStoreFilename = _trustStoreFilename;
         trustStorePasswd = _trustStorePasswd;
         try {
@@ -344,7 +364,7 @@ public class WaarpSecureKeyStore {
         }
         try {
             secureTrustManagerFactory = new WaarpSecureTrustManagerFactory(trustManagerFactory,
-                    needClientAuthent);
+                                                                           needClientAuthent);
         } catch (CryptoException e) {
             logger.error("Cannot create TrustManagerFactory Instance", e);
             throw new CryptoException("Cannot create TrustManagerFactory Instance", e);
@@ -353,7 +373,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Initialize an empty TrustStore
-     * 
+     *
      * @return True if correctly initialized empty
      */
     public boolean initEmptyTrustStore() {
@@ -367,7 +387,7 @@ public class WaarpSecureKeyStore {
         try {
             // Empty keyTrustStore created so null for the InputStream
             keyTrustStore.load(null,
-                    getKeyTrustStorePassword());
+                               getKeyTrustStorePassword());
         } catch (NoSuchAlgorithmException e) {
             logger.error("Cannot create keyTrustStore Instance", e);
             return false;
@@ -387,7 +407,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Delete a Key from the TrustStore based on its alias
-     * 
+     *
      * @param alias
      * @return True if entry is deleted
      */
@@ -403,7 +423,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Add a Certificate into the TrustStore based on its alias
-     * 
+     *
      * @param alias
      * @param cert
      * @return True if entry is added
@@ -420,7 +440,7 @@ public class WaarpSecureKeyStore {
 
     /**
      * Save the TrustStore to a file
-     * 
+     *
      * @param filename
      * @return True if keyTrustStore is saved to file
      */
@@ -455,28 +475,6 @@ public class WaarpSecureKeyStore {
             }
         }
         return true;
-    }
-
-    /**
-     * Load a certificate from a filename
-     * 
-     * @param filename
-     * @return the X509 Certificate from filename
-     * @throws CertificateException
-     * @throws FileNotFoundException
-     */
-    public static Certificate loadX509Certificate(String filename)
-            throws CertificateException, FileNotFoundException {
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        FileInputStream in = new FileInputStream(filename);
-        try {
-            return cf.generateCertificate(in);
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-            }
-        }
     }
 
     /**

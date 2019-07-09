@@ -17,25 +17,22 @@ import io.netty.util.internal.logging.JdkLoggerFactory;
 import io.netty.util.internal.logging.Slf4JLoggerFactory;
 
 /**
- * Creates an {@link WaarpLogger} or changes the default factory
- * implementation. This factory allows you to choose what logging framework
- * VITAM should use. The default factory is {@link WaarpSlf4JLoggerFactory}. If SLF4J
- * is not available, {@link WaarpSlf4JLoggerFactory} is used. If Log4J is not available, {@link WaarpJdkLoggerFactory} is used. You can
- * change it to your preferred
- * logging framework before other VITAM classes are loaded:
+ * Creates an {@link WaarpLogger} or changes the default factory implementation. This factory allows you to choose what
+ * logging framework VITAM should use. The default factory is {@link WaarpSlf4JLoggerFactory}. If SLF4J is not
+ * available, {@link WaarpSlf4JLoggerFactory} is used. If Log4J is not available, {@link WaarpJdkLoggerFactory} is used.
+ * You can change it to your preferred logging framework before other VITAM classes are loaded:
  *
  * <pre>
  * {@link WaarpLoggerFactory}.setDefaultFactory(new {@link WaarpSlf4JLoggerFactory}());
  * </pre>
- *
- * Please note that the new default factory is effective only for the classes
- * which were loaded after the default factory is changed. Therefore, {@link #setDefaultFactory(WaarpLoggerFactory)} should be
- * called as early
- * as possible and shouldn't be called more than once.
+ * <p>
+ * Please note that the new default factory is effective only for the classes which were loaded after the default
+ * factory is changed. Therefore, {@link #setDefaultFactory(WaarpLoggerFactory)} should be called as early as possible
+ * and shouldn't be called more than once.
  */
 public abstract class WaarpLoggerFactory {
-    private static volatile WaarpLoggerFactory defaultFactory;
     protected static WaarpLogLevel currentLevel = null;
+    private static volatile WaarpLoggerFactory defaultFactory;
 
     static {
         final String name = WaarpLoggerFactory.class.getName();
@@ -50,6 +47,16 @@ public abstract class WaarpLoggerFactory {
         }
 
         defaultFactory = f;
+    }
+
+    /**
+     * @param level
+     */
+    public WaarpLoggerFactory(final WaarpLogLevel level) {
+        setInternalLogLevel(level);
+        if (currentLevel == null) {
+            setInternalLogLevel(getLevelSpecific());
+        }
     }
 
     /**
@@ -83,6 +90,7 @@ public abstract class WaarpLoggerFactory {
      * Creates a new logger instance with the name of the specified class.
      *
      * @param clazz
+     *
      * @return the logger instance
      */
     public static WaarpLogger getInstance(final Class<?> clazz) {
@@ -93,6 +101,7 @@ public abstract class WaarpLoggerFactory {
      * Creates a new logger instance with the specified name.
      *
      * @param name
+     *
      * @return the logger instance
      */
     public static WaarpLogger getInstance(final String name) {
@@ -103,6 +112,7 @@ public abstract class WaarpLoggerFactory {
      * Creates a new logger instance with the name of the specified class.
      *
      * @param clazz
+     *
      * @return the logger instance
      */
     public static WaarpLogger getLogger(final Class<?> clazz) {
@@ -113,10 +123,15 @@ public abstract class WaarpLoggerFactory {
      * Creates a new logger instance with the specified name.
      *
      * @param name
+     *
      * @return the logger instance
      */
     public static WaarpLogger getLogger(final String name) {
         return getDefaultFactory().newInstance(name);
+    }
+
+    public static WaarpLogLevel getLogLevel() {
+        return currentLevel;
     }
 
     /**
@@ -129,10 +144,6 @@ public abstract class WaarpLoggerFactory {
         }
     }
 
-    public static WaarpLogLevel getLogLevel() {
-        return currentLevel;
-    }
-
     protected static synchronized void setInternalLogLevel(final WaarpLogLevel level) {
         if (level != null) {
             currentLevel = level;
@@ -140,17 +151,6 @@ public abstract class WaarpLoggerFactory {
     }
 
     /**
-     * @param level
-     */
-    public WaarpLoggerFactory(final WaarpLogLevel level) {
-        setInternalLogLevel(level);
-        if (currentLevel == null) {
-            setInternalLogLevel(getLevelSpecific());
-        }
-    }
-
-    /**
-     *
      * @return should return the current Level for the specific implementation
      */
     protected abstract WaarpLogLevel getLevelSpecific();

@@ -1,17 +1,16 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -37,6 +36,10 @@ public final class SystemPropertyUtil {
         refresh();
     }
 
+    private SystemPropertyUtil() {
+        // Unused
+    }
+
     /**
      * Re-retrieves all system properties so that any post-launch properties updates are retrieved.
      */
@@ -46,7 +49,7 @@ public final class SystemPropertyUtil {
             newProps = System.getProperties();
         } catch (SecurityException e) {
             System.err.println("Unable to retrieve the system properties; default values will be used: "
-                    + e.getMessage());
+                               + e.getMessage());
             newProps = new Properties();
         }
 
@@ -68,7 +71,8 @@ public final class SystemPropertyUtil {
             } catch (Exception e1) {
                 // ignore since it is a security issue and -Dfile.encoding=UTF-8 should be used
                 System.err
-                        .println("Issue while trying to set UTF-8 as default file encoding: use -Dfile.encoding=UTF-8 as java command argument: "
+                        .println(
+                                "Issue while trying to set UTF-8 as default file encoding: use -Dfile.encoding=UTF-8 as java command argument: "
                                 + e1.getMessage());
                 System.err.println("Currently file.encoding is: " + get(FILE_ENCODING));
             }
@@ -76,7 +80,7 @@ public final class SystemPropertyUtil {
     }
 
     /**
-     * 
+     *
      * @return True if Encoding is Correct
      */
     public static boolean isFileEncodingCorrect() {
@@ -157,7 +161,7 @@ public final class SystemPropertyUtil {
 
         System.err.println(
                 "Unable to parse the boolean system property '" + key + "':" + value + " - " +
-                        "using the default value: " + def);
+                "using the default value: " + def);
 
         return def;
     }
@@ -191,7 +195,7 @@ public final class SystemPropertyUtil {
 
         System.err.println(
                 "Unable to parse the integer system property '" + key + "':" + value + " - " +
-                        "using the default value: " + def);
+                "using the default value: " + def);
 
         return def;
     }
@@ -225,16 +229,12 @@ public final class SystemPropertyUtil {
 
         System.err.println(
                 "Unable to parse the long integer system property '" + key + "':" + value + " - " +
-                        "using the default value: " + def);
+                "using the default value: " + def);
 
         return def;
     }
 
     public static void debug() {
         props.list(System.out);
-    }
-
-    private SystemPropertyUtil() {
-        // Unused
     }
 }

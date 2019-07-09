@@ -1,26 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.database.model;
-
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Types;
 
 import org.waarp.common.database.DbConstant;
 import org.waarp.common.database.DbPreparedStatement;
@@ -33,11 +27,15 @@ import org.waarp.common.database.exception.WaarpDatabaseSqlException;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Types;
+
 /**
  * PostGreSQL Database Model implementation
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public abstract class DbModelPostgresql extends DbModelAbstract {
     /**
@@ -50,13 +48,9 @@ public abstract class DbModelPostgresql extends DbModelAbstract {
 
     protected Boolean useIsValid = null;
 
-    public DbType getDbType() {
-        return type;
-    }
-
     /**
      * Create the object and initialize if necessary the driver
-     * 
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbModelPostgresql() throws WaarpDatabaseNoConnectionException {
@@ -77,7 +71,7 @@ public abstract class DbModelPostgresql extends DbModelAbstract {
         /*
          * Quoting the PostgreSQL documentation: from http://jdbc.postgresql.org/documentation/head/ds-ds.html
          * In general it is not recommended to use the PostgreSQL™ provided connection pool.
-         * 
+         *
          */
         /*
          * PGPoolingDataSource source = new PGPoolingDataSource();
@@ -87,65 +81,8 @@ public abstract class DbModelPostgresql extends DbModelAbstract {
          */
     }
 
-    protected enum DBType {
-        CHAR(Types.CHAR, " CHAR(3) "),
-        VARCHAR(Types.VARCHAR, " VARCHAR(8096) "),
-        NVARCHAR(Types.NVARCHAR, " VARCHAR(8096) "),
-        LONGVARCHAR(Types.LONGVARCHAR, " TEXT "),
-        BIT(Types.BIT, " BOOLEAN "),
-        TINYINT(Types.TINYINT, " INT2 "),
-        SMALLINT(Types.SMALLINT, " SMALLINT "),
-        INTEGER(Types.INTEGER, " INTEGER "),
-        BIGINT(Types.BIGINT, " BIGINT "),
-        REAL(Types.REAL, " REAL "),
-        DOUBLE(Types.DOUBLE, " DOUBLE PRECISION "),
-        VARBINARY(Types.VARBINARY, " BYTEA "),
-        DATE(Types.DATE, " DATE "),
-        TIMESTAMP(Types.TIMESTAMP, " TIMESTAMP ");
-
-        public int type;
-
-        public String constructor;
-
-        DBType(int type, String constructor) {
-            this.type = type;
-            this.constructor = constructor;
-        }
-
-        public static String getType(int sqltype) {
-            switch (sqltype) {
-                case Types.CHAR:
-                    return CHAR.constructor;
-                case Types.VARCHAR:
-                    return VARCHAR.constructor;
-                case Types.NVARCHAR:
-                    return NVARCHAR.constructor;
-                case Types.LONGVARCHAR:
-                    return LONGVARCHAR.constructor;
-                case Types.BIT:
-                    return BIT.constructor;
-                case Types.TINYINT:
-                    return TINYINT.constructor;
-                case Types.SMALLINT:
-                    return SMALLINT.constructor;
-                case Types.INTEGER:
-                    return INTEGER.constructor;
-                case Types.BIGINT:
-                    return BIGINT.constructor;
-                case Types.REAL:
-                    return REAL.constructor;
-                case Types.DOUBLE:
-                    return DOUBLE.constructor;
-                case Types.VARBINARY:
-                    return VARBINARY.constructor;
-                case Types.DATE:
-                    return DATE.constructor;
-                case Types.TIMESTAMP:
-                    return TIMESTAMP.constructor;
-                default:
-                    return null;
-            }
-        }
+    public DbType getDbType() {
+        return type;
     }
 
     public void createTables(DbSession session) throws WaarpDatabaseNoConnectionException {
@@ -160,12 +97,12 @@ public abstract class DbModelPostgresql extends DbModelAbstract {
                 .values();
         for (int i = 0; i < ccolumns.length - 1; i++) {
             action += ccolumns[i].name() +
-                    DBType.getType(DbDataModel.dbTypes[i]) + notNull +
-                    ", ";
+                      DBType.getType(DbDataModel.dbTypes[i]) + notNull +
+                      ", ";
         }
         action += ccolumns[ccolumns.length - 1].name() +
-                DBType.getType(DbDataModel.dbTypes[ccolumns.length - 1]) +
-                primaryKey + ")";
+                  DBType.getType(DbDataModel.dbTypes[ccolumns.length - 1]) +
+                  primaryKey + ")";
         logger.warn(action);
         DbRequest request = new DbRequest(session);
         try {
@@ -200,8 +137,8 @@ public abstract class DbModelPostgresql extends DbModelAbstract {
 
         // example of sequence
         action = "CREATE SEQUENCE " + DbDataModel.fieldseq +
-                " MINVALUE " + (DbConstant.ILLEGALVALUE + 1) +
-                " RESTART WITH " + (DbConstant.ILLEGALVALUE + 1);
+                 " MINVALUE " + (DbConstant.ILLEGALVALUE + 1) +
+                 " RESTART WITH " + (DbConstant.ILLEGALVALUE + 1);
         logger.warn(action);
         try {
             request.query(action);
@@ -219,8 +156,8 @@ public abstract class DbModelPostgresql extends DbModelAbstract {
     public void resetSequence(DbSession session, long newvalue)
             throws WaarpDatabaseNoConnectionException {
         String action = "ALTER SEQUENCE " + DbDataModel.fieldseq +
-                " MINVALUE " + (DbConstant.ILLEGALVALUE + 1) +
-                " RESTART WITH " + newvalue;
+                        " MINVALUE " + (DbConstant.ILLEGALVALUE + 1) +
+                        " RESTART WITH " + newvalue;
         DbRequest request = new DbRequest(session);
         try {
             request.query(action);
@@ -238,7 +175,7 @@ public abstract class DbModelPostgresql extends DbModelAbstract {
 
     public long nextSequence(DbSession dbSession)
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException, WaarpDatabaseNoDataException {
+                   WaarpDatabaseSqlException, WaarpDatabaseNoDataException {
         long result = DbConstant.ILLEGALVALUE;
         String action = "SELECT NEXTVAL('" + DbDataModel.fieldseq + "')";
         DbPreparedStatement preparedStatement = new DbPreparedStatement(
@@ -269,9 +206,71 @@ public abstract class DbModelPostgresql extends DbModelAbstract {
     }
 
     public String limitRequest(String allfields, String request, int nb) {
-        if (nb == 0)
+        if (nb == 0) {
             return request;
+        }
         return request + " LIMIT " + nb;
+    }
+
+    protected enum DBType {
+        CHAR(Types.CHAR, " CHAR(3) "),
+        VARCHAR(Types.VARCHAR, " VARCHAR(8096) "),
+        NVARCHAR(Types.NVARCHAR, " VARCHAR(8096) "),
+        LONGVARCHAR(Types.LONGVARCHAR, " TEXT "),
+        BIT(Types.BIT, " BOOLEAN "),
+        TINYINT(Types.TINYINT, " INT2 "),
+        SMALLINT(Types.SMALLINT, " SMALLINT "),
+        INTEGER(Types.INTEGER, " INTEGER "),
+        BIGINT(Types.BIGINT, " BIGINT "),
+        REAL(Types.REAL, " REAL "),
+        DOUBLE(Types.DOUBLE, " DOUBLE PRECISION "),
+        VARBINARY(Types.VARBINARY, " BYTEA "),
+        DATE(Types.DATE, " DATE "),
+        TIMESTAMP(Types.TIMESTAMP, " TIMESTAMP ");
+
+        public int type;
+
+        public String constructor;
+
+        DBType(int type, String constructor) {
+            this.type = type;
+            this.constructor = constructor;
+        }
+
+        public static String getType(int sqltype) {
+            switch (sqltype) {
+            case Types.CHAR:
+                return CHAR.constructor;
+            case Types.VARCHAR:
+                return VARCHAR.constructor;
+            case Types.NVARCHAR:
+                return NVARCHAR.constructor;
+            case Types.LONGVARCHAR:
+                return LONGVARCHAR.constructor;
+            case Types.BIT:
+                return BIT.constructor;
+            case Types.TINYINT:
+                return TINYINT.constructor;
+            case Types.SMALLINT:
+                return SMALLINT.constructor;
+            case Types.INTEGER:
+                return INTEGER.constructor;
+            case Types.BIGINT:
+                return BIGINT.constructor;
+            case Types.REAL:
+                return REAL.constructor;
+            case Types.DOUBLE:
+                return DOUBLE.constructor;
+            case Types.VARBINARY:
+                return VARBINARY.constructor;
+            case Types.DATE:
+                return DATE.constructor;
+            case Types.TIMESTAMP:
+                return TIMESTAMP.constructor;
+            default:
+                return null;
+            }
+        }
     }
 
 }

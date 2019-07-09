@@ -1,22 +1,18 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility;
 
@@ -40,7 +36,7 @@ import java.util.regex.Pattern;
  * fragment of MAC address and Timestamp. see https://github.com/groupon/locality-uuid.java <br>
  * <br>
  * But force sequence and take care of errors and improves some performance issues
- * 
+ *
  * @author "Frederic Bregier"
  *
  */
@@ -51,7 +47,7 @@ public final class UUID implements Comparable<UUID> {
     public static final int KEYSIZE = 20;
     private static final int KEYB64SIZE = 28;
     private static final int KEYB16SIZE = KEYSIZE * 2;
-    private static final int UTILUUIDKEYSIZE    = 16;
+    private static final int UTILUUIDKEYSIZE = 16;
     /**
      * Random Generator
      */
@@ -64,7 +60,7 @@ public final class UUID implements Comparable<UUID> {
      * Version to store (to check correctness if future algorithm)
      */
     private static final int VERSION = (1 & 0x0F);
-    
+
     private static final Pattern MACHINE_ID_PATTERN = Pattern.compile("^(?:[0-9a-fA-F][:-]?){6,8}$");
     private static final int MACHINE_ID_LEN = 6;
 
@@ -73,13 +69,13 @@ public final class UUID implements Comparable<UUID> {
      */
     private static final int JVMPID = jvmProcessId();
     /**
-     * Try to get Mac Address but could be also changed dynamically
-     */
-    private static byte[] MAC = macAddress();
-    /**
      * Counter part
      */
     private static final int MAXSTART = Integer.MAX_VALUE >> 4;
+    /**
+     * Try to get Mac Address but could be also changed dynamically
+     */
+    private static byte[] MAC = macAddress();
     private static volatile int counter = RANDOM.nextInt(MAXSTART);
     /**
      * Counter reset
@@ -92,29 +88,12 @@ public final class UUID implements Comparable<UUID> {
     private final byte[] uuid;
 
     /**
-     * Up to the 6 first bytes will be used. If Null or less than 6 bytes, extra bytes will
-     * be randomly generated.
-     * 
-     * @param mac
-     *            the MAC address in byte format (up to the 6 first bytes will be used)
-     */
-    public static synchronized void setMAC(final byte[] mac) {
-        if (mac == null) {
-            MAC = getRandom(MACHINE_ID_LEN);
-        } else {
-            MAC = Arrays.copyOf(mac, MACHINE_ID_LEN);
-            for (int i = mac.length; i < MACHINE_ID_LEN; i++) {
-                MAC[i] = (byte) RANDOM.nextInt(256);
-            }
-        }
-    }
-
-    /**
      * Constructor that generates a new UUID using the current process id, MAC address, and timestamp
      */
     public UUID() {
         this((byte) 0);
     }
+
     /**
      * Constructor that generates a new UUID using the current process id, MAC address, and timestamp
      * @param id the id of the subset of UUID from which it belongs to (default being 0, else between 1 and 255)
@@ -169,6 +148,7 @@ public final class UUID implements Comparable<UUID> {
         uuid[18] = (byte) (time >> 8);
         uuid[19] = (byte) (time);
     }
+
     /**
      * Create a UUID immediately compatible with a standard UUID implementation
      * @param on128bits True for 128 bits limitation (16 Bytes instead of 20 Bytes)
@@ -182,6 +162,7 @@ public final class UUID implements Comparable<UUID> {
             uuid[8] = 0;
         }
     }
+
     /**
      * Create a UUID immediately compatible with a standard UUID implementation
      * @param mostSigBits
@@ -211,6 +192,7 @@ public final class UUID implements Comparable<UUID> {
         uuid[18] = (byte) (leastSigBits >> 8);
         uuid[19] = (byte) (leastSigBits);
     }
+
     /**
      * Create a UUID immediately compatible with a standard UUID implementation
      * @param uuid
@@ -218,6 +200,7 @@ public final class UUID implements Comparable<UUID> {
     public UUID(java.util.UUID uuid) {
         this(uuid.getMostSignificantBits(), uuid.getLeastSignificantBits());
     }
+
     /**
      * Constructor that takes a byte array as this UUID's content
      *
@@ -229,29 +212,7 @@ public final class UUID implements Comparable<UUID> {
         uuid = new byte[KEYSIZE];
         setBytes(bytes);
     }
-    /**
-     * Internal function
-     * @param bytes
-     * @return
-     * @throws RuntimeException
-     */
-    protected UUID setBytes(final byte[] bytes) throws RuntimeException {
-        if (bytes.length != KEYSIZE && bytes.length != UTILUUIDKEYSIZE) {
-            throw new RuntimeException("Attempted to parse malformed UUID: (" + bytes.length + ") " + Arrays.toString(bytes));
-        }
-        if (bytes.length == UTILUUIDKEYSIZE) {
-            uuid[0] = 0;
-            System.arraycopy(bytes, 0, uuid, 1, 3);
-            uuid[4] = VERSION;
-            System.arraycopy(bytes, 3, uuid, 5, 2);
-            uuid[7] = 0;
-            uuid[8] = 0;
-            System.arraycopy(bytes, 5, uuid, 9, 11);
-        } else {
-            System.arraycopy(bytes, 0, uuid, 0, KEYSIZE);
-        }
-        return this;
-    }
+
     /**
      * Build from String key
      *
@@ -277,179 +238,26 @@ public final class UUID implements Comparable<UUID> {
         }
     }
 
-    public final String toBase64() {
-        try {
-            return Base64.encodeBytes(uuid, Base64.URL_SAFE);
-        } catch (IOException e) {
-            return Base64.encodeBytes(uuid);
+    /**
+     * Up to the 6 first bytes will be used. If Null or less than 6 bytes, extra bytes will
+     * be randomly generated.
+     *
+     * @param mac
+     *            the MAC address in byte format (up to the 6 first bytes will be used)
+     */
+    public static synchronized void setMAC(final byte[] mac) {
+        if (mac == null) {
+            MAC = getRandom(MACHINE_ID_LEN);
+        } else {
+            MAC = Arrays.copyOf(mac, MACHINE_ID_LEN);
+            for (int i = mac.length; i < MACHINE_ID_LEN; i++) {
+                MAC[i] = (byte) RANDOM.nextInt(256);
+            }
         }
     }
 
-    public final String toHex() {
-        return Hexa.toHex(uuid);
-    }
-
-    @Override
-    public String toString() {
-        return toBase64();
-    }
-
     /**
-     * copy the uuid of this UUID, so that it can't be changed, and return it
-     * 
-     * @return raw byte array of UUID
-     */
-    public byte[] getBytes() {
-        return Arrays.copyOf(uuid, KEYSIZE);
-    }
-    /**
-     * extract version field as a hex char from raw UUID bytes
      *
-     * @return version char
-     */
-    public final int getVersion() {
-        return (uuid[4] & 0xC0) >> 6;
-    }
-
-    /**
-     * @return the id of the subset of UUID from which it belongs to (default being 0)
-     */
-    public final int getId() {
-        return uuid[0] & 0xFF;
-    }
-
-    /**
-     * extract process id from raw UUID bytes and return as int
-     *
-     * @return id of process that generated the UUID, or -1 for unrecognized format
-     */
-    public final int getProcessId() {
-        if (getVersion() != VERSION) {
-            return -1;
-        }
-
-        return ((uuid[4] & 0x3F) << 16) | (uuid[5] & 0xFF) << 8 | (uuid[6] & 0xFF);
-    }
-
-    /**
-     * @return the associated counter value
-     */
-    public final int getCounter() {
-        int count = (uuid[3] & 0xFF) << 16;
-        count |= (uuid[2] & 0xFF) << 8;
-        count |= uuid[1] & 0xFF;
-        return count;
-    }
-
-    /**
-     * extract timestamp from raw UUID bytes and return as int
-     *
-     * @return millisecond UTC timestamp from generation of the UUID, or -1 for unrecognized format
-     */
-    public final long getTimestamp() {
-        if (getVersion() != VERSION) {
-            return -1;
-        }
-
-        long time;
-        time = ((long) uuid[13] & 0xFF) << 48;
-        time |= ((long) uuid[14] & 0xFF) << 40;
-        time |= ((long) uuid[15] & 0xFF) << 32;
-        time |= ((long) uuid[16] & 0xFF) << 24;
-        time |= ((long) uuid[17] & 0xFF) << 16;
-        time |= ((long) uuid[18] & 0xFF) << 8;
-        time |= ((long) uuid[19] & 0xFF);
-        return time;
-    }
-
-    /**
-     * extract MAC address fragment from raw UUID bytes, setting missing values to 0,
-     * from the active MAC address when the UUID was generated
-     *
-     * @return byte array of UUID fragment, or null for unrecognized format
-     */
-    public final byte[] getMacFragment() {
-        if (getVersion() != VERSION) {
-            return null;
-        }
-
-        final byte[] x = new byte[6];
-
-        x[0] = uuid[7];
-        x[1] = uuid[8];
-        x[2] = uuid[9];
-        x[3] = uuid[10];
-        x[4] = uuid[11];
-        x[5] = uuid[12];
-
-        return x;
-    }
-    /**
-     * 
-     * @return the least significant bits (as in standard UUID implementation)
-     */
-    public long getLeastSignificantBits() {
-        long least;
-        least = ((long) uuid[12] & 0xFF) << 56;
-        least |= ((long) uuid[13] & 0xFF) << 48;
-        least |= ((long) uuid[14] & 0xFF) << 40;
-        least |= ((long) uuid[15] & 0xFF) << 32;
-        least |= ((long) uuid[16] & 0xFF) << 24;
-        least |= ((long) uuid[17] & 0xFF) << 16;
-        least |= ((long) uuid[18] & 0xFF) << 8;
-        least |= ((long) uuid[19] & 0xFF);
-        return least;
-    }
-    /**
-     * 
-     * @return the most significant bits (as in standard UUID implementation)
-     */
-    public long getMostSignificantBits() {
-        long most;
-        most = ((long) uuid[1] & 0xFF) << 56;
-        most |= ((long) uuid[2] & 0xFF) << 48;
-        most |= ((long) uuid[3] & 0xFF) << 40;
-        most |= ((long) uuid[5] & 0xFF) << 32;
-        most |= ((long) uuid[6] & 0xFF) << 24;
-        most |= ((long) uuid[9] & 0xFF) << 16;
-        most |= ((long) uuid[10] & 0xFF) << 8;
-        most |= ((long) uuid[11] & 0xFF);
-        return most;
-    }
-    /**
-     * 
-     * @return a UUID compatible with Java.Util package implementation
-     */
-    public java.util.UUID getJavaUuid() {
-        return new java.util.UUID(getMostSignificantBits(), getLeastSignificantBits());
-    }
-    /**
-     * copy the uuid of this UUID, so that it can't be changed, and return it
-     *
-     * @return raw byte array of UUID for a 16 Bytes UUID
-     */
-    public byte[] javaUuidGetBytes() {
-        byte []newUuid = new byte[UTILUUIDKEYSIZE];
-        System.arraycopy(uuid, 1, newUuid, 0, 3);
-        System.arraycopy(uuid, 5, newUuid, 3, 2);
-        System.arraycopy(uuid, 9, newUuid, 5, 11);
-        return newUuid;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || !(o instanceof UUID))
-            return false;
-        return (this == o) || Arrays.equals(this.uuid, ((UUID) o).uuid);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(uuid);
-    }
-
-    /**
-     * 
      * @param length
      * @return a byte array with random values
      */
@@ -460,7 +268,7 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     * 
+     *
      * @return the mac address if possible, else random values
      */
     public static byte[] macAddress() {
@@ -511,7 +319,7 @@ public final class UUID implements Comparable<UUID> {
         // Retrieve the list of available network interfaces.
         Map<NetworkInterface, InetAddress> ifaces = new LinkedHashMap<NetworkInterface, InetAddress>();
         try {
-            for (Enumeration<NetworkInterface> i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> i = NetworkInterface.getNetworkInterfaces(); i.hasMoreElements(); ) {
                 NetworkInterface iface = i.nextElement();
                 // Use the interface with proper INET addresses only.
                 Enumeration<InetAddress> addrs = iface.getInetAddresses();
@@ -640,7 +448,6 @@ public final class UUID implements Comparable<UUID> {
         return 4;
     }
 
-    // pulled from http://stackoverflow.com/questions/35842/how-can-a-java-program-get-its-own-process-id
     /**
      * @return the JVM Process ID
      */
@@ -666,26 +473,6 @@ public final class UUID implements Comparable<UUID> {
             e.printStackTrace();
             return RANDOM.nextInt(MAX_PID);
         }
-    }
-    @Override
-    public int compareTo(UUID arg0) {
-        if (getId() != arg0.getId()) {
-            return getId() < arg0.getId() ? -1 : 1;
-        }
-        long ts = getTimestamp();
-        long ts2 = arg0.getTimestamp();
-        if (ts == ts2) {
-            int ct = getCounter();
-            int ct2 = arg0.getCounter();
-            if (ct == ct2) {
-                // then all must be equals, else whatever
-                return Arrays.equals(uuid, arg0.uuid) ? 0 : -1;
-            }
-            // Cannot be equal
-            return ct < ct2 ? -1 : 1;
-        }
-        // others as ProcessId or MacFragment is unimportant in comparison
-        return ts < ts2 ? -1 : 1;
     }
 
     /**
@@ -714,5 +501,230 @@ public final class UUID implements Comparable<UUID> {
         }
         System.out.println("ok");
         System.exit(0);
+    }
+
+    public final String toBase64() {
+        try {
+            return Base64.encodeBytes(uuid, Base64.URL_SAFE);
+        } catch (IOException e) {
+            return Base64.encodeBytes(uuid);
+        }
+    }
+
+    public final String toHex() {
+        return Hexa.toHex(uuid);
+    }
+
+    @Override
+    public String toString() {
+        return toBase64();
+    }
+
+    /**
+     * copy the uuid of this UUID, so that it can't be changed, and return it
+     *
+     * @return raw byte array of UUID
+     */
+    public byte[] getBytes() {
+        return Arrays.copyOf(uuid, KEYSIZE);
+    }
+
+    /**
+     * Internal function
+     * @param bytes
+     * @return
+     * @throws RuntimeException
+     */
+    protected UUID setBytes(final byte[] bytes) throws RuntimeException {
+        if (bytes.length != KEYSIZE && bytes.length != UTILUUIDKEYSIZE) {
+            throw new RuntimeException(
+                    "Attempted to parse malformed UUID: (" + bytes.length + ") " + Arrays.toString(bytes));
+        }
+        if (bytes.length == UTILUUIDKEYSIZE) {
+            uuid[0] = 0;
+            System.arraycopy(bytes, 0, uuid, 1, 3);
+            uuid[4] = VERSION;
+            System.arraycopy(bytes, 3, uuid, 5, 2);
+            uuid[7] = 0;
+            uuid[8] = 0;
+            System.arraycopy(bytes, 5, uuid, 9, 11);
+        } else {
+            System.arraycopy(bytes, 0, uuid, 0, KEYSIZE);
+        }
+        return this;
+    }
+
+    /**
+     * extract version field as a hex char from raw UUID bytes
+     *
+     * @return version char
+     */
+    public final int getVersion() {
+        return (uuid[4] & 0xC0) >> 6;
+    }
+
+    /**
+     * @return the id of the subset of UUID from which it belongs to (default being 0)
+     */
+    public final int getId() {
+        return uuid[0] & 0xFF;
+    }
+
+    /**
+     * extract process id from raw UUID bytes and return as int
+     *
+     * @return id of process that generated the UUID, or -1 for unrecognized format
+     */
+    public final int getProcessId() {
+        if (getVersion() != VERSION) {
+            return -1;
+        }
+
+        return ((uuid[4] & 0x3F) << 16) | (uuid[5] & 0xFF) << 8 | (uuid[6] & 0xFF);
+    }
+
+    /**
+     * @return the associated counter value
+     */
+    public final int getCounter() {
+        int count = (uuid[3] & 0xFF) << 16;
+        count |= (uuid[2] & 0xFF) << 8;
+        count |= uuid[1] & 0xFF;
+        return count;
+    }
+
+    /**
+     * extract timestamp from raw UUID bytes and return as int
+     *
+     * @return millisecond UTC timestamp from generation of the UUID, or -1 for unrecognized format
+     */
+    public final long getTimestamp() {
+        if (getVersion() != VERSION) {
+            return -1;
+        }
+
+        long time;
+        time = ((long) uuid[13] & 0xFF) << 48;
+        time |= ((long) uuid[14] & 0xFF) << 40;
+        time |= ((long) uuid[15] & 0xFF) << 32;
+        time |= ((long) uuid[16] & 0xFF) << 24;
+        time |= ((long) uuid[17] & 0xFF) << 16;
+        time |= ((long) uuid[18] & 0xFF) << 8;
+        time |= ((long) uuid[19] & 0xFF);
+        return time;
+    }
+
+    /**
+     * extract MAC address fragment from raw UUID bytes, setting missing values to 0,
+     * from the active MAC address when the UUID was generated
+     *
+     * @return byte array of UUID fragment, or null for unrecognized format
+     */
+    public final byte[] getMacFragment() {
+        if (getVersion() != VERSION) {
+            return null;
+        }
+
+        final byte[] x = new byte[6];
+
+        x[0] = uuid[7];
+        x[1] = uuid[8];
+        x[2] = uuid[9];
+        x[3] = uuid[10];
+        x[4] = uuid[11];
+        x[5] = uuid[12];
+
+        return x;
+    }
+
+    /**
+     *
+     * @return the least significant bits (as in standard UUID implementation)
+     */
+    public long getLeastSignificantBits() {
+        long least;
+        least = ((long) uuid[12] & 0xFF) << 56;
+        least |= ((long) uuid[13] & 0xFF) << 48;
+        least |= ((long) uuid[14] & 0xFF) << 40;
+        least |= ((long) uuid[15] & 0xFF) << 32;
+        least |= ((long) uuid[16] & 0xFF) << 24;
+        least |= ((long) uuid[17] & 0xFF) << 16;
+        least |= ((long) uuid[18] & 0xFF) << 8;
+        least |= ((long) uuid[19] & 0xFF);
+        return least;
+    }
+
+    /**
+     *
+     * @return the most significant bits (as in standard UUID implementation)
+     */
+    public long getMostSignificantBits() {
+        long most;
+        most = ((long) uuid[1] & 0xFF) << 56;
+        most |= ((long) uuid[2] & 0xFF) << 48;
+        most |= ((long) uuid[3] & 0xFF) << 40;
+        most |= ((long) uuid[5] & 0xFF) << 32;
+        most |= ((long) uuid[6] & 0xFF) << 24;
+        most |= ((long) uuid[9] & 0xFF) << 16;
+        most |= ((long) uuid[10] & 0xFF) << 8;
+        most |= ((long) uuid[11] & 0xFF);
+        return most;
+    }
+
+    /**
+     *
+     * @return a UUID compatible with Java.Util package implementation
+     */
+    public java.util.UUID getJavaUuid() {
+        return new java.util.UUID(getMostSignificantBits(), getLeastSignificantBits());
+    }
+
+    /**
+     * copy the uuid of this UUID, so that it can't be changed, and return it
+     *
+     * @return raw byte array of UUID for a 16 Bytes UUID
+     */
+    public byte[] javaUuidGetBytes() {
+        byte[] newUuid = new byte[UTILUUIDKEYSIZE];
+        System.arraycopy(uuid, 1, newUuid, 0, 3);
+        System.arraycopy(uuid, 5, newUuid, 3, 2);
+        System.arraycopy(uuid, 9, newUuid, 5, 11);
+        return newUuid;
+    }
+
+    // pulled from http://stackoverflow.com/questions/35842/how-can-a-java-program-get-its-own-process-id
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof UUID)) {
+            return false;
+        }
+        return (this == o) || Arrays.equals(this.uuid, ((UUID) o).uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(uuid);
+    }
+
+    @Override
+    public int compareTo(UUID arg0) {
+        if (getId() != arg0.getId()) {
+            return getId() < arg0.getId()? -1 : 1;
+        }
+        long ts = getTimestamp();
+        long ts2 = arg0.getTimestamp();
+        if (ts == ts2) {
+            int ct = getCounter();
+            int ct2 = arg0.getCounter();
+            if (ct == ct2) {
+                // then all must be equals, else whatever
+                return Arrays.equals(uuid, arg0.uuid)? 0 : -1;
+            }
+            // Cannot be equal
+            return ct < ct2? -1 : 1;
+        }
+        // others as ProcessId or MacFragment is unimportant in comparison
+        return ts < ts2? -1 : 1;
     }
 }

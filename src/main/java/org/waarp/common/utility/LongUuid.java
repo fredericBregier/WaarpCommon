@@ -1,22 +1,18 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility;
 
@@ -32,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * and Timestamp. see https://github.com/groupon/locality-uuid.java <br>
  * <br>
  * But force sequence and take care of errors and improves some performance issues
- * 
+ *
  * @author "Frederic Bregier"
  *
  */
@@ -91,13 +87,14 @@ public final class LongUuid {
 
     /**
      * Constructor that takes a byte array as this UUID's content
-     * 
+     *
      * @param bytes
      *            UUID content
      */
     public LongUuid(final byte[] bytes) {
-        if (bytes.length != UUIDSIZE)
+        if (bytes.length != UUIDSIZE) {
             throw new RuntimeException("Attempted to parse malformed UUID: " + Arrays.toString(bytes));
+        }
 
         uuid = Arrays.copyOf(bytes, UUIDSIZE);
     }
@@ -117,79 +114,15 @@ public final class LongUuid {
     public LongUuid(final String idsource) {
         final String id = idsource.trim();
 
-        if (id.length() != UUIDSIZE * 2)
+        if (id.length() != UUIDSIZE * 2) {
             throw new RuntimeException("Attempted to parse malformed UUID: " + id);
+        }
 
         uuid = Hexa.fromHex(id);
     }
 
-    @Override
-    public String toString() {
-        return Hexa.toHex(uuid);
-    }
-
     /**
-     * copy the uuid of this UUID, so that it can't be changed, and return it
-     * 
-     * @return raw byte array of UUID
-     */
-    public byte[] getBytes() {
-        return Arrays.copyOf(uuid, UUIDSIZE);
-    }
-
-    /**
-     * extract process id from raw UUID bytes and return as int
-     * 
-     * @return id of process that generated the UUID
-     */
-    public int getProcessId() {
-        return ((uuid[0] & 0xFF) << 8) | (uuid[1] & 0xFF);
-    }
-
-    /**
-     * extract timestamp from raw UUID bytes and return as int
-     * 
-     * @return millisecond UTC timestamp from generation of the UUID
-     */
-    public long getTimestamp() {
-        long time;
-        time = ((long) uuid[2] & 0xFF) << 28;
-        time |= ((long) uuid[3] & 0xFF) << 20;
-        time |= ((long) uuid[4] & 0xFF) << 12;
-        time |= ((long) uuid[5] & 0xF0) << 4;
-        return time;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || !(o instanceof LongUuid))
-            return false;
-        return (this == o) || Arrays.equals(this.uuid, ((LongUuid) o).uuid);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(uuid);
-    }
-
-    /**
-     * 
-     * @return the equivalent UUID as long
-     */
-    public long getLong() {
-        long value = ((long) uuid[0] & 0xFF) << 56;
-        value |= ((long) uuid[1] & 0xFF) << 48;
-        value |= ((long) uuid[2] & 0xFF) << 40;
-        value |= ((long) uuid[3] & 0xFF) << 32;
-        value |= ((long) uuid[4] & 0xFF) << 24;
-        value |= ((long) uuid[5] & 0xFF) << 16;
-        value |= ((long) uuid[6] & 0xFF) << 8;
-        value |= ((long) uuid[7] & 0xFF);
-        return value;
-    }
-
-    /**
-     * 
+     *
      * @param length
      * @return a byte array with random values
      */
@@ -228,12 +161,12 @@ public final class LongUuid {
         for (int i = 0; i < 10; i++) {
             LongUuid uuid = new LongUuid();
             System.out.println(System.currentTimeMillis() + " " + uuid + "=" + uuid.getLong() + ":"
-                    + uuid.getProcessId() + ":" + uuid.getTimestamp());
+                               + uuid.getProcessId() + ":" + uuid.getTimestamp());
         }
         for (int i = 0; i < 10; i++) {
             LongUuid uuid = new LongUuid();
             System.out.println(System.currentTimeMillis() + " " + uuid + "=" + uuid.getLong() + ":"
-                    + uuid.getProcessId() + ":" + uuid.getTimestamp());
+                               + uuid.getProcessId() + ":" + uuid.getTimestamp());
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -268,19 +201,20 @@ public final class LongUuid {
         }
         stop = System.currentTimeMillis();
         System.out.println("TimeW+reloadFromgetLong = " + (stop - start) + " so " + (n * 1000 / (stop - start))
-                + " Uuids/s");
+                           + " Uuids/s");
 
         int count = 0;
         start = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
             LongUuid uuid = new LongUuid();
             LongUuid uuid2 = new LongUuid(uuid.getLong());
-            if (uuid2.equals(uuid))
+            if (uuid2.equals(uuid)) {
                 count++;
+            }
         }
         stop = System.currentTimeMillis();
         System.out.println("TimeWAndTest = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s "
-                + count);
+                           + count);
 
         start = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
@@ -297,18 +231,85 @@ public final class LongUuid {
         }
         stop = System.currentTimeMillis();
         System.out.println("TimeW+reloadFromgetBytes = " + (stop - start) + " so " + (n * 1000 / (stop - start))
-                + " Uuids/s");
+                           + " Uuids/s");
 
         count = 0;
         start = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
             LongUuid uuid = new LongUuid();
             LongUuid uuid2 = new LongUuid(uuid.getBytes());
-            if (uuid2.equals(uuid))
+            if (uuid2.equals(uuid)) {
                 count++;
+            }
         }
         stop = System.currentTimeMillis();
         System.out.println("TimeWAndTest = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s "
-                + count);
+                           + count);
+    }
+
+    @Override
+    public String toString() {
+        return Hexa.toHex(uuid);
+    }
+
+    /**
+     * copy the uuid of this UUID, so that it can't be changed, and return it
+     *
+     * @return raw byte array of UUID
+     */
+    public byte[] getBytes() {
+        return Arrays.copyOf(uuid, UUIDSIZE);
+    }
+
+    /**
+     * extract process id from raw UUID bytes and return as int
+     *
+     * @return id of process that generated the UUID
+     */
+    public int getProcessId() {
+        return ((uuid[0] & 0xFF) << 8) | (uuid[1] & 0xFF);
+    }
+
+    /**
+     * extract timestamp from raw UUID bytes and return as int
+     *
+     * @return millisecond UTC timestamp from generation of the UUID
+     */
+    public long getTimestamp() {
+        long time;
+        time = ((long) uuid[2] & 0xFF) << 28;
+        time |= ((long) uuid[3] & 0xFF) << 20;
+        time |= ((long) uuid[4] & 0xFF) << 12;
+        time |= ((long) uuid[5] & 0xF0) << 4;
+        return time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof LongUuid)) {
+            return false;
+        }
+        return (this == o) || Arrays.equals(this.uuid, ((LongUuid) o).uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(uuid);
+    }
+
+    /**
+     *
+     * @return the equivalent UUID as long
+     */
+    public long getLong() {
+        long value = ((long) uuid[0] & 0xFF) << 56;
+        value |= ((long) uuid[1] & 0xFF) << 48;
+        value |= ((long) uuid[2] & 0xFF) << 40;
+        value |= ((long) uuid[3] & 0xFF) << 32;
+        value |= ((long) uuid[4] & 0xFF) << 24;
+        value |= ((long) uuid[5] & 0xFF) << 16;
+        value |= ((long) uuid[6] & 0xFF) << 8;
+        value |= ((long) uuid[7] & 0xFF);
+        return value;
     }
 }

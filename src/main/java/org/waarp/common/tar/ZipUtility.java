@@ -1,21 +1,25 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.tar;
+
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,20 +31,15 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.compress.utils.IOUtils;
-
 /**
  * @author Frederic Bregier
- * 
+ *
  */
 public class ZipUtility {
 
     /**
      * Create a new Zip from a root directory
-     * 
+     *
      * @param directory
      *            the base directory
      * @param filename
@@ -89,7 +88,7 @@ public class ZipUtility {
 
     /**
      * Recursive traversal to add files
-     * 
+     *
      * @param root
      * @param file
      * @param zaos
@@ -97,7 +96,7 @@ public class ZipUtility {
      * @throws IOException
      */
     private static void recurseFiles(File root, File file, ZipArchiveOutputStream zaos,
-            boolean absolute) throws IOException {
+                                     boolean absolute) throws IOException {
         if (file.isDirectory()) {
             // recursive call
             File[] files = file.listFiles();
@@ -122,7 +121,7 @@ public class ZipUtility {
 
     /**
      * Create a new Zip from a list of Files (only name of files will be used)
-     * 
+     *
      * @param files
      *            list of files to add
      * @param filename
@@ -135,7 +134,7 @@ public class ZipUtility {
 
     /**
      * Create a new Zip from an array of Files (only name of files will be used)
-     * 
+     *
      * @param files
      *            array of files to add
      * @param filename
@@ -182,7 +181,7 @@ public class ZipUtility {
 
     /**
      * Recursive traversal to add files
-     * 
+     *
      * @param file
      * @param zaos
      * @throws IOException
@@ -200,7 +199,7 @@ public class ZipUtility {
 
     /**
      * Extract all files from Tar into the specified directory
-     * 
+     *
      * @param tarFile
      * @param directory
      * @return the list of extracted filenames
@@ -240,10 +239,10 @@ public class ZipUtility {
     public static void main(String[] args) {
         if (args.length < 3) {
             System.err.println("You need to provide 3 arguments:\n" +
-                    "   option filedest.tar \"source\"\n" +
-                    "   where option=1 means unzip and source is a directory\n" +
-                    "   option=2 means zip and source is a directory\n" +
-                    "   option=3 means zip and source is a list of files comma separated");
+                               "   option filedest.tar \"source\"\n" +
+                               "   where option=1 means unzip and source is a directory\n" +
+                               "   option=2 means zip and source is a directory\n" +
+                               "   option=3 means zip and source is a list of files comma separated");
             System.exit(1);
         }
         int option = Integer.parseInt(args[0]);

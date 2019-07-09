@@ -1,25 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp. If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.database;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.waarp.common.database.exception.WaarpDatabaseNoConnectionException;
 import org.waarp.common.database.exception.WaarpDatabaseNoDataException;
@@ -27,11 +22,15 @@ import org.waarp.common.database.exception.WaarpDatabaseSqlException;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Class to handle request
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class DbRequest {
     /**
@@ -39,25 +38,22 @@ public class DbRequest {
      */
     private static final WaarpLogger logger = WaarpLoggerFactory
             .getLogger(DbRequest.class);
-
+    /**
+     * Internal DB Session
+     */
+    private final DbSession ls;
     /**
      * Internal Statement
      */
     private Statement stmt = null;
-
     /**
      * Internal Result Set
      */
     private ResultSet rs = null;
 
     /**
-     * Internal DB Session
-     */
-    private final DbSession ls;
-
-    /**
      * Create a new request from the DbSession
-     * 
+     *
      * @param ls
      * @throws WaarpDatabaseNoConnectionException
      */
@@ -69,15 +65,25 @@ public class DbRequest {
     }
 
     /**
+     * Test if value is null and create the string for insert/update
+     *
+     * @param value
+     * @return the string as result
+     */
+    public static String getIsNull(String value) {
+        return value == null? " is NULL" : " = '" + value + "'";
+    }
+
+    /**
      * Create a statement with some particular options
-     * 
+     *
      * @return the new Statement
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
     private Statement createStatement()
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                   WaarpDatabaseSqlException {
         if (ls == null) {
             throw new WaarpDatabaseNoConnectionException("No connection");
         }
@@ -103,14 +109,14 @@ public class DbRequest {
     /**
      * Execute a SELECT statement and set of Result. The statement must not be an
      * update/insert/delete. The previous statement and resultSet are closed.
-     * 
+     *
      * @param select
      * @throws WaarpDatabaseSqlException
      * @throws WaarpDatabaseNoConnectionException
      */
     public void select(String select)
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                   WaarpDatabaseSqlException {
         close();
         stmt = createStatement();
         // rs = stmt.executeQuery(select);
@@ -122,11 +128,11 @@ public class DbRequest {
             }
         } catch (SQLException e) {
             logger.error("SQL Exception Request:" + select + " " +
-                    e.getMessage());
+                         e.getMessage());
             DbSession.error(e);
             ls.checkConnectionNoException();
             throw new WaarpDatabaseSqlException("SQL Exception Request:" +
-                    select, e);
+                                                select, e);
         }
     }
 
@@ -134,7 +140,7 @@ public class DbRequest {
      * Execute a SELECT statement and set of Result. The statement must not be an
      * update/insert/delete. The previous statement and resultSet are closed.
      * The timeout is applied if > 0.
-     * 
+     *
      * @param select
      * @param timeout
      *            in seconds
@@ -143,7 +149,7 @@ public class DbRequest {
      */
     public void select(String select, int timeout)
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                   WaarpDatabaseSqlException {
         close();
         stmt = createStatement();
         if (timeout > 0) {
@@ -162,25 +168,25 @@ public class DbRequest {
             }
         } catch (SQLException e) {
             logger.error("SQL Exception Request:" + select + " " +
-                    e.getMessage());
+                         e.getMessage());
             DbSession.error(e);
             ls.checkConnectionNoException();
             throw new WaarpDatabaseSqlException("SQL Exception Request:" +
-                    select, e);
+                                                select, e);
         }
     }
 
     /**
      * Execute a UPDATE/INSERT/DELETE statement and returns the number of row. The previous
      * statement and resultSet are closed.
-     * 
+     *
      * @param query
      * @return the number of row in the query
      * @throws WaarpDatabaseSqlException
      * @throws WaarpDatabaseNoConnectionException
      */
     public int query(String query) throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                                          WaarpDatabaseSqlException {
         close();
         stmt = createStatement();
         try {
@@ -189,11 +195,11 @@ public class DbRequest {
             return rowcount;
         } catch (SQLException e) {
             logger.error("SQL Exception Request:" + query + " " +
-                    e.getMessage());
+                         e.getMessage());
             DbSession.error(e);
             ls.checkConnectionNoException();
             throw new WaarpDatabaseSqlException("SQL Exception Request:" +
-                    query, e);
+                                                query, e);
         }
     }
 
@@ -225,7 +231,7 @@ public class DbRequest {
 
     /**
      * Get the last ID autoincrement from the last request
-     * 
+     *
      * @return the long Id or DbConstant.ILLEGALVALUE (Long.MIN_VALUE) if an error occurs.
      * @throws WaarpDatabaseNoDataException
      */
@@ -249,13 +255,13 @@ public class DbRequest {
 
     /**
      * Move the cursor to the next result
-     * 
+     *
      * @return True if there is a next result, else False
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
     public boolean getNext() throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                                    WaarpDatabaseSqlException {
         if (rs == null) {
             logger.error("SQL ResultSet is Null into getNext");
             throw new WaarpDatabaseNoConnectionException(
@@ -273,12 +279,12 @@ public class DbRequest {
             DbSession.error(e);
             ls.checkConnectionNoException();
             throw new WaarpDatabaseSqlException("SQL Exception to getNextRow",
-                    e);
+                                                e);
         }
     }
 
     /**
-     * 
+     *
      * @return The resultSet (can be used in conjunction of getNext())
      * @throws WaarpDatabaseNoConnectionException
      */
@@ -288,15 +294,5 @@ public class DbRequest {
                     "SQL ResultSet is Null into getResultSet");
         }
         return rs;
-    }
-
-    /**
-     * Test if value is null and create the string for insert/update
-     * 
-     * @param value
-     * @return the string as result
-     */
-    public static String getIsNull(String value) {
-        return value == null ? " is NULL" : " = '" + value + "'";
     }
 }

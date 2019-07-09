@@ -1,25 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.file.passthrough;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.waarp.common.command.exception.CommandAbstractException;
 import org.waarp.common.command.exception.Reply550Exception;
@@ -31,38 +26,41 @@ import org.waarp.common.file.SessionInterface;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Directory implementation for Passthrough Based. It is just an empty shell since in pass through
  * mode, no directories or files really exist.
- * 
+ *
  * If one wants to implement special actions, he/she just has to extend this class and override the
  * default empty implementation.
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public abstract class PassthroughBasedDirImpl extends AbstractDir {
-    /**
-     * Factory for PassthroughFile
-     */
-    protected static PassthroughFileFactory factory = null;
-
-    /**
-     * Passthrough object
-     */
-    protected PassthroughFile pdir = null;
     /**
      * Internal Logger
      */
     private static final WaarpLogger logger = WaarpLoggerFactory
             .getLogger(PassthroughBasedDirImpl.class);
+    /**
+     * Factory for PassthroughFile
+     */
+    protected static PassthroughFileFactory factory = null;
+    /**
+     * Passthrough object
+     */
+    protected PassthroughFile pdir = null;
 
     /**
      * @param session
      * @param optsMLSx
      */
     public PassthroughBasedDirImpl(SessionInterface session,
-            OptsMLSxInterface optsMLSx) {
+                                   OptsMLSxInterface optsMLSx) {
         this.session = session;
         this.optsMLSx = optsMLSx;
         this.optsMLSx.setOptsModify((byte) -1);
@@ -77,7 +75,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
 
     /**
      * Finds all files matching a wildcard expression (based on '?', '~' or '*').
-     * 
+     *
      * @param pathWithWildcard
      *            The wildcard expression with a business path.
      * @return List of String as relative paths matching the wildcard expression. Those files are
@@ -104,20 +102,20 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
             file = factory.create(null, pathWithWildcard);
         } catch (PassthroughException e) {
             throw new Reply553Exception("Error while creating a wildcard PassthroughFile: " +
-                    e.getMessage());
+                                        e.getMessage());
         }
         try {
             return file.wildcard(null);
         } catch (PassthroughException e) {
             throw new Reply553Exception("Error while getting a wildcard PassthroughFile: " +
-                    e.getMessage());
+                                        e.getMessage());
         }
 
     }
 
     /**
      * Get the File from this path, checking first its validity
-     * 
+     *
      * @param path
      * @return the FileInterface
      * @throws CommandAbstractException
@@ -134,7 +132,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
 
     /**
      * Get the true file from the path
-     * 
+     *
      * @param path
      * @return the true File from the path
      * @throws CommandAbstractException
@@ -145,7 +143,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
         List<String> paths = wildcardFiles(normalizePath(newpath));
         if (paths.size() != 1) {
             throw new Reply550Exception("File not found: " + paths.size() +
-                    " founds");
+                                        " founds");
         }
         String extDir = paths.get(0);
         extDir = this.validatePath(extDir);
@@ -155,7 +153,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
 
     /**
      * Get the relative path (without mount point)
-     * 
+     *
      * @param file
      * @return the relative path
      */
@@ -171,7 +169,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
         if (paths.size() != 1) {
             logger.warn("CD error: {}", newpath);
             throw new Reply550Exception("Directory not found: " + paths.size() +
-                    " founds");
+                                        " founds");
         }
         String extDir = paths.get(0);
         extDir = this.validatePath(extDir);
@@ -195,7 +193,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
         List<String> paths = wildcardFiles(normalizePath(parent));
         if (paths.size() != 1) {
             throw new Reply550Exception("Base Directory not found: " +
-                    paths.size() + " founds");
+                                        paths.size() + " founds");
         }
         String newDir = paths.get(0) + SEPARATOR + dir.getName();
         newDir = this.validatePath(newDir);
@@ -221,7 +219,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
         List<String> paths = wildcardFiles(normalizePath(newdirectory));
         if (paths.size() != 1) {
             throw new Reply550Exception("Directory not found: " + paths.size() +
-                    " founds");
+                                        " founds");
         }
         String extDir = paths.get(0);
         extDir = this.validatePath(extDir);
@@ -328,7 +326,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
 
     /**
      * Decide if Full time or partial time as in 'ls' command
-     * 
+     *
      * @return True if Full Time, False is Default (as in 'ls' command)
      */
     protected boolean isFullTime() {
@@ -351,9 +349,9 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
         // FIXME file: create a virtual unique file
         String filename =
                 getFileFromPath(currentDir) + SEPARATOR +
-                        getSession().getAuth().getUser() +
-                        Long.toHexString(System.currentTimeMillis()) +
-                        this.session.getUniqueExtension();
+                getSession().getAuth().getUser() +
+                Long.toHexString(System.currentTimeMillis()) +
+                this.session.getUniqueExtension();
         File file = new File(filename);
         String currentFile = getRelativePath(file);
         return newFile(normalizePath(currentFile), false);

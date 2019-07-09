@@ -39,24 +39,24 @@ public class WaarpJdkLoggerFactory extends WaarpLoggerFactory {
     protected void seLevelSpecific(final WaarpLogLevel level) {
         final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
         switch (level) {
-            case TRACE:
-                logger.setLevel(Level.FINEST);
-                break;
-            case DEBUG:
-                logger.setLevel(Level.FINE);
-                break;
-            case INFO:
-                logger.setLevel(Level.INFO);
-                break;
-            case WARN:
-                logger.setLevel(Level.WARNING);
-                break;
-            case ERROR:
-                logger.setLevel(Level.SEVERE);
-                break;
-            default:
-                logger.setLevel(Level.WARNING);
-                break;
+        case TRACE:
+            logger.setLevel(Level.FINEST);
+            break;
+        case DEBUG:
+            logger.setLevel(Level.FINE);
+            break;
+        case INFO:
+            logger.setLevel(Level.INFO);
+            break;
+        case WARN:
+            logger.setLevel(Level.WARNING);
+            break;
+        case ERROR:
+            logger.setLevel(Level.SEVERE);
+            break;
+        default:
+            logger.setLevel(Level.WARNING);
+            break;
         }
     }
 

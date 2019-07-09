@@ -1,32 +1,35 @@
 package org.waarp.common.state;
 
-import static org.junit.Assert.*;
-
-import java.util.EnumSet;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.junit.Test;
 import org.waarp.common.exception.IllegalFiniteStateException;
 import org.waarp.common.state.MachineStateTest.ExampleEnumState.ExampleTransition;
 
+import java.util.EnumSet;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static org.junit.Assert.*;
+
 public class MachineStateTest {
-    public static enum ExampleEnumState {
-        RUNNING, PAUSED, CONFIGURING, RESET, ENDED;
-
-        public static enum ExampleTransition {
-            tRUNNING(RUNNING, EnumSet.of(PAUSED, ENDED)),
-            tPAUSED(PAUSED, EnumSet.of(RUNNING, RESET, CONFIGURING)),
-            tENDED(ENDED, EnumSet.of(RESET)),
-            tCONFIGURING(CONFIGURING, EnumSet.of(PAUSED)),
-            tRESET(RESET, EnumSet.of(PAUSED, RESET));
-
-            public Transition<ExampleEnumState> elt;
-
-            private ExampleTransition(ExampleEnumState state, EnumSet<ExampleEnumState> set) {
-                this.elt = new Transition<ExampleEnumState>(state, set);
-            }
+    static private boolean changeState(MachineState<ExampleEnumState> mach,
+                                       ExampleEnumState desired) {
+        try {
+            printState(mach);
+            mach.setCurrent(desired);
+            printState(mach);
+            return true;
+        } catch (IllegalFiniteStateException e) {
+            printWrongState(mach, desired);
+            return false;
         }
+    }
 
+    static private final void printState(MachineState<ExampleEnumState> mach) {
+        System.out.println("State is " + mach.getCurrent());
+    }
+
+    static private final void printWrongState(MachineState<ExampleEnumState> mach,
+                                              ExampleEnumState desired) {
+        System.out.println("Cannot go from State " + mach.getCurrent() + " to State " + desired);
     }
 
     @Test
@@ -36,7 +39,7 @@ public class MachineStateTest {
         ConcurrentHashMap<ExampleEnumState, EnumSet<ExampleEnumState>> stateMap =
                 new ConcurrentHashMap<ExampleEnumState, EnumSet<ExampleEnumState>>();
         stateMap.put(ExampleTransition.tRUNNING.elt.getState(),
-                (EnumSet<ExampleEnumState>) ExampleTransition.tRUNNING.elt.getSet());
+                     (EnumSet<ExampleEnumState>) ExampleTransition.tRUNNING.elt.getSet());
         // Second create the MachineState with the right Map
         MachineState<ExampleEnumState> machineState1 =
                 new MachineState(ExampleEnumState.PAUSED, stateMap);
@@ -74,26 +77,23 @@ public class MachineStateTest {
         assertTrue(changeState(machineState2, ExampleEnumState.PAUSED));
     }
 
-    static private boolean changeState(MachineState<ExampleEnumState> mach,
-            ExampleEnumState desired) {
-        try {
-            printState(mach);
-            mach.setCurrent(desired);
-            printState(mach);
-            return true;
-        } catch (IllegalFiniteStateException e) {
-            printWrongState(mach, desired);
-            return false;
+    public static enum ExampleEnumState {
+        RUNNING, PAUSED, CONFIGURING, RESET, ENDED;
+
+        public static enum ExampleTransition {
+            tRUNNING(RUNNING, EnumSet.of(PAUSED, ENDED)),
+            tPAUSED(PAUSED, EnumSet.of(RUNNING, RESET, CONFIGURING)),
+            tENDED(ENDED, EnumSet.of(RESET)),
+            tCONFIGURING(CONFIGURING, EnumSet.of(PAUSED)),
+            tRESET(RESET, EnumSet.of(PAUSED, RESET));
+
+            public Transition<ExampleEnumState> elt;
+
+            private ExampleTransition(ExampleEnumState state, EnumSet<ExampleEnumState> set) {
+                this.elt = new Transition<ExampleEnumState>(state, set);
+            }
         }
-    }
 
-    static private final void printState(MachineState<ExampleEnumState> mach) {
-        System.out.println("State is " + mach.getCurrent());
-    }
-
-    static private final void printWrongState(MachineState<ExampleEnumState> mach,
-            ExampleEnumState desired) {
-        System.out.println("Cannot go from State " + mach.getCurrent() + " to State " + desired);
     }
 
 }

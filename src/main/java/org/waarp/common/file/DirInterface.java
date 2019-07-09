@@ -1,32 +1,31 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.file;
 
-import java.util.List;
-
 import org.waarp.common.command.exception.CommandAbstractException;
 import org.waarp.common.command.exception.Reply530Exception;
 
+import java.util.List;
+
 /**
  * Interface for Directory support
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public interface DirInterface {
     /**
@@ -40,7 +39,7 @@ public interface DirInterface {
     public static final char SEPARATORCHAR = '/';
 
     /**
-     * 
+     *
      * @return the current value of Options for MLSx
      */
     public OptsMLSxInterface getOptsMLSx();
@@ -52,27 +51,28 @@ public interface DirInterface {
 
     /**
      * Init DirInterface after authentication is done
-     * 
+     *
      */
     public void initAfterIdentification();
 
     /**
      * Check if the authentication is correct
-     * 
+     *
      * @throws Reply530Exception
      */
     public void checkIdentify() throws Reply530Exception;
 
     /**
-     * 
+     *
      * @return the FtpSession
      */
     public SessionInterface getSession();
 
     // **************** Directory part **************************
+
     /**
      * Construct and Check if the given path is valid from business point of view (see {@link AuthInterface})
-     * 
+     *
      * @param path
      * @return the construct and validated path (could be different than the one given as argument,
      *         example: '..' are removed)
@@ -83,7 +83,7 @@ public interface DirInterface {
 
     /**
      * Check if the given path is valid in the sens starting from the current directory
-     * 
+     *
      * @param path
      * @return True if OK
      */
@@ -97,7 +97,7 @@ public interface DirInterface {
 
     /**
      * Change directory with the one given as argument
-     * 
+     *
      * @param path
      * @return True if the change is valid
      * @throws CommandAbstractException
@@ -107,7 +107,7 @@ public interface DirInterface {
 
     /**
      * Change directory with the one given as argument without checking existence
-     * 
+     *
      * @param path
      * @return True if the change is valid
      * @throws CommandAbstractException
@@ -117,7 +117,7 @@ public interface DirInterface {
 
     /**
      * Change for parent directory
-     * 
+     *
      * @return True if the change is valid
      * @throws CommandAbstractException
      */
@@ -126,7 +126,7 @@ public interface DirInterface {
 
     /**
      * Create the directory associated with the String as path
-     * 
+     *
      * @param directory
      * @return the full path of the new created directory
      * @exception CommandAbstractException
@@ -136,7 +136,7 @@ public interface DirInterface {
 
     /**
      * Delete the directory associated with the String as path
-     * 
+     *
      * @param directory
      * @return the full path of the new deleted directory
      * @exception CommandAbstractException
@@ -146,7 +146,7 @@ public interface DirInterface {
 
     /**
      * Is the given path a directory and exists
-     * 
+     *
      * @param path
      * @return True if it is a directory and it exists
      * @throws CommandAbstractException
@@ -156,7 +156,7 @@ public interface DirInterface {
 
     /**
      * Is the given path a file and exists
-     * 
+     *
      * @param path
      * @return True if it is a file and it exists
      * @throws CommandAbstractException
@@ -165,7 +165,7 @@ public interface DirInterface {
 
     /**
      * Return the Modification time for the path
-     * 
+     *
      * @param path
      * @return the Modification time as a String YYYYMMDDHHMMSS.sss
      * @throws CommandAbstractException
@@ -175,7 +175,7 @@ public interface DirInterface {
 
     /**
      * List all files from the given path (could be a file or a directory)
-     * 
+     *
      * @param path
      * @return the list of paths
      * @throws CommandAbstractException
@@ -185,7 +185,7 @@ public interface DirInterface {
 
     /**
      * List all files with other informations from the given path (could be a file or a directory)
-     * 
+     *
      * @param path
      * @param lsFormat
      *            True if ls Format, else MLSx format
@@ -197,7 +197,7 @@ public interface DirInterface {
 
     /**
      * Give for 1 file all informations from the given path (could be a file or a directory)
-     * 
+     *
      * @param path
      * @param lsFormat
      *            True if ls Format, else MLSx format
@@ -208,16 +208,17 @@ public interface DirInterface {
             throws CommandAbstractException;
 
     /**
-     * 
+     *
      * @return the free space of the current Directory
      * @throws CommandAbstractException
      */
     public abstract long getFreeSpace() throws CommandAbstractException;
 
     // **************** Unique FileInterface part **************************
+
     /**
      * Create a new File
-     * 
+     *
      * @param path
      * @param append
      * @return the new FileInterface
@@ -228,7 +229,7 @@ public interface DirInterface {
 
     /**
      * Set a path as the current FileInterface
-     * 
+     *
      * @param path
      * @param append
      *            True if this file is supposed to be in append mode (APPE), False in any other
@@ -241,7 +242,7 @@ public interface DirInterface {
 
     /**
      * Set a new unique path as the current FileInterface from the current Directory (STOU)
-     * 
+     *
      * @return the FileInterface if it is correctly initiate
      * @throws CommandAbstractException
      */
@@ -255,14 +256,14 @@ public interface DirInterface {
     public abstract boolean canRead() throws CommandAbstractException;
 
     /**
-     * 
+     *
      * @return True if the current FileInterface is ready for writing
      * @throws CommandAbstractException
      */
     public abstract boolean canWrite() throws CommandAbstractException;
 
     /**
-     * 
+     *
      * @return True if the current FileInterface exists
      * @throws CommandAbstractException
      */
@@ -270,7 +271,7 @@ public interface DirInterface {
 
     /**
      * Get the CRC of the given FileInterface
-     * 
+     *
      * @param path
      * @return the CRC
      * @throws CommandAbstractException
@@ -279,7 +280,7 @@ public interface DirInterface {
 
     /**
      * Get the MD5 of the given FileInterface
-     * 
+     *
      * @param path
      * @return the MD5
      * @throws CommandAbstractException
@@ -288,7 +289,7 @@ public interface DirInterface {
 
     /**
      * Get the SHA-1 of the given FileInterface
-     * 
+     *
      * @param path
      * @return the SHA-1
      * @throws CommandAbstractException

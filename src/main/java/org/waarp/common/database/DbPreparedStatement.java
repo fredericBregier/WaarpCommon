@@ -1,34 +1,33 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp. If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.database;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.waarp.common.database.exception.WaarpDatabaseNoConnectionException;
 import org.waarp.common.database.exception.WaarpDatabaseSqlException;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * Class to handle PrepareStatement
- * 
+ *
  * @author Frederic Bregier
  */
 public class DbPreparedStatement {
@@ -37,35 +36,30 @@ public class DbPreparedStatement {
      */
     private static final WaarpLogger logger = WaarpLoggerFactory
             .getLogger(DbPreparedStatement.class);
-
+    /**
+     * The associated DB session
+     */
+    private final DbSession ls;
     /**
      * Internal PreparedStatement
      */
     private PreparedStatement preparedStatement = null;
-
     /**
      * The Associated request
      */
     private String request = null;
-
     /**
      * Is this PreparedStatement ready
      */
     private boolean isReady = false;
-
     /**
      * The associated resultSet
      */
     private ResultSet rs = null;
 
     /**
-     * The associated DB session
-     */
-    private final DbSession ls;
-
-    /**
      * Create a DbPreparedStatement from DbSession object
-     * 
+     *
      * @param ls
      * @throws WaarpDatabaseNoConnectionException
      */
@@ -77,7 +71,7 @@ public class DbPreparedStatement {
                     "PreparedStatement no session");
         }
         if (ls.isDisActive()) {
-            logger.debug("DisActive: "+ls.getAdmin().getServer());
+            logger.debug("DisActive: " + ls.getAdmin().getServer());
             ls.checkConnection();
         }
         this.ls = ls;
@@ -88,7 +82,7 @@ public class DbPreparedStatement {
 
     /**
      * Create a DbPreparedStatement from DbSession object and a request
-     * 
+     *
      * @param ls
      * @param request
      * @throws WaarpDatabaseNoConnectionException
@@ -96,7 +90,7 @@ public class DbPreparedStatement {
      */
     public DbPreparedStatement(DbSession ls, String request)
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                   WaarpDatabaseSqlException {
         if (ls == null) {
             logger.error("SQL Exception PreparedStatement no session");
             throw new WaarpDatabaseNoConnectionException(
@@ -126,7 +120,7 @@ public class DbPreparedStatement {
                 setReady(true);
             } catch (SQLException e1) {
                 logger.error("SQL Exception PreparedStatement: " + request +
-                        " " + e.getMessage());
+                             " " + e.getMessage());
                 DbSession.error(e);
                 preparedStatement = null;
                 setReady(false);
@@ -138,7 +132,7 @@ public class DbPreparedStatement {
 
     /**
      * Create a DbPreparedStatement from DbSession object and a request
-     * 
+     *
      * @param ls
      * @param request
      * @param nbFetch
@@ -148,7 +142,7 @@ public class DbPreparedStatement {
      */
     public DbPreparedStatement(DbSession ls, String request, int nbFetch)
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                   WaarpDatabaseSqlException {
         if (ls == null) {
             logger.error("SQL Exception PreparedStatement no session");
             throw new WaarpDatabaseNoConnectionException(
@@ -180,7 +174,7 @@ public class DbPreparedStatement {
                 setReady(true);
             } catch (SQLException e1) {
                 logger.error("SQL Exception PreparedStatement: " + request +
-                        " " + e.getMessage());
+                             " " + e.getMessage());
                 DbSession.error(e);
                 preparedStatement = null;
                 setReady(false);
@@ -192,14 +186,14 @@ public class DbPreparedStatement {
 
     /**
      * Create a preparedStatement from request
-     * 
+     *
      * @param requestarg
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
     public void createPrepareStatement(String requestarg)
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                   WaarpDatabaseSqlException {
         if (requestarg == null) {
             logger.error("createPreparedStatement no request");
             throw new WaarpDatabaseNoConnectionException(
@@ -212,7 +206,7 @@ public class DbPreparedStatement {
             close();
         }
         if (ls.isDisActive()) {
-            logger.debug("DisActive: "+ls.getAdmin().getServer());
+            logger.debug("DisActive: " + ls.getAdmin().getServer());
             ls.checkConnection();
         }
         try {
@@ -227,7 +221,7 @@ public class DbPreparedStatement {
                 setReady(true);
             } catch (SQLException e1) {
                 logger.error("SQL Exception createPreparedStatement from {}:" +
-                        requestarg + " " + e.getMessage(), ls.getAdmin().getServer());
+                             requestarg + " " + e.getMessage(), ls.getAdmin().getServer());
                 DbSession.error(e);
                 realClose();
                 preparedStatement = null;
@@ -242,25 +236,25 @@ public class DbPreparedStatement {
     /**
      * In case of closing database connection, it is possible to reopen a long term
      * preparedStatement as it was at creation.
-     * 
+     *
      * @throws WaarpDatabaseSqlException
      * @throws WaarpDatabaseNoConnectionException
      */
     public void recreatePreparedStatement()
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                   WaarpDatabaseSqlException {
         this.createPrepareStatement(request);
     }
 
     /**
      * Execute a Select preparedStatement
-     * 
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
-     * 
+     *
      */
     public void executeQuery() throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                                      WaarpDatabaseSqlException {
         if (preparedStatement == null) {
             logger.error("executeQuery no request");
             throw new WaarpDatabaseNoConnectionException(
@@ -273,13 +267,13 @@ public class DbPreparedStatement {
             ls.checkConnection();
             throw new WaarpDatabaseSqlException(
                     "Request cannot be executed since connection was recreated between: " +
-                            request);
+                    request);
         }
         try {
             rs = preparedStatement.executeQuery();
         } catch (SQLException e) {
             logger.error("SQL Exception executeQuery:" + request + " " +
-                    e.getMessage());
+                         e.getMessage());
             DbSession.error(e);
             close();
             rs = null;
@@ -291,13 +285,13 @@ public class DbPreparedStatement {
 
     /**
      * Execute the Update/Insert/Delete preparedStatement
-     * 
+     *
      * @return the number of row
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
     public int executeUpdate() throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                                      WaarpDatabaseSqlException {
         if (preparedStatement == null) {
             logger.error("executeUpdate no request");
             throw new WaarpDatabaseNoConnectionException(
@@ -310,14 +304,14 @@ public class DbPreparedStatement {
             ls.checkConnection();
             throw new WaarpDatabaseSqlException(
                     "Request cannot be executed since connection was recreated between:" +
-                            request);
+                    request);
         }
         int retour = -1;
         try {
             retour = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("SQL Exception executeUpdate:" + request + " " +
-                    e.getMessage());
+                         e.getMessage());
             logger.debug("SQL Exception full stack trace", e);
             DbSession.error(e);
             ls.checkConnectionNoException();
@@ -329,7 +323,7 @@ public class DbPreparedStatement {
 
     /**
      * Close the resultSet if any
-     * 
+     *
      */
     public void close() {
         if (rs != null) {
@@ -343,7 +337,7 @@ public class DbPreparedStatement {
 
     /**
      * Really close the preparedStatement and the resultSet if any
-     * 
+     *
      */
     public void realClose() {
         close();
@@ -363,13 +357,13 @@ public class DbPreparedStatement {
 
     /**
      * Move the cursor to the next result
-     * 
+     *
      * @return True if there is a next result, else False
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
     public boolean getNext() throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                                    WaarpDatabaseSqlException {
         if (rs == null) {
             logger.error("SQL ResultSet is Null into getNext");
             throw new WaarpDatabaseNoConnectionException(
@@ -383,8 +377,8 @@ public class DbPreparedStatement {
         try {
             return rs.next();
         } catch (SQLException e) {
-            logger.error("SQL Exception to getNextRow" + (request != null ? " [" + request + "]" : "") + " "
-                    + e.getMessage());
+            logger.error("SQL Exception to getNextRow" + (request != null? " [" + request + "]" : "") + " "
+                         + e.getMessage());
             DbSession.error(e);
             ls.checkConnectionNoException();
             throw new WaarpDatabaseSqlException(
@@ -393,7 +387,7 @@ public class DbPreparedStatement {
     }
 
     /**
-     * 
+     *
      * @return The resultSet (can be used in conjunction of getNext())
      * @throws WaarpDatabaseNoConnectionException
      */
@@ -406,7 +400,7 @@ public class DbPreparedStatement {
     }
 
     /**
-     * 
+     *
      * @return The preparedStatement (should be used in conjunction of createPreparedStatement)
      * @throws WaarpDatabaseNoConnectionException
      */

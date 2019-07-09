@@ -1,28 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.xml;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.Writer;
-import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -34,6 +26,13 @@ import org.dom4j.io.XMLWriter;
 import org.waarp.common.exception.InvalidArgumentException;
 import org.waarp.common.utility.WaarpStringUtils;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.Writer;
+import java.util.List;
+
 /**
  * XML utility that handles simple cases as:<br>
  * <ul>
@@ -44,21 +43,21 @@ import org.waarp.common.utility.WaarpStringUtils;
  * <li>Any other path is not supported: //x /x@y ./ ../</li>
  * <li>Supports special SubXml tree as element (singleton or multiple)</li>
  * </ul>
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public class XmlUtil {
 
     /**
-     * 
+     *
      * @param filename
      * @return Existing Document from filename
      * @throws IOException
      * @throws DocumentException
      */
     static public Document getDocument(String filename) throws IOException,
-            DocumentException {
+                                                               DocumentException {
         File file = new File(filename);
         if (!file.canRead()) {
             throw new IOException("File is not readable: " + filename);
@@ -67,14 +66,14 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param file
      * @return Existing Document from file
      * @throws IOException
      * @throws DocumentException
      */
     static public Document getDocument(File file) throws IOException,
-            DocumentException {
+                                                         DocumentException {
         if (!file.canRead()) {
             throw new IOException("File is not readable: " + file.getPath());
         }
@@ -84,7 +83,7 @@ public class XmlUtil {
 
     /**
      * Read the document from the string
-     * 
+     *
      * @param document
      *            as String
      * @return the Document
@@ -96,7 +95,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param document
      * @return the document as an XML string
      */
@@ -105,7 +104,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param element
      * @return the element as an XML string
      */
@@ -114,7 +113,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @return an empty new Document
      */
     static public Document createEmptyDocument() {
@@ -123,7 +122,7 @@ public class XmlUtil {
 
     /**
      * Save the document into the file
-     * 
+     *
      * @param filename
      * @param document
      * @throws IOException
@@ -136,7 +135,7 @@ public class XmlUtil {
 
     /**
      * Save the document into the file
-     * 
+     *
      * @param file
      * @param document
      * @throws IOException
@@ -169,7 +168,7 @@ public class XmlUtil {
 
     /**
      * Save the branch from element into the file
-     * 
+     *
      * @param filename
      * @param element
      * @throws IOException
@@ -182,7 +181,7 @@ public class XmlUtil {
 
     /**
      * Save the branch from element into the file
-     * 
+     *
      * @param file
      * @param element
      * @throws IOException
@@ -201,7 +200,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param document
      * @return the root Element from the document
      */
@@ -212,7 +211,7 @@ public class XmlUtil {
     /**
      * Add or Get (if already existing) an element given by the path relative to the referent
      * element and set the value
-     * 
+     *
      * @param ref
      * @param path
      * @param value
@@ -227,7 +226,7 @@ public class XmlUtil {
     /**
      * Add or Get (if already existing) an element given by the path relative to the referent
      * element
-     * 
+     *
      * @param ref
      * @param path
      * @return the new added or already existing element
@@ -250,14 +249,14 @@ public class XmlUtil {
 
     /**
      * Add an element given by the path relative to the referent element and set the value
-     * 
+     *
      * @param ref
      * @param path
      * @param value
      * @return the new added element with value
      */
     static public Element addAndSetElementMultiple(Element ref, String path,
-            String value) {
+                                                   String value) {
         Element current = addAndGetElementMultiple(ref, path);
         current.setText(value);
         return current;
@@ -265,7 +264,7 @@ public class XmlUtil {
 
     /**
      * Add an element given by the path relative to the referent element
-     * 
+     *
      * @param ref
      * @param path
      * @return the new added element
@@ -292,7 +291,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param ref
      * @param path
      * @return the parent element associated with the path relatively to the referent element
@@ -312,7 +311,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param ref
      * @param path
      * @return the element associated with the path relatively to the referent element
@@ -332,7 +331,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param ref
      * @param path
      * @return the element associated with the path relatively to the referent element
@@ -355,14 +354,14 @@ public class XmlUtil {
     /**
      * Add or Get (if already existing) an element given by the path relative to the document and
      * set the value
-     * 
+     *
      * @param doc
      * @param path
      * @param value
      * @return the new added or already existing element with new value
      */
     static public Element addOrSetElement(Document doc, String path,
-            String value) {
+                                          String value) {
         Element current = addOrGetElement(doc, path);
         current.setText(value);
         return current;
@@ -370,7 +369,7 @@ public class XmlUtil {
 
     /**
      * Add or Get (if already existing) an element given by the path relative to the document
-     * 
+     *
      * @param doc
      * @param path
      * @return the new added or already existing element
@@ -406,14 +405,14 @@ public class XmlUtil {
 
     /**
      * Add an element given by the path relative to the document and set the value
-     * 
+     *
      * @param doc
      * @param path
      * @param value
      * @return the new added element with value
      */
     static public Element addAndSetElementMultiple(Document doc, String path,
-            String value) {
+                                                   String value) {
         Element current = addAndGetElementMultiple(doc, path);
         current.setText(value);
         return current;
@@ -421,7 +420,7 @@ public class XmlUtil {
 
     /**
      * Add an element given by the path relative to the document
-     * 
+     *
      * @param doc
      * @param path
      * @return the new added element
@@ -465,7 +464,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param doc
      * @param path
      * @return the Parent element associated with the path relatively to the document
@@ -481,7 +480,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param doc
      * @param path
      * @return the element associated with the path relatively to the document
@@ -497,7 +496,7 @@ public class XmlUtil {
     }
 
     /**
-     * 
+     *
      * @param doc
      * @param path
      * @return the element associated with the path relatively to the document
@@ -515,7 +514,7 @@ public class XmlUtil {
 
     /**
      * Create the XmlValues from the XmlDevls and the Document
-     * 
+     *
      * @param doc
      * @param decls
      * @return XmlValues
@@ -537,7 +536,7 @@ public class XmlUtil {
                     }
                     for (Element element : elts) {
                         XmlValue[] newValue = read(element,
-                                decls[i].getSubXml());
+                                                   decls[i].getSubXml());
                         if (newValue == null) {
                             continue;
                         }
@@ -601,7 +600,7 @@ public class XmlUtil {
 
     /**
      * Create the XmlValues from the XmlDevls and the reference Element
-     * 
+     *
      * @param ref
      * @param decls
      * @return XmlValues
@@ -623,7 +622,7 @@ public class XmlUtil {
                     }
                     for (Element element : elts) {
                         XmlValue[] newValue = read(element,
-                                decls[i].getSubXml());
+                                                   decls[i].getSubXml());
                         if (newValue == null) {
                             continue;
                         }
@@ -687,7 +686,7 @@ public class XmlUtil {
 
     /**
      * Add all nodes from XmlValues into Document
-     * 
+     *
      * @param doc
      * @param values
      */
@@ -702,23 +701,23 @@ public class XmlUtil {
                                 .getList();
                         for (XmlValue[] object : list) {
                             Element ref = addAndGetElementMultiple(doc,
-                                    values[i].getXmlPath());
+                                                                   values[i].getXmlPath());
                             write(ref, object);
                         }
                     } else {
                         Element ref = addOrGetElement(doc,
-                                values[i].getXmlPath());
+                                                      values[i].getXmlPath());
                         write(ref, values[i].getSubXml());
                     }
                 } else if (values[i].isMultiple()) {
                     List<?> list = values[i].getList();
                     for (Object object : list) {
                         addAndSetElementMultiple(doc, values[i].getXmlPath(),
-                                object.toString());
+                                                 object.toString());
                     }
                 } else {
                     addOrSetElement(doc, values[i].getXmlPath(),
-                            values[i].getIntoString());
+                                    values[i].getIntoString());
                 }
             }
         }
@@ -726,7 +725,7 @@ public class XmlUtil {
 
     /**
      * Add all nodes from XmlValues from the referenced Element
-     * 
+     *
      * @param ref
      * @param values
      */
@@ -741,23 +740,23 @@ public class XmlUtil {
                                 .getList();
                         for (XmlValue[] object : list) {
                             Element newref = addAndGetElementMultiple(ref,
-                                    values[i].getXmlPath());
+                                                                      values[i].getXmlPath());
                             write(newref, object);
                         }
                     } else {
                         Element newref = addOrGetElement(ref,
-                                values[i].getXmlPath());
+                                                         values[i].getXmlPath());
                         write(newref, values[i].getSubXml());
                     }
                 } else if (values[i].isMultiple()) {
                     List<?> list = values[i].getList();
                     for (Object object : list) {
                         addAndSetElementMultiple(ref, values[i].getXmlPath(),
-                                object.toString());
+                                                 object.toString());
                     }
                 } else {
                     addOrSetElement(ref, values[i].getXmlPath(),
-                            values[i].getIntoString());
+                                    values[i].getIntoString());
                 }
             }
         }
@@ -765,7 +764,7 @@ public class XmlUtil {
 
     /**
      * Example (run test)
-     * 
+     *
      * @param args
      */
     @SuppressWarnings("unchecked")
@@ -776,19 +775,20 @@ public class XmlUtil {
                 new XmlDecl("n3", XmlType.STRING, "/root/string", false),
                 new XmlDecl("n4", XmlType.INTEGER, "/root/int", false),
                 new XmlDecl("n5", XmlType.BOOLEAN, "/root/sub1/sub2/bool",
-                        false),
+                            false),
                 new XmlDecl("n6", XmlType.BOOLEAN, "/root/sub1/sub3/bool", true),
                 new XmlDecl("n7", XmlType.BOOLEAN,
-                        "/root/sub4/sub5/sub6/sub7/bool", false) };
+                            "/root/sub4/sub5/sub6/sub7/bool", false)
+        };
         String xmltree = "<root><bool>true</bool><float>1.2</float><string>my string to read</string><int>5</int>"
-                + "<sub1>"
-                + "<sub2><bool>1</bool></sub2>"
-                + "<sub3>"
-                + "<bool>false</bool><bool>true</bool><bool>0</bool>"
-                + "</sub3>"
-                + "</sub1>"
-                + "<sub4><sub5><sub6><sub7><bool>True</bool></sub7></sub6></sub5></sub4>"
-                + "</root>";
+                         + "<sub1>"
+                         + "<sub2><bool>1</bool></sub2>"
+                         + "<sub3>"
+                         + "<bool>false</bool><bool>true</bool><bool>0</bool>"
+                         + "</sub3>"
+                         + "</sub1>"
+                         + "<sub4><sub5><sub6><sub7><bool>True</bool></sub7></sub6></sub5></sub4>"
+                         + "</root>";
         // Test with only single XmlType (no XVAL)
         Document document = null;
         try {
@@ -880,7 +880,7 @@ public class XmlUtil {
         }
         try {
             saveElement("D:\\Tools\\test5.xml",
-                    (Element) elt.selectSingleNode("root"));
+                        (Element) elt.selectSingleNode("root"));
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -889,35 +889,38 @@ public class XmlUtil {
         System.err.println("\n\nXVAL TESTING\n");
         XmlDecl[] subdecls1 = {
                 new XmlDecl("n11", XmlType.BOOLEAN, "/n11/bool", false),
-                new XmlDecl("n12", XmlType.FLOAT, "/n11/float", true) };
+                new XmlDecl("n12", XmlType.FLOAT, "/n11/float", true)
+        };
         XmlDecl[] subdecls2 = {
                 new XmlDecl("n21", XmlType.BOOLEAN, "/n21/bool", false),
-                new XmlDecl("n22", XmlType.FLOAT, "/n21/float", true) };
+                new XmlDecl("n22", XmlType.FLOAT, "/n21/float", true)
+        };
         XmlDecl[] maindecls = {
                 new XmlDecl("n1", XmlType.BOOLEAN, "/root/bool", false),
                 new XmlDecl("n2", XmlType.FLOAT, "/root/float", false),
                 new XmlDecl("n3", XmlType.STRING, "/root/string", false),
                 new XmlDecl("n4", XmlType.INTEGER, "/root/int", false),
                 new XmlDecl("n5", XmlType.BOOLEAN, "/root/sub1/sub2/bool",
-                        false),
+                            false),
                 new XmlDecl("n6", XmlType.BOOLEAN, "/root/sub1/sub3/bool", true),
                 new XmlDecl("n7", XmlType.BOOLEAN,
-                        "/root/sub4/sub5/sub6/sub7/bool", false),
+                            "/root/sub4/sub5/sub6/sub7/bool", false),
                 new XmlDecl("n10", XmlType.XVAL, "/root/sub8", subdecls1, false),
-                new XmlDecl("n20", XmlType.XVAL, "/root/sub9", subdecls2, true) };
+                new XmlDecl("n20", XmlType.XVAL, "/root/sub9", subdecls2, true)
+        };
         xmltree = "<root><bool>true</bool><float>1.2</float><string>my string to read</string><int>5</int>"
-                + "<sub1>"
-                + "<sub2><bool>1</bool></sub2>"
-                + "<sub3>"
-                + "<bool>false</bool><bool>true</bool><bool>0</bool>"
-                + "</sub3>"
-                + "</sub1>"
-                + "<sub4><sub5><sub6><sub7><bool>True</bool></sub7></sub6></sub5></sub4>"
-                + "<sub8><n11><bool>true</bool><float>1.2</float><float>1.3</float><float>1.4</float></n11></sub8>"
-                + "<sub9><n21><bool>true</bool><float>2.2</float><float>2.3</float><float>2.4</float></n21></sub9>"
-                + "<sub9><n21><bool>false</bool><float>3.2</float><float>3.3</float><float>3.4</float></n21></sub9>"
-                + "<sub9><n21><bool>true</bool><float>4.2</float><float>4.3</float><float>4.4</float></n21></sub9>"
-                + "</root>";
+                  + "<sub1>"
+                  + "<sub2><bool>1</bool></sub2>"
+                  + "<sub3>"
+                  + "<bool>false</bool><bool>true</bool><bool>0</bool>"
+                  + "</sub3>"
+                  + "</sub1>"
+                  + "<sub4><sub5><sub6><sub7><bool>True</bool></sub7></sub6></sub5></sub4>"
+                  + "<sub8><n11><bool>true</bool><float>1.2</float><float>1.3</float><float>1.4</float></n11></sub8>"
+                  + "<sub9><n21><bool>true</bool><float>2.2</float><float>2.3</float><float>2.4</float></n21></sub9>"
+                  + "<sub9><n21><bool>false</bool><float>3.2</float><float>3.3</float><float>3.4</float></n21></sub9>"
+                  + "<sub9><n21><bool>true</bool><float>4.2</float><float>4.3</float><float>4.4</float></n21></sub9>"
+                  + "</root>";
         document = null;
         try {
             document = readDocument(xmltree);
@@ -1007,7 +1010,7 @@ public class XmlUtil {
         }
         try {
             saveElement("D:\\Tools\\xtest5.xml",
-                    elt);
+                        elt);
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -1016,7 +1019,7 @@ public class XmlUtil {
 
     /**
      * Write the given XML document to filename using the encoding
-     * 
+     *
      * @param filename
      * @param encoding
      *            if null, default encoding UTF-8 will be used

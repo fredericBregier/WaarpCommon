@@ -1,31 +1,20 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.json;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -44,47 +33,20 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * JSON handler using adaptative format (Smile or Json - in that order -)
- * 
+ *
  * @author "Frederic Bregier"
  *
  */
 public class AdaptativeJsonHandler {
-
-    public static enum JsonCodec {
-        SMILE(new SmileFactory()), JSON(new JsonFactory());
-
-        public final JsonFactory factory;
-        public final ObjectMapper mapper;
-
-        private JsonCodec(JsonFactory factory) {
-            this.factory = factory;
-            this.mapper = new ObjectMapper(factory);
-            mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-            mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            mapper.configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
-        }
-
-        private static List<JsonFactory> getFactories() {
-            List<JsonFactory> factories = new ArrayList<JsonFactory>();
-            JsonCodec[] codecs = JsonCodec.values();
-            for (JsonCodec jsonCodec : codecs) {
-                factories.add(jsonCodec.factory);
-            }
-            return factories;
-        }
-
-        private static HashMap<String, JsonCodec> getHashMap() {
-            HashMap<String, JsonCodec> hashmap = new HashMap<String, JsonCodec>();
-            JsonCodec[] codecs = JsonCodec.values();
-            for (JsonCodec jsonCodec : codecs) {
-                hashmap.put(jsonCodec.factory.getFormatName(), jsonCodec);
-            }
-            return hashmap;
-        }
-    }
 
     /**
      * Data Format Detector
@@ -96,10 +58,8 @@ public class AdaptativeJsonHandler {
      * HashMap getting Codec from Factory name
      */
     private static final HashMap<String, JsonCodec> factoryForName = JsonCodec.getHashMap();
-
     ObjectMapper mapper;
     private JsonCodec codec;
-
     public AdaptativeJsonHandler(JsonCodec codec) {
         this.codec = codec;
         mapper = codec.mapper;
@@ -141,7 +101,7 @@ public class AdaptativeJsonHandler {
 
     /**
      * Change the JsonCodec: warning, change should be done before any usage to preserve consistency
-     * 
+     *
      * @param codec
      */
     public void changeHandler(JsonCodec codec) {
@@ -150,7 +110,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @return the associated codec
      */
     public JsonCodec getCodec() {
@@ -158,7 +118,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @return an empty ObjectNode
      */
     public final ObjectNode createObjectNode() {
@@ -166,7 +126,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @return an empty ArrayNode
      */
     public final ArrayNode createArrayNode() {
@@ -174,7 +134,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param value
      * @return the objectNode or null if an error occurs
      */
@@ -189,7 +149,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param object
      * @return the Json representation of the object
      */
@@ -202,7 +162,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @return the String if the field exists, else null
@@ -212,7 +172,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @return the String if the field exists, else null
@@ -222,7 +182,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -241,7 +201,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -252,7 +212,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -263,7 +223,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -274,7 +234,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -285,7 +245,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -304,7 +264,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -314,7 +274,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -324,7 +284,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -334,7 +294,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -344,7 +304,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -357,7 +317,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -370,21 +330,22 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @return True if all fields exist
      */
     public final boolean exist(ObjectNode node, String... field) {
         for (String string : field) {
-            if (!node.has(string))
+            if (!node.has(string)) {
                 return false;
+            }
         }
         return true;
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -395,7 +356,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -406,7 +367,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -417,7 +378,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -428,7 +389,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -439,7 +400,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param defValue
@@ -450,7 +411,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -460,7 +421,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -470,7 +431,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -480,7 +441,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -490,7 +451,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -503,7 +464,7 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @param value
@@ -516,21 +477,22 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     * 
+     *
      * @param node
      * @param field
      * @return True if all fields exist
      */
     public final boolean exist(ObjectNode node, Enum<?>... field) {
         for (Enum<?> enm : field) {
-            if (!node.has(enm.name()))
+            if (!node.has(enm.name())) {
                 return false;
+            }
         }
         return true;
     }
 
     /**
-     * 
+     *
      * @param value
      * @return the corresponding HashMap
      */
@@ -538,7 +500,8 @@ public class AdaptativeJsonHandler {
         if (value != null && !value.isEmpty()) {
             Map<String, Object> info = null;
             try {
-                info = mapper.readValue(value, new TypeReference<Map<String, Object>>() {});
+                info = mapper.readValue(value, new TypeReference<Map<String, Object>>() {
+                });
             } catch (JsonParseException e1) {
             } catch (JsonMappingException e1) {
             } catch (IOException e1) {
@@ -549,6 +512,40 @@ public class AdaptativeJsonHandler {
             return info;
         } else {
             return new HashMap<String, Object>();
+        }
+    }
+
+    public static enum JsonCodec {
+        SMILE(new SmileFactory()), JSON(new JsonFactory());
+
+        public final JsonFactory factory;
+        public final ObjectMapper mapper;
+
+        private JsonCodec(JsonFactory factory) {
+            this.factory = factory;
+            this.mapper = new ObjectMapper(factory);
+            mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+            mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
+        }
+
+        private static List<JsonFactory> getFactories() {
+            List<JsonFactory> factories = new ArrayList<JsonFactory>();
+            JsonCodec[] codecs = JsonCodec.values();
+            for (JsonCodec jsonCodec : codecs) {
+                factories.add(jsonCodec.factory);
+            }
+            return factories;
+        }
+
+        private static HashMap<String, JsonCodec> getHashMap() {
+            HashMap<String, JsonCodec> hashmap = new HashMap<String, JsonCodec>();
+            JsonCodec[] codecs = JsonCodec.values();
+            for (JsonCodec jsonCodec : codecs) {
+                hashmap.put(jsonCodec.factory.getFormatName(), jsonCodec);
+            }
+            return hashmap;
         }
     }
 

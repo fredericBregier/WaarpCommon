@@ -15,7 +15,7 @@
  */
 
 /**
- * This is an internal package that contains the internal implementations of the netty-http library.
- * User shouldn't use classes inside this package directly as the API can change at any time.
+ * This is an internal package that contains the internal implementations of the netty-http library. User shouldn't use
+ * classes inside this package directly as the API can change at any time.
  */
 package io.cdap.http.internal;

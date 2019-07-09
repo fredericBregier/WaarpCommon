@@ -1,21 +1,30 @@
 /**
  * This file is part of Waarp Project.
- *
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- *
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- *
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- *
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.database.data;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.waarp.common.database.DbPreparedStatement;
+import org.waarp.common.database.DbSession;
+import org.waarp.common.database.exception.WaarpDatabaseException;
+import org.waarp.common.database.exception.WaarpDatabaseNoConnectionException;
+import org.waarp.common.database.exception.WaarpDatabaseNoDataException;
+import org.waarp.common.database.exception.WaarpDatabaseSqlException;
+import org.waarp.common.json.JsonHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,17 +35,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
-
-import org.waarp.common.database.DbPreparedStatement;
-import org.waarp.common.database.DbSession;
-import org.waarp.common.database.exception.WaarpDatabaseException;
-import org.waarp.common.database.exception.WaarpDatabaseNoConnectionException;
-import org.waarp.common.database.exception.WaarpDatabaseNoDataException;
-import org.waarp.common.database.exception.WaarpDatabaseSqlException;
-import org.waarp.common.json.JsonHandler;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Abstract database table implementation without explicit COMMIT.<br>
@@ -51,44 +49,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public abstract class AbstractDbData {
     public static final String JSON_MODEL = "@model";
-
     /**
-     * UpdatedInfo status
-     *
-     * @author Frederic Bregier
-     *
+     * The DbSession to use
      */
-    public enum UpdatedInfo {
-        /**
-         * Unknown run status
-         */
-        UNKNOWN,
-        /**
-         * Not updated run status
-         */
-        NOTUPDATED,
-        /**
-         * Interrupted status (stop or cancel)
-         */
-        INTERRUPTED,
-        /**
-         * Updated run status meaning ready to be submitted
-         */
-        TOSUBMIT,
-        /**
-         * In error run status
-         */
-        INERROR,
-        /**
-         * Running status
-         */
-        RUNNING,
-        /**
-         * All done run status
-         */
-        DONE
-    }
-
+    protected final DbSession dbSession;
     /**
      * To be implemented
      */
@@ -103,11 +67,6 @@ public abstract class AbstractDbData {
 
     protected boolean isSaved = false;
     /**
-     * The DbSession to use
-     */
-    protected final DbSession dbSession;
-
-    /**
      * Abstract constructor to set the DbSession to use
      *
      * @param dbSession
@@ -117,12 +76,202 @@ public abstract class AbstractDbData {
         this.dbSession = dbSession;
         initObject();
     }
+
     /**
      * Abstract constructor to set the DbSession to use
      */
     public AbstractDbData() {
         this.dbSession = null;
         initObject();
+    }
+
+    /**
+     * Set Value into PreparedStatement
+     *
+     * @param ps
+     * @param value
+     * @param rank
+     *            >= 1
+     * @throws WaarpDatabaseSqlException
+     */
+    static public void setTrueValue(PreparedStatement ps, DbValue value, int rank)
+            throws WaarpDatabaseSqlException {
+        try {
+            switch (value.type) {
+            case Types.VARCHAR:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.VARCHAR);
+                    break;
+                }
+                ps.setString(rank, (String) value.getValue());
+                break;
+            case Types.LONGVARCHAR:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.LONGVARCHAR);
+                    break;
+                }
+                ps.setString(rank, (String) value.getValue());
+                break;
+            case Types.BIT:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.BIT);
+                    break;
+                }
+                ps.setBoolean(rank, (Boolean) value.getValue());
+                break;
+            case Types.TINYINT:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.TINYINT);
+                    break;
+                }
+                ps.setByte(rank, (Byte) value.getValue());
+                break;
+            case Types.SMALLINT:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.SMALLINT);
+                    break;
+                }
+                ps.setShort(rank, (Short) value.getValue());
+                break;
+            case Types.INTEGER:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.INTEGER);
+                    break;
+                }
+                ps.setInt(rank, (Integer) value.getValue());
+                break;
+            case Types.BIGINT:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.BIGINT);
+                    break;
+                }
+                ps.setLong(rank, (Long) value.getValue());
+                break;
+            case Types.REAL:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.REAL);
+                    break;
+                }
+                ps.setFloat(rank, (Float) value.getValue());
+                break;
+            case Types.DOUBLE:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.DOUBLE);
+                    break;
+                }
+                ps.setDouble(rank, (Double) value.getValue());
+                break;
+            case Types.VARBINARY:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.VARBINARY);
+                    break;
+                }
+                ps.setBytes(rank, (byte[]) value.getValue());
+                break;
+            case Types.DATE:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.DATE);
+                    break;
+                }
+                ps.setDate(rank, (Date) value.getValue());
+                break;
+            case Types.TIMESTAMP:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.TIMESTAMP);
+                    break;
+                }
+                ps.setTimestamp(rank, (Timestamp) value.getValue());
+                break;
+            case Types.CLOB:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.CLOB);
+                    break;
+                }
+                ps.setClob(rank, (Reader) value.getValue());
+                break;
+            case Types.BLOB:
+                if (value.getValue() == null) {
+                    ps.setNull(rank, Types.BLOB);
+                    break;
+                }
+                ps.setBlob(rank, (InputStream) value.getValue());
+                break;
+            default:
+                throw new WaarpDatabaseSqlException("Type not supported: " +
+                                                    value.type + " at " + rank);
+            }
+        } catch (ClassCastException e) {
+            throw new WaarpDatabaseSqlException("Setting values casting error: " +
+                                                value.type + " at " + rank, e);
+        } catch (SQLException e) {
+            DbSession.error(e);
+            throw new WaarpDatabaseSqlException("Setting values in error: " +
+                                                value.type + " at " + rank, e);
+        }
+    }
+
+    /**
+     * Get one value into DbValue from ResultSet
+     *
+     * @param rs
+     * @param value
+     * @throws WaarpDatabaseSqlException
+     */
+    static public void getTrueValue(ResultSet rs, DbValue value)
+            throws WaarpDatabaseSqlException {
+        try {
+            switch (value.type) {
+            case Types.VARCHAR:
+                value.setValue(rs.getString(value.getColumn()));
+                break;
+            case Types.LONGVARCHAR:
+                value.setValue(rs.getString(value.getColumn()));
+                break;
+            case Types.BIT:
+                value.setValue(rs.getBoolean(value.getColumn()));
+                break;
+            case Types.TINYINT:
+                value.setValue(rs.getByte(value.getColumn()));
+                break;
+            case Types.SMALLINT:
+                value.setValue(rs.getShort(value.getColumn()));
+                break;
+            case Types.INTEGER:
+                value.setValue(rs.getInt(value.getColumn()));
+                break;
+            case Types.BIGINT:
+                value.setValue(rs.getLong(value.getColumn()));
+                break;
+            case Types.REAL:
+                value.setValue(rs.getFloat(value.getColumn()));
+                break;
+            case Types.DOUBLE:
+                value.setValue(rs.getDouble(value.getColumn()));
+                break;
+            case Types.VARBINARY:
+                value.setValue(rs.getBytes(value.getColumn()));
+                break;
+            case Types.DATE:
+                value.setValue(rs.getDate(value.getColumn()));
+                break;
+            case Types.TIMESTAMP:
+                value.setValue(rs.getTimestamp(value.getColumn()));
+                break;
+            case Types.CLOB:
+                value.setValue(rs.getClob(value.getColumn()).getCharacterStream());
+                break;
+            case Types.BLOB:
+                value.setValue(rs.getBlob(value.getColumn()).getBinaryStream());
+                break;
+            default:
+                throw new WaarpDatabaseSqlException("Type not supported: " +
+                                                    value.type + " for " + value.getColumn());
+            }
+        } catch (SQLException e) {
+            DbSession.error(e);
+            throw new WaarpDatabaseSqlException("Getting values in error: " +
+                                                value.type + " for " + value.getColumn(), e);
+        }
     }
 
     /**
@@ -164,8 +313,8 @@ public abstract class AbstractDbData {
                 dbSession);
         try {
             preparedStatement.createPrepareStatement("SELECT " +
-                    primaryKey[0].getColumn() + " FROM " + getTable() + " WHERE " +
-                    getWherePrimaryKey());
+                                                     primaryKey[0].getColumn() + " FROM " + getTable() + " WHERE " +
+                                                     getWherePrimaryKey());
             setPrimaryKey();
             setValues(preparedStatement, primaryKey);
             preparedStatement.executeQuery();
@@ -188,8 +337,8 @@ public abstract class AbstractDbData {
                 dbSession);
         try {
             preparedStatement.createPrepareStatement("SELECT " + getSelectAllFields() +
-                    " FROM " + getTable() + " WHERE " +
-                    getWherePrimaryKey());
+                                                     " FROM " + getTable() + " WHERE " +
+                                                     getWherePrimaryKey());
             setPrimaryKey();
             setValues(preparedStatement, primaryKey);
             preparedStatement.executeQuery();
@@ -223,7 +372,7 @@ public abstract class AbstractDbData {
                 dbSession);
         try {
             preparedStatement.createPrepareStatement("INSERT INTO " + getTable() +
-                    " (" + getSelectAllFields() + ") VALUES " + getInsertAllValues());
+                                                     " (" + getSelectAllFields() + ") VALUES " + getInsertAllValues());
             setValues(preparedStatement, allFields);
             int count = preparedStatement.executeUpdate();
             if (count <= 0) {
@@ -253,8 +402,8 @@ public abstract class AbstractDbData {
                 dbSession);
         try {
             preparedStatement.createPrepareStatement("UPDATE " + getTable() +
-                    " SET " + getUpdateAllFields() + " WHERE " +
-                    getWherePrimaryKey());
+                                                     " SET " + getUpdateAllFields() + " WHERE " +
+                                                     getWherePrimaryKey());
             setValues(preparedStatement, allFields);
             int count = preparedStatement.executeUpdate();
             if (count <= 0) {
@@ -283,7 +432,7 @@ public abstract class AbstractDbData {
                 dbSession);
         try {
             preparedStatement.createPrepareStatement("DELETE FROM " + getTable() +
-                    " WHERE " + getWherePrimaryKey());
+                                                     " WHERE " + getWherePrimaryKey());
             setPrimaryKey();
             setValues(preparedStatement, primaryKey);
             int count = preparedStatement.executeUpdate();
@@ -316,131 +465,6 @@ public abstract class AbstractDbData {
     protected abstract void setFromArray() throws WaarpDatabaseSqlException;
 
     /**
-     * Set Value into PreparedStatement
-     *
-     * @param ps
-     * @param value
-     * @param rank
-     *            >= 1
-     * @throws WaarpDatabaseSqlException
-     */
-    static public void setTrueValue(PreparedStatement ps, DbValue value, int rank)
-            throws WaarpDatabaseSqlException {
-        try {
-            switch (value.type) {
-                case Types.VARCHAR:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.VARCHAR);
-                        break;
-                    }
-                    ps.setString(rank, (String) value.getValue());
-                    break;
-                case Types.LONGVARCHAR:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.LONGVARCHAR);
-                        break;
-                    }
-                    ps.setString(rank, (String) value.getValue());
-                    break;
-                case Types.BIT:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.BIT);
-                        break;
-                    }
-                    ps.setBoolean(rank, (Boolean) value.getValue());
-                    break;
-                case Types.TINYINT:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.TINYINT);
-                        break;
-                    }
-                    ps.setByte(rank, (Byte) value.getValue());
-                    break;
-                case Types.SMALLINT:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.SMALLINT);
-                        break;
-                    }
-                    ps.setShort(rank, (Short) value.getValue());
-                    break;
-                case Types.INTEGER:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.INTEGER);
-                        break;
-                    }
-                    ps.setInt(rank, (Integer) value.getValue());
-                    break;
-                case Types.BIGINT:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.BIGINT);
-                        break;
-                    }
-                    ps.setLong(rank, (Long) value.getValue());
-                    break;
-                case Types.REAL:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.REAL);
-                        break;
-                    }
-                    ps.setFloat(rank, (Float) value.getValue());
-                    break;
-                case Types.DOUBLE:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.DOUBLE);
-                        break;
-                    }
-                    ps.setDouble(rank, (Double) value.getValue());
-                    break;
-                case Types.VARBINARY:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.VARBINARY);
-                        break;
-                    }
-                    ps.setBytes(rank, (byte[]) value.getValue());
-                    break;
-                case Types.DATE:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.DATE);
-                        break;
-                    }
-                    ps.setDate(rank, (Date) value.getValue());
-                    break;
-                case Types.TIMESTAMP:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.TIMESTAMP);
-                        break;
-                    }
-                    ps.setTimestamp(rank, (Timestamp) value.getValue());
-                    break;
-                case Types.CLOB:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.CLOB);
-                        break;
-                    }
-                    ps.setClob(rank, (Reader) value.getValue());
-                    break;
-                case Types.BLOB:
-                    if (value.getValue() == null) {
-                        ps.setNull(rank, Types.BLOB);
-                        break;
-                    }
-                    ps.setBlob(rank, (InputStream) value.getValue());
-                    break;
-                default:
-                    throw new WaarpDatabaseSqlException("Type not supported: " +
-                            value.type + " at " + rank);
-            }
-        } catch (ClassCastException e) {
-            throw new WaarpDatabaseSqlException("Setting values casting error: " +
-                    value.type + " at " + rank, e);
-        } catch (SQLException e) {
-            DbSession.error(e);
-            throw new WaarpDatabaseSqlException("Setting values in error: " +
-                    value.type + " at " + rank, e);
-        }
-    }
-
-    /**
      * Set one value to a DbPreparedStatement
      *
      * @param preparedStatement
@@ -463,76 +487,12 @@ public abstract class AbstractDbData {
      * @throws WaarpDatabaseSqlException
      */
     protected void setValues(DbPreparedStatement preparedStatement,
-            DbValue[] values) throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                             DbValue[] values) throws WaarpDatabaseNoConnectionException,
+                                                      WaarpDatabaseSqlException {
         PreparedStatement ps = preparedStatement.getPreparedStatement();
         for (int i = 0; i < values.length; i++) {
             DbValue value = values[i];
             setTrueValue(ps, value, i + 1);
-        }
-    }
-
-    /**
-     * Get one value into DbValue from ResultSet
-     *
-     * @param rs
-     * @param value
-     * @throws WaarpDatabaseSqlException
-     */
-    static public void getTrueValue(ResultSet rs, DbValue value)
-            throws WaarpDatabaseSqlException {
-        try {
-            switch (value.type) {
-                case Types.VARCHAR:
-                    value.setValue(rs.getString(value.getColumn()));
-                    break;
-                case Types.LONGVARCHAR:
-                    value.setValue(rs.getString(value.getColumn()));
-                    break;
-                case Types.BIT:
-                    value.setValue(rs.getBoolean(value.getColumn()));
-                    break;
-                case Types.TINYINT:
-                    value.setValue(rs.getByte(value.getColumn()));
-                    break;
-                case Types.SMALLINT:
-                    value.setValue(rs.getShort(value.getColumn()));
-                    break;
-                case Types.INTEGER:
-                    value.setValue(rs.getInt(value.getColumn()));
-                    break;
-                case Types.BIGINT:
-                    value.setValue(rs.getLong(value.getColumn()));
-                    break;
-                case Types.REAL:
-                    value.setValue(rs.getFloat(value.getColumn()));
-                    break;
-                case Types.DOUBLE:
-                    value.setValue(rs.getDouble(value.getColumn()));
-                    break;
-                case Types.VARBINARY:
-                    value.setValue(rs.getBytes(value.getColumn()));
-                    break;
-                case Types.DATE:
-                    value.setValue(rs.getDate(value.getColumn()));
-                    break;
-                case Types.TIMESTAMP:
-                    value.setValue(rs.getTimestamp(value.getColumn()));
-                    break;
-                case Types.CLOB:
-                    value.setValue(rs.getClob(value.getColumn()).getCharacterStream());
-                    break;
-                case Types.BLOB:
-                    value.setValue(rs.getBlob(value.getColumn()).getBinaryStream());
-                    break;
-                default:
-                    throw new WaarpDatabaseSqlException("Type not supported: " +
-                            value.type + " for " + value.getColumn());
-            }
-        } catch (SQLException e) {
-            DbSession.error(e);
-            throw new WaarpDatabaseSqlException("Getting values in error: " +
-                    value.type + " for " + value.getColumn(), e);
         }
     }
 
@@ -559,8 +519,8 @@ public abstract class AbstractDbData {
      * @throws WaarpDatabaseSqlException
      */
     protected void getValues(DbPreparedStatement preparedStatement,
-            DbValue[] values) throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException {
+                             DbValue[] values) throws WaarpDatabaseNoConnectionException,
+                                                      WaarpDatabaseSqlException {
         ResultSet rs = preparedStatement.getResultSet();
         for (DbValue value : values) {
             getTrueValue(rs, value);
@@ -605,44 +565,44 @@ public abstract class AbstractDbData {
         node.put(JSON_MODEL, this.getClass().getSimpleName());
         for (DbValue value : allFields) {
             switch (value.type) {
-                case Types.VARCHAR:
-                case Types.LONGVARCHAR:
-                    node.put(value.getColumn(), (String) value.getValue());
-                    break;
-                case Types.BIT:
-                    node.put(value.getColumn(), (Boolean) value.getValue());
-                    break;
-                case Types.TINYINT:
-                    node.put(value.getColumn(), (Byte) value.getValue());
-                    break;
-                case Types.SMALLINT:
-                    node.put(value.getColumn(), (Short) value.getValue());
-                    break;
-                case Types.INTEGER:
-                    node.put(value.getColumn(), (Integer) value.getValue());
-                    break;
-                case Types.BIGINT:
-                    node.put(value.getColumn(), (Long) value.getValue());
-                    break;
-                case Types.REAL:
-                    node.put(value.getColumn(), (Float) value.getValue());
-                    break;
-                case Types.DOUBLE:
-                    node.put(value.getColumn(), (Double) value.getValue());
-                    break;
-                case Types.VARBINARY:
-                    node.put(value.getColumn(), (byte[]) value.getValue());
-                    break;
-                case Types.DATE:
-                    node.put(value.getColumn(), ((Date) value.getValue()).getTime());
-                    break;
-                case Types.TIMESTAMP:
-                    node.put(value.getColumn(), ((Timestamp) value.getValue()).getTime());
-                    break;
-                case Types.CLOB:
-                case Types.BLOB:
-                default:
-                    node.put(value.getColumn(), "Unsupported type=" + value.type);
+            case Types.VARCHAR:
+            case Types.LONGVARCHAR:
+                node.put(value.getColumn(), (String) value.getValue());
+                break;
+            case Types.BIT:
+                node.put(value.getColumn(), (Boolean) value.getValue());
+                break;
+            case Types.TINYINT:
+                node.put(value.getColumn(), (Byte) value.getValue());
+                break;
+            case Types.SMALLINT:
+                node.put(value.getColumn(), (Short) value.getValue());
+                break;
+            case Types.INTEGER:
+                node.put(value.getColumn(), (Integer) value.getValue());
+                break;
+            case Types.BIGINT:
+                node.put(value.getColumn(), (Long) value.getValue());
+                break;
+            case Types.REAL:
+                node.put(value.getColumn(), (Float) value.getValue());
+                break;
+            case Types.DOUBLE:
+                node.put(value.getColumn(), (Double) value.getValue());
+                break;
+            case Types.VARBINARY:
+                node.put(value.getColumn(), (byte[]) value.getValue());
+                break;
+            case Types.DATE:
+                node.put(value.getColumn(), ((Date) value.getValue()).getTime());
+                break;
+            case Types.TIMESTAMP:
+                node.put(value.getColumn(), ((Timestamp) value.getValue()).getTime());
+                break;
+            case Types.CLOB:
+            case Types.BLOB:
+            default:
+                node.put(value.getColumn(), "Unsupported type=" + value.type);
             }
         }
         return node;
@@ -669,45 +629,82 @@ public abstract class AbstractDbData {
             if (item != null && !item.isMissingNode() && !item.isNull()) {
                 isSaved = false;
                 switch (value.type) {
-                    case Types.VARCHAR:
-                    case Types.LONGVARCHAR:
-                        value.setValue(item.asText());
-                        break;
-                    case Types.BIT:
-                        value.setValue(item.asBoolean());
-                        break;
-                    case Types.TINYINT:
-                    case Types.SMALLINT:
-                    case Types.INTEGER:
-                        value.setValue(item.asInt());
-                        break;
-                    case Types.BIGINT:
-                        value.setValue(item.asLong());
-                        break;
-                    case Types.REAL:
-                    case Types.DOUBLE:
-                        value.setValue(item.asDouble());
-                        break;
-                    case Types.VARBINARY:
-                        try {
-                            value.setValue(item.binaryValue());
-                        } catch (IOException e) {
-                            throw new WaarpDatabaseSqlException("Issue while assigning array of bytes", e);
-                        }
-                        break;
-                    case Types.DATE:
-                        value.setValue(new Date(item.asLong()));
-                        break;
-                    case Types.TIMESTAMP:
-                        value.setValue(new Timestamp(item.asLong()));
-                        break;
-                    case Types.CLOB:
-                    case Types.BLOB:
-                    default:
-                        throw new WaarpDatabaseSqlException("Unsupported type: " + value.type);
+                case Types.VARCHAR:
+                case Types.LONGVARCHAR:
+                    value.setValue(item.asText());
+                    break;
+                case Types.BIT:
+                    value.setValue(item.asBoolean());
+                    break;
+                case Types.TINYINT:
+                case Types.SMALLINT:
+                case Types.INTEGER:
+                    value.setValue(item.asInt());
+                    break;
+                case Types.BIGINT:
+                    value.setValue(item.asLong());
+                    break;
+                case Types.REAL:
+                case Types.DOUBLE:
+                    value.setValue(item.asDouble());
+                    break;
+                case Types.VARBINARY:
+                    try {
+                        value.setValue(item.binaryValue());
+                    } catch (IOException e) {
+                        throw new WaarpDatabaseSqlException("Issue while assigning array of bytes", e);
+                    }
+                    break;
+                case Types.DATE:
+                    value.setValue(new Date(item.asLong()));
+                    break;
+                case Types.TIMESTAMP:
+                    value.setValue(new Timestamp(item.asLong()));
+                    break;
+                case Types.CLOB:
+                case Types.BLOB:
+                default:
+                    throw new WaarpDatabaseSqlException("Unsupported type: " + value.type);
                 }
             }
         }
         setFromArray();
+    }
+
+    /**
+     * UpdatedInfo status
+     *
+     * @author Frederic Bregier
+     *
+     */
+    public enum UpdatedInfo {
+        /**
+         * Unknown run status
+         */
+        UNKNOWN,
+        /**
+         * Not updated run status
+         */
+        NOTUPDATED,
+        /**
+         * Interrupted status (stop or cancel)
+         */
+        INTERRUPTED,
+        /**
+         * Updated run status meaning ready to be submitted
+         */
+        TOSUBMIT,
+        /**
+         * In error run status
+         */
+        INERROR,
+        /**
+         * Running status
+         */
+        RUNNING,
+        /**
+         * All done run status
+         */
+        DONE
     }
 }

@@ -1,48 +1,26 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.filemonitor;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
 import io.netty.util.Timer;
@@ -57,51 +35,65 @@ import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.utility.WaarpThreadFactory;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * This package would like to propose a JSE 6 compatible way to scan a directory
  * for new, deleted and changed files, in order to allow some functions like
  * pooling a directory before actions.
- * 
+ *
  * @author "Frederic Bregier"
  *
  */
 public class FileMonitor {
+    protected static final DigestAlgo defaultDigestAlgo = DigestAlgo.MD5;
+    protected static final long minimalDelay = 100;
+    protected static final long defaultDelay = 1000;
     /**
      * Internal Logger
      */
     static protected volatile WaarpLogger logger;
-    protected static final DigestAlgo defaultDigestAlgo = DigestAlgo.MD5;
-    protected static final long minimalDelay = 100;
-    protected static final long defaultDelay = 1000;
-
-    protected WaarpFuture future = null;
-    protected WaarpFuture internalfuture = null;
-    protected boolean stopped = false;
     protected final String name;
     protected final File statusFile;
     protected final File stopFile;
     protected final List<File> directories = new ArrayList<File>();
     protected final DigestAlgo digest;
+    protected final ConcurrentHashMap<String, FileItem> fileItems =
+            new ConcurrentHashMap<String, FileMonitor.FileItem>();
+    protected final ConcurrentLinkedQueue<Future<?>> results = new ConcurrentLinkedQueue<Future<?>>();
+    protected WaarpFuture future = null;
+    protected WaarpFuture internalfuture = null;
+    protected boolean stopped = false;
     protected long elapseTime = defaultDelay; // default to 1s
     protected long elapseWaarpTime = -1; // default set to run after each run
     protected Timer timer = null;
     protected Timer timerWaarp = null; // used only if elapseWaarpTime > defaultDelay (1s)
     protected boolean scanSubDir = false;
-
     protected boolean initialized = false;
     protected File checkFile = null;
-
-    protected final ConcurrentHashMap<String, FileItem> fileItems =
-            new ConcurrentHashMap<String, FileMonitor.FileItem>();
     protected ConcurrentHashMap<String, FileItem> lastFileItems =
             new ConcurrentHashMap<String, FileMonitor.FileItem>();
-
     protected FileFilter filter =
             new FileFilter() {
                 public boolean accept(File pathname) {
@@ -114,11 +106,8 @@ public class FileMonitor {
     protected int fixedThreadPool = 0;
     protected FileMonitorCommandRunnableFuture commandRemovedFile = null;
     protected FileMonitorCommandRunnableFuture commandCheckIteration = null;
-
     protected ConcurrentLinkedQueue<FileItem> toUse =
             new ConcurrentLinkedQueue<FileMonitor.FileItem>();
-    protected final ConcurrentLinkedQueue<Future<?>> results = new ConcurrentLinkedQueue<Future<?>>();
-
     protected AtomicLong globalok = new AtomicLong(0);
     protected AtomicLong globalerror = new AtomicLong(0);
     protected AtomicLong todayok = new AtomicLong(0);
@@ -148,11 +137,11 @@ public class FileMonitor {
      *            the commandCheckIteration to run (may be null), runs after each check (elapseTime)
      */
     public FileMonitor(String name, File statusFile, File stopFile,
-            File directory, DigestAlgo digest, long elapseTime,
-            FileFilter filter, boolean scanSubdir,
-            FileMonitorCommandRunnableFuture commandValidFile,
-            FileMonitorCommandRunnableFuture commandRemovedFile,
-            FileMonitorCommandRunnableFuture commandCheckIteration) {
+                       File directory, DigestAlgo digest, long elapseTime,
+                       FileFilter filter, boolean scanSubdir,
+                       FileMonitorCommandRunnableFuture commandValidFile,
+                       FileMonitorCommandRunnableFuture commandRemovedFile,
+                       FileMonitorCommandRunnableFuture commandCheckIteration) {
         if (logger == null) {
             logger = WaarpLoggerFactory.getLogger(FileMonitor.class);
         }
@@ -182,6 +171,49 @@ public class FileMonitor {
         this.setNextDay();
     }
 
+    public static void main(String[] args) {
+        if (args.length < 3) {
+            System.err.println("Need a statusfile, a stopfile and a directory to test");
+            return;
+        }
+        File file = new File(args[0]);
+        if (file.exists() && !file.isFile()) {
+            System.err.println("Not a correct status file");
+            return;
+        }
+        File stopfile = new File(args[1]);
+        if (file.exists() && !file.isFile()) {
+            System.err.println("Not a correct stop file");
+            return;
+        }
+        File dir = new File(args[2]);
+        if (!dir.isDirectory()) {
+            System.err.println("Not a directory");
+            return;
+        }
+        FileMonitorCommandRunnableFuture filemonitor =
+                new FileMonitorCommandRunnableFuture() {
+                    public void run(FileItem file) {
+                        System.out.println("File New: " + file.file.getAbsolutePath());
+                        finalize(true, 0);
+                    }
+                };
+        FileMonitor monitor = new FileMonitor("test", file, stopfile, dir, null, 0,
+                                              new RegexFileFilter(RegexFileFilter.REGEX_XML_EXTENSION),
+                                              false, filemonitor, new FileMonitorCommandRunnableFuture() {
+            public void run(FileItem file) {
+                System.err.println("File Del: " + file.file.getAbsolutePath());
+            }
+        }, new FileMonitorCommandRunnableFuture() {
+            public void run(FileItem unused) {
+                System.err.println("Check done");
+            }
+        });
+        filemonitor.setMonitor(monitor);
+        monitor.start();
+        monitor.waitForStopFile();
+    }
+
     protected void setNextDay() {
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -201,7 +233,7 @@ public class FileMonitor {
     }
 
     /**
-     * 
+     *
      * @param factory
      *            the factory to used instead of simple instance (enables parallelism)
      * @param fixedPool
@@ -222,7 +254,7 @@ public class FileMonitor {
     /**
      * if set greater than 1000 ms, will be parallel,
      * else will be sequential after each check and ignoring this timer
-     * 
+     *
      * @param elapseWaarpTime
      *            the elapseWaarpTime to set
      */
@@ -234,7 +266,7 @@ public class FileMonitor {
 
     /**
      * Add a directory to scan
-     * 
+     *
      * @param directory
      */
     public void addDirectory(File directory) {
@@ -245,7 +277,7 @@ public class FileMonitor {
 
     /**
      * Add a directory to scan
-     * 
+     *
      * @param directory
      */
     public void removeDirectory(File directory) {
@@ -261,7 +293,7 @@ public class FileMonitor {
             deleteChkFile();
             long time = (elapseTime) * 10;
             logger.warn("Waiting to check if another Monitor is running with the same configuration: " + (time / 1000)
-                    + "s");
+                        + "s");
             try {
                 Thread.sleep(time);
             } catch (InterruptedException e) {
@@ -283,8 +315,9 @@ public class FileMonitor {
     }
 
     protected void reloadStatus() {
-        if (statusFile == null)
+        if (statusFile == null) {
             return;
+        }
         if (!statusFile.exists()) {
             initialized = true;
             return;
@@ -297,7 +330,8 @@ public class FileMonitor {
         try {
             HashMap<String, FileItem> newHashMap =
                     JsonHandler.mapper.readValue(statusFile,
-                            new TypeReference<HashMap<String, FileItem>>() {});
+                                                 new TypeReference<HashMap<String, FileItem>>() {
+                                                 });
             fileItems.putAll(newHashMap);
             initialized = true;
         } catch (JsonParseException e) {
@@ -307,7 +341,7 @@ public class FileMonitor {
     }
 
     /**
-     * 
+     *
      * @return True if the FileMonitor is correctly initialized
      */
     public boolean initialized() {
@@ -315,8 +349,9 @@ public class FileMonitor {
     }
 
     protected void saveStatus() {
-        if (statusFile == null)
+        if (statusFile == null) {
             return;
+        }
         try {
             JsonHandler.mapper.writeValue(statusFile, fileItems);
             createChkFile();
@@ -327,7 +362,7 @@ public class FileMonitor {
     }
 
     /**
-     * 
+     *
      * @return the number of fileItems in the current history (active, in error or past)
      */
     public long getCurrentHistoryNb() {
@@ -338,7 +373,7 @@ public class FileMonitor {
     }
 
     /**
-     * 
+     *
      * Reset such that next status will be full (not partial)
      */
     public void setNextAsFullStatus() {
@@ -346,7 +381,7 @@ public class FileMonitor {
     }
 
     /**
-     * 
+     *
      * @return the status (updated only) in JSON format
      */
     public String getStatus() {
@@ -367,9 +402,11 @@ public class FileMonitor {
             }
         }
         FileMonitorInformation fileMonitorInformation = new FileMonitorInformation(name, newFileItems,
-                removedFileItems,
-                directories, stopFile, statusFile, elapseTime, scanSubDir,
-                globalok, globalerror, todayok, todayerror);
+                                                                                   removedFileItems,
+                                                                                   directories, stopFile, statusFile,
+                                                                                   elapseTime, scanSubDir,
+                                                                                   globalok, globalerror, todayok,
+                                                                                   todayerror);
         for (Entry<String, FileItem> key : fileItems.entrySet()) {
             FileItem clone = key.getValue().clone();
             lastFileItems.put(key.getKey(), clone);
@@ -428,7 +465,7 @@ public class FileMonitor {
                     new WaarpThreadFactory("TimerFileMonitorWaarp_" + name),
                     100, TimeUnit.MILLISECONDS, 8);
             timerWaarp.newTimeout(new FileMonitorTimerInformationTask(commandCheckIteration), elapseWaarpTime,
-                    TimeUnit.MILLISECONDS);
+                                  TimeUnit.MILLISECONDS);
         }
     }
 
@@ -458,24 +495,26 @@ public class FileMonitor {
     }
 
     /**
-     * 
+     *
      * @return the head of the File queue but does not remove it
      */
     public File peek() {
         FileItem item = toUse.peek();
-        if (item == null)
+        if (item == null) {
             return null;
+        }
         return item.file;
     }
 
     /**
-     * 
+     *
      * @return the head of the File queue and removes it
      */
     public File poll() {
         FileItem item = toUse.poll();
-        if (item == null)
+        if (item == null) {
             return null;
+        }
         return item.file;
     }
 
@@ -491,7 +530,7 @@ public class FileMonitor {
         if (stopped || stopFile.exists()) {
             logger.warn(
                     "STOPPING the FileMonitor {} since condition is fullfilled: stop file found ({}): "
-                            + stopFile.exists(), name, stopFile);
+                    + stopFile.exists(), name, stopFile);
             internalfuture.setSuccess();
             return true;
         }
@@ -500,7 +539,7 @@ public class FileMonitor {
 
     /**
      * Check Files
-     * 
+     *
      * @return False to stop
      */
     protected boolean checkFiles() {
@@ -669,7 +708,7 @@ public class FileMonitor {
 
     /**
      * Timer task
-     * 
+     *
      * @author "Frederic Bregier"
      *
      */
@@ -715,8 +754,115 @@ public class FileMonitor {
     }
 
     /**
+     * Used by Waarp Business information
+     *
+     * @author "Frederic Bregier"
+     *
+     */
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+    public static class FileMonitorInformation {
+        public String name;
+        public ConcurrentHashMap<String, FileItem> fileItems;
+        public Set<String> removedFileItems;
+        public List<File> directories;
+        public File stopFile;
+        public File statusFile;
+        public long elapseTime;
+        public boolean scanSubDir;
+        public AtomicLong globalok;
+        public AtomicLong globalerror;
+        public AtomicLong todayok;
+        public AtomicLong todayerror;
+
+        public FileMonitorInformation() {
+            // empty constructor for JSON
+        }
+
+        protected FileMonitorInformation(String name, ConcurrentHashMap<String, FileItem> fileItems,
+                                         Set<String> removedFileItems,
+                                         List<File> directories, File stopFile, File statusFile,
+                                         long elapseTime, boolean scanSubDir,
+                                         AtomicLong globalok, AtomicLong globalerror, AtomicLong todayok,
+                                         AtomicLong todayerror) {
+            this.name = name;
+            this.fileItems = fileItems;
+            this.removedFileItems = removedFileItems;
+            this.directories = directories;
+            this.stopFile = stopFile;
+            this.statusFile = statusFile;
+            this.elapseTime = elapseTime;
+            this.scanSubDir = scanSubDir;
+            this.globalok = globalok;
+            this.globalerror = globalerror;
+            this.todayok = todayok;
+            this.todayerror = todayerror;
+        }
+
+    }
+
+    /**
+     * One element in the directory
+     *
+     * @author "Frederic Bregier"
+     *
+     */
+    public static class FileItem implements Cloneable {
+        public File file;
+        public byte[] hash = null;
+        public long lastTime = Long.MIN_VALUE;
+        public long timeUsed = Long.MIN_VALUE;
+        public boolean used = false;
+        public long specialId = DbConstant.ILLEGALVALUE;
+
+        public FileItem() {
+            // empty constructor for JSON
+        }
+
+        /**
+         * @param file
+         */
+        protected FileItem(File file) {
+            this.file = file;
+        }
+
+        @Override
+        public int hashCode() {
+            return file.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            // equality is based on file itself
+            return (obj != null && obj instanceof FileItem && file.equals(((FileItem) obj).file));
+        }
+
+        /**
+         *
+         * @param item
+         * @return True if the fileItem is strictly the same (and not only the file as in equals)
+         */
+        public boolean isStrictlySame(FileItem item) {
+            return (item != null) &&
+                   file.equals(item.file) && (lastTime == item.lastTime) &&
+                   (timeUsed == item.timeUsed) && (used == item.used) &&
+                   (hash != null? Arrays.equals(hash, item.hash) : item.hash == null);
+        }
+
+        @Override
+        public FileItem clone() {
+            FileItem clone = new FileItem(file);
+            clone.hash = hash;
+            clone.lastTime = lastTime;
+            clone.timeUsed = timeUsed;
+            clone.used = used;
+            clone.specialId = specialId;
+            return clone;
+        }
+    }
+
+    /**
      * Class to run Waarp Business information in fixed delay rather than after each check
-     * 
+     *
      * @author "Frederic Bregier"
      *
      */
@@ -762,154 +908,5 @@ public class FileMonitor {
                 internalfuture.setSuccess();
             }
         }
-    }
-
-    /**
-     * Used by Waarp Business information
-     * 
-     * @author "Frederic Bregier"
-     *
-     */
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-    public static class FileMonitorInformation {
-        public String name;
-        public ConcurrentHashMap<String, FileItem> fileItems;
-        public Set<String> removedFileItems;
-        public List<File> directories;
-        public File stopFile;
-        public File statusFile;
-        public long elapseTime;
-        public boolean scanSubDir;
-        public AtomicLong globalok;
-        public AtomicLong globalerror;
-        public AtomicLong todayok;
-        public AtomicLong todayerror;
-
-        public FileMonitorInformation() {
-            // empty constructor for JSON
-        }
-
-        protected FileMonitorInformation(String name, ConcurrentHashMap<String, FileItem> fileItems,
-                Set<String> removedFileItems,
-                List<File> directories, File stopFile, File statusFile,
-                long elapseTime, boolean scanSubDir,
-                AtomicLong globalok, AtomicLong globalerror, AtomicLong todayok, AtomicLong todayerror) {
-            this.name = name;
-            this.fileItems = fileItems;
-            this.removedFileItems = removedFileItems;
-            this.directories = directories;
-            this.stopFile = stopFile;
-            this.statusFile = statusFile;
-            this.elapseTime = elapseTime;
-            this.scanSubDir = scanSubDir;
-            this.globalok = globalok;
-            this.globalerror = globalerror;
-            this.todayok = todayok;
-            this.todayerror = todayerror;
-        }
-
-    }
-
-    /**
-     * One element in the directory
-     * 
-     * @author "Frederic Bregier"
-     *
-     */
-    public static class FileItem implements Cloneable {
-        public File file;
-        public byte[] hash = null;
-        public long lastTime = Long.MIN_VALUE;
-        public long timeUsed = Long.MIN_VALUE;
-        public boolean used = false;
-        public long specialId = DbConstant.ILLEGALVALUE;
-
-        public FileItem() {
-            // empty constructor for JSON
-        }
-
-        /**
-         * @param file
-         */
-        protected FileItem(File file) {
-            this.file = file;
-        }
-
-        @Override
-        public int hashCode() {
-            return file.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            // equality is based on file itself
-            return (obj != null && obj instanceof FileItem && file.equals(((FileItem) obj).file));
-        }
-
-        /**
-         * 
-         * @param item
-         * @return True if the fileItem is strictly the same (and not only the file as in equals)
-         */
-        public boolean isStrictlySame(FileItem item) {
-            return (item != null) &&
-                    file.equals(item.file) && (lastTime == item.lastTime) &&
-                    (timeUsed == item.timeUsed) && (used == item.used) &&
-                    (hash != null ? Arrays.equals(hash, item.hash) : item.hash == null);
-        }
-
-        @Override
-        public FileItem clone() {
-            FileItem clone = new FileItem(file);
-            clone.hash = hash;
-            clone.lastTime = lastTime;
-            clone.timeUsed = timeUsed;
-            clone.used = used;
-            clone.specialId = specialId;
-            return clone;
-        }
-    }
-
-    public static void main(String[] args) {
-        if (args.length < 3) {
-            System.err.println("Need a statusfile, a stopfile and a directory to test");
-            return;
-        }
-        File file = new File(args[0]);
-        if (file.exists() && !file.isFile()) {
-            System.err.println("Not a correct status file");
-            return;
-        }
-        File stopfile = new File(args[1]);
-        if (file.exists() && !file.isFile()) {
-            System.err.println("Not a correct stop file");
-            return;
-        }
-        File dir = new File(args[2]);
-        if (!dir.isDirectory()) {
-            System.err.println("Not a directory");
-            return;
-        }
-        FileMonitorCommandRunnableFuture filemonitor =
-                new FileMonitorCommandRunnableFuture() {
-                    public void run(FileItem file) {
-                        System.out.println("File New: " + file.file.getAbsolutePath());
-                        finalize(true, 0);
-                    }
-                };
-        FileMonitor monitor = new FileMonitor("test", file, stopfile, dir, null, 0,
-                new RegexFileFilter(RegexFileFilter.REGEX_XML_EXTENSION),
-                false, filemonitor, new FileMonitorCommandRunnableFuture() {
-                    public void run(FileItem file) {
-                        System.err.println("File Del: " + file.file.getAbsolutePath());
-                    }
-                }, new FileMonitorCommandRunnableFuture() {
-                    public void run(FileItem unused) {
-                        System.err.println("Check done");
-                    }
-                });
-        filemonitor.setMonitor(monitor);
-        monitor.start();
-        monitor.waitForStopFile();
     }
 }

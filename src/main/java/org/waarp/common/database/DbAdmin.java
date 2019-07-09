@@ -1,26 +1,20 @@
 /**
  * This file is part of Waarp Project.
- *
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- *
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- *
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- *
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp. If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.database;
-
-import java.sql.SQLException;
-import java.util.ConcurrentModificationException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timer;
@@ -35,6 +29,11 @@ import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.utility.UUID;
 import org.waarp.common.utility.WaarpThreadFactory;
 
+import java.sql.SQLException;
+import java.util.ConcurrentModificationException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Class for access to Database
  *
@@ -43,112 +42,55 @@ import org.waarp.common.utility.WaarpThreadFactory;
  */
 @Deprecated
 public class DbAdmin {
+    protected static final Timer dbSessionTimer = new HashedWheelTimer(new WaarpThreadFactory("TimerClose"),
+                                                                       50, TimeUnit.MILLISECONDS, 1024);
     /**
      * Internal Logger
      */
     private static final WaarpLogger logger = WaarpLoggerFactory
             .getLogger(DbAdmin.class);
-
     public static int RETRYNB = 3;
-
     public static long WAITFORNETOP = 100;
-
-    /**
-     * Database type
-     */
-    protected final DbType typeDriver;
-
-    /**
-     * DbModel
-     */
-    private final DbModel dbModel;
-
-    /**
-     * DB Server
-     */
-    private final String server;
-
-    /**
-     * DB User
-     */
-    private final String user;
-
-    /**
-     * DB Password
-     */
-    private final String passwd;
-
-    /**
-     * Is this DB Admin connected
-     */
-    private boolean isActive = false;
-
-    /**
-     * Is this DB Admin Read Only
-     */
-    private boolean isReadOnly = false;
-
-    /**
-     * session is the Session object for all type of requests
-     */
-    private DbSession session = null;
     /**
      * Number of HttpSession
      */
     private static int nbHttpSession = 0;
-
-    protected static final Timer dbSessionTimer = new HashedWheelTimer(new WaarpThreadFactory("TimerClose"),
-            50, TimeUnit.MILLISECONDS, 1024);
-
     /**
-     * @return the session
+     * List all Connection to enable the close call on them
      */
-    public DbSession getSession() {
-        return session;
-    }
-
+    private static ConcurrentHashMap<UUID, DbSession> listConnection = new ConcurrentHashMap<UUID, DbSession>();
     /**
-     * @param session the session to set
+     * Database type
      */
-    public void setSession(DbSession session) {
-        this.session = session;
-    }
-
+    protected final DbType typeDriver;
     /**
-     * @return True if the connection is ReadOnly
+     * DbModel
      */
-    public boolean isReadOnly() {
-        return isReadOnly;
-    }
-
+    private final DbModel dbModel;
     /**
-     * @return the isActive
+     * DB Server
      */
-    @Deprecated
-    public boolean isActive() {
-        return true;
-    }
-
+    private final String server;
     /**
-     * @param isActive the isActive to set
+     * DB User
      */
-    @Deprecated
-    public void setActive(boolean isActive) {}
-
+    private final String user;
     /**
-     * Validate connection
-     *
-     * @throws WaarpDatabaseNoConnectionException
+     * DB Password
      */
-    public void validConnection() throws WaarpDatabaseNoConnectionException {
-        try {
-            dbModel.validConnection(getSession());
-        } catch (WaarpDatabaseNoConnectionException e) {
-            getSession().setDisActive(true);
-            throw e;
-        }
-        getSession().setDisActive(false);
-    }
+    private final String passwd;
+    /**
+     * Is this DB Admin connected
+     */
+    private boolean isActive = false;
+    /**
+     * Is this DB Admin Read Only
+     */
+    private boolean isReadOnly = false;
+    /**
+     * session is the Session object for all type of requests
+     */
+    private DbSession session = null;
 
     /**
      * Use a default server for basic connection. Later on, specific connection to database for the
@@ -266,96 +208,26 @@ public class DbAdmin {
     }
 
     /**
-     * Close the underlying session. Can be call even for connection given from the constructor
-     * DbAdmin(Connection, boolean).
-     *
-     */
-    public void close() {
-        if (getSession() != null) {
-            getSession().endUseConnection(); // default since this is the top
-            // connection
-            getSession().forceDisconnect();
-            setSession(null);
-        }
-    }
-
-    /**
-     * Commit on connection (since in autocommit, should not be used)
-     *
-     * @throws WaarpDatabaseNoConnectionException
-     * @throws WaarpDatabaseSqlException
-     *
-     */
-    public void commit() throws WaarpDatabaseSqlException,
-            WaarpDatabaseNoConnectionException {
-        if (getSession() != null) {
-            getSession().commit();
-        }
-    }
-
-    /**
-     * @return the server
-     */
-    public String getServer() {
-        return server;
-    }
-
-    /**
-     * @return the user
-     */
-    public String getUser() {
-        return user;
-    }
-
-    /**
-     * @return the passwd
-     */
-    public String getPasswd() {
-        return passwd;
-    }
-
-    /**
-     * @return the associated dbModel
-     */
-    public DbModel getDbModel() {
-        return dbModel;
-    }
-
-    /**
-     * @return the typeDriver
-     */
-    public DbType getTypeDriver() {
-        return typeDriver;
-    }
-
-    @Override
-    public String toString() {
-        return "Admin: " + typeDriver.name() + ":" + server + ":" + user + ":" + (passwd.length());
-    }
-
-    /**
-     * List all Connection to enable the close call on them
-     */
-    private static ConcurrentHashMap<UUID, DbSession> listConnection = new ConcurrentHashMap<UUID, DbSession>();
-
-    /**
      * Increment nb of Http Connection
      */
     public static void incHttpSession() {
         nbHttpSession++;
     }
+
     /**
      * Decrement nb of Http Connection
      */
     public static void decHttpSession() {
         nbHttpSession--;
     }
+
     /**
      * @return the nb of Http Connection
      */
     public static int getHttpSession() {
         return nbHttpSession;
     }
+
     /**
      * Add a Connection into the list
      *
@@ -419,10 +291,130 @@ public class DbAdmin {
     }
 
     /**
+     * @return the session
+     */
+    public DbSession getSession() {
+        return session;
+    }
+
+    /**
+     * @param session the session to set
+     */
+    public void setSession(DbSession session) {
+        this.session = session;
+    }
+
+    /**
+     * @return True if the connection is ReadOnly
+     */
+    public boolean isReadOnly() {
+        return isReadOnly;
+    }
+
+    /**
+     * @return the isActive
+     */
+    @Deprecated
+    public boolean isActive() {
+        return true;
+    }
+
+    /**
+     * @param isActive the isActive to set
+     */
+    @Deprecated
+    public void setActive(boolean isActive) {
+    }
+
+    /**
+     * Validate connection
+     *
+     * @throws WaarpDatabaseNoConnectionException
+     */
+    public void validConnection() throws WaarpDatabaseNoConnectionException {
+        try {
+            dbModel.validConnection(getSession());
+        } catch (WaarpDatabaseNoConnectionException e) {
+            getSession().setDisActive(true);
+            throw e;
+        }
+        getSession().setDisActive(false);
+    }
+
+    /**
+     * Close the underlying session. Can be call even for connection given from the constructor
+     * DbAdmin(Connection, boolean).
+     *
+     */
+    public void close() {
+        if (getSession() != null) {
+            getSession().endUseConnection(); // default since this is the top
+            // connection
+            getSession().forceDisconnect();
+            setSession(null);
+        }
+    }
+
+    /**
+     * Commit on connection (since in autocommit, should not be used)
+     *
+     * @throws WaarpDatabaseNoConnectionException
+     * @throws WaarpDatabaseSqlException
+     *
+     */
+    public void commit() throws WaarpDatabaseSqlException,
+                                WaarpDatabaseNoConnectionException {
+        if (getSession() != null) {
+            getSession().commit();
+        }
+    }
+
+    /**
+     * @return the server
+     */
+    public String getServer() {
+        return server;
+    }
+
+    /**
+     * @return the user
+     */
+    public String getUser() {
+        return user;
+    }
+
+    /**
+     * @return the passwd
+     */
+    public String getPasswd() {
+        return passwd;
+    }
+
+    /**
+     * @return the associated dbModel
+     */
+    public DbModel getDbModel() {
+        return dbModel;
+    }
+
+    /**
+     * @return the typeDriver
+     */
+    public DbType getTypeDriver() {
+        return typeDriver;
+    }
+
+    @Override
+    public String toString() {
+        return "Admin: " + typeDriver.name() + ":" + server + ":" + user + ":" + (passwd.length());
+    }
+
+    /**
      *
      * @return True if this driver allows Thread Shared Connexion (concurrency usage)
      */
     public boolean isCompatibleWithThreadSharedConnexion() {
-        return (typeDriver != DbType.MariaDB && typeDriver != DbType.MySQL && typeDriver != DbType.Oracle && typeDriver != DbType.none);
+        return (typeDriver != DbType.MariaDB && typeDriver != DbType.MySQL && typeDriver != DbType.Oracle &&
+                typeDriver != DbType.none);
     }
 }

@@ -19,11 +19,11 @@ package io.cdap.http.internal;
 import java.util.Arrays;
 
 /**
- * An {@link ImmutablePair} consists of two elements within. The elements once set in the ImmutablePair cannot
- * be modified. The class itself is final, so that it cannot be subclassed. This is general norm for creating
- * Immutable classes. Please note that the {@link ImmutablePair} cannot be modified once set, but the objects
- * within them can be, so in general it means that if there are mutable objects within the pair then the pair
- * itself is effectively mutable.
+ * An {@link ImmutablePair} consists of two elements within. The elements once set in the ImmutablePair cannot be
+ * modified. The class itself is final, so that it cannot be subclassed. This is general norm for creating Immutable
+ * classes. Please note that the {@link ImmutablePair} cannot be modified once set, but the objects within them can be,
+ * so in general it means that if there are mutable objects within the pair then the pair itself is effectively
+ * mutable.
  *
  * <pre>
  *   ImmutablePair<Tuple, TupleInputStreamIdentifier> tupleStreamPair= new
@@ -42,14 +42,10 @@ final class ImmutablePair<A, B> {
     private final A first;
     private final B second;
 
-    public static <A, B> ImmutablePair<A, B> of(A first, B second) {
-        return new ImmutablePair<A, B>(first, second);
-    }
-
     /**
      * Constructs a Immutable Pair.
-     * 
-     * @param first  object in pair
+     *
+     * @param first object in pair
      * @param second object in pair
      */
     private ImmutablePair(A first, B second) {
@@ -57,9 +53,13 @@ final class ImmutablePair<A, B> {
         this.second = second;
     }
 
+    public static <A, B> ImmutablePair<A, B> of(A first, B second) {
+        return new ImmutablePair<A, B>(first, second);
+    }
+
     /**
      * Returns first object from pair.
-     * 
+     *
      * @return first object from pair.
      */
     public A getFirst() {
@@ -68,7 +68,7 @@ final class ImmutablePair<A, B> {
 
     /**
      * Return second object from pair.
-     * 
+     *
      * @return second object from pair.
      */
     public B getSecond() {
@@ -77,7 +77,7 @@ final class ImmutablePair<A, B> {
 
     /**
      * Returns a string representation of {@link ImmutablePair} object.
-     * 
+     *
      * @return string representation of this object.
      */
     @Override
@@ -87,7 +87,7 @@ final class ImmutablePair<A, B> {
 
     /**
      * Returns a hash code value for this object.
-     * 
+     *
      * @return hash code value of this object.
      */
     @Override
@@ -97,9 +97,10 @@ final class ImmutablePair<A, B> {
 
     /**
      * Helper method that replaces Objects.equals(first, second)
-     * 
+     *
      * @param first
      * @param otherFirst
+     *
      * @return True if equals
      */
     private boolean equals(Object first, Object otherFirst) {
@@ -120,8 +121,9 @@ final class ImmutablePair<A, B> {
 
     /**
      * Returns whether some other object "is equal" to this object.
-     * 
+     *
      * @param o reference object with which to compare
+     *
      * @return true if object is the same as the obj argument; false otherwise.
      */
     @Override

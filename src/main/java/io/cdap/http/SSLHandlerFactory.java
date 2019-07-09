@@ -21,78 +21,79 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Security;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.TrustManagerFactory;
 
 /**
  * A class that encapsulates SSL Certificate Information.
  */
 public class SSLHandlerFactory {
 
-  private final SslContext sslContext;
-  private boolean needClientAuth;
+    private final SslContext sslContext;
+    private boolean needClientAuth;
 
-  public SSLHandlerFactory(SSLConfig sslConfig) {
-    String algorithm = Security.getProperty("ssl.KeyManagerFactory.algorithm");
-    if (algorithm == null) {
-      algorithm = "SunX509";
+    public SSLHandlerFactory(SSLConfig sslConfig) {
+        String algorithm = Security.getProperty("ssl.KeyManagerFactory.algorithm");
+        if (algorithm == null) {
+            algorithm = "SunX509";
+        }
+        try {
+            KeyStore ks = getKeyStore(sslConfig.getKeyStore(), sslConfig.getKeyStorePassword());
+            // Set up key manager factory to use our key store
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance(algorithm);
+            kmf.init(ks, sslConfig.getCertificatePassword() != null? sslConfig.getCertificatePassword().toCharArray()
+                    : sslConfig.getKeyStorePassword().toCharArray());
+
+            SslContextBuilder builder = SslContextBuilder.forServer(kmf);
+            if (sslConfig.getTrustKeyStore() != null) {
+                this.needClientAuth = true;
+                KeyStore tks = getKeyStore(sslConfig.getTrustKeyStore(), sslConfig.getTrustKeyStorePassword());
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
+                tmf.init(tks);
+                builder.trustManager(tmf);
+            }
+
+            this.sslContext = builder.build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Failed to initialize the server-side SSLContext", e);
+        }
     }
-    try {
-      KeyStore ks = getKeyStore(sslConfig.getKeyStore(), sslConfig.getKeyStorePassword());
-      // Set up key manager factory to use our key store
-      KeyManagerFactory kmf = KeyManagerFactory.getInstance(algorithm);
-      kmf.init(ks, sslConfig.getCertificatePassword() != null ? sslConfig.getCertificatePassword().toCharArray()
-        : sslConfig.getKeyStorePassword().toCharArray());
 
-      SslContextBuilder builder = SslContextBuilder.forServer(kmf);
-      if (sslConfig.getTrustKeyStore() != null) {
-        this.needClientAuth = true;
-        KeyStore tks = getKeyStore(sslConfig.getTrustKeyStore(), sslConfig.getTrustKeyStorePassword());
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
-        tmf.init(tks);
-        builder.trustManager(tmf);
-      }
-
-      this.sslContext = builder.build();
-    } catch (Exception e) {
-      throw new IllegalArgumentException("Failed to initialize the server-side SSLContext", e);
+    public SSLHandlerFactory(SslContext sslContext) {
+        this.sslContext = sslContext;
     }
-  }
 
-  public SSLHandlerFactory(SslContext sslContext) {
-    this.sslContext = sslContext;
-  }
-
-  private static KeyStore getKeyStore(File keyStore, String keyStorePassword) throws Exception {
-    InputStream is = null;
-    try {
-      is = new FileInputStream(keyStore);
-      KeyStore ks = KeyStore.getInstance("JKS");
-      ks.load(is, keyStorePassword.toCharArray());
-      return ks;
-    } finally {
-      if (is != null) {
-        is.close();
-      }
+    private static KeyStore getKeyStore(File keyStore, String keyStorePassword) throws Exception {
+        InputStream is = null;
+        try {
+            is = new FileInputStream(keyStore);
+            KeyStore ks = KeyStore.getInstance("JKS");
+            ks.load(is, keyStorePassword.toCharArray());
+            return ks;
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
     }
-  }
 
-  /**
-   * Creates an SslHandler
-   *
-   * @param bufferAllocator the buffer allocator
-   * @return instance of {@code SslHandler}
-   */
-  public SslHandler create(ByteBufAllocator bufferAllocator) {
-    SSLEngine engine = sslContext.newEngine(bufferAllocator);
-    engine.setNeedClientAuth(needClientAuth);
-    engine.setUseClientMode(false);
-    return new SslHandler(engine);
-  }
+    /**
+     * Creates an SslHandler
+     *
+     * @param bufferAllocator the buffer allocator
+     *
+     * @return instance of {@code SslHandler}
+     */
+    public SslHandler create(ByteBufAllocator bufferAllocator) {
+        SSLEngine engine = sslContext.newEngine(bufferAllocator);
+        engine.setNeedClientAuth(needClientAuth);
+        engine.setUseClientMode(false);
+        return new SslHandler(engine);
+    }
 }

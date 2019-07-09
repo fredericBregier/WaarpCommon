@@ -1,32 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.crypto;
-
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.Key;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.waarp.common.digest.FilesystemBasedDigest;
 import org.waarp.common.exception.CryptoException;
@@ -34,9 +22,19 @@ import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.utility.WaarpStringUtils;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.Key;
+
 /**
  * This class handles method to crypt and decrypt using the chosen algorithm.<br>
- * 
+ *
  * <br>
  * Usage:<br>
  * <ul>
@@ -52,9 +50,9 @@ import org.waarp.common.utility.WaarpStringUtils;
  * <li>To decrypt one string from Hex format to the original String: String myStringDecrypt =
  * key.decryptHexInString(myStringCrypte);</li>
  * </ul>
- * 
+ *
  * @author frederic bregier
- * 
+ *
  */
 public abstract class KeyObject {
     /**
@@ -75,28 +73,29 @@ public abstract class KeyObject {
     }
 
     /**
-     * 
+     *
      * @return the algorithm used (Java name)
      */
     public abstract String getAlgorithm();
 
     /**
-     * 
+     *
      * @return the instance used (Java name)
      */
     public abstract String getInstance();
 
     /**
-     * 
+     *
      * @return the size for the algorithm key
      */
     public abstract int getKeySize();
 
     /**
-     * 
+     *
      * @return the filename extension to use for this kind of key
      */
     public abstract String getFileExtension();
+
     /**
      * @return the key associated with this object
      */
@@ -105,30 +104,8 @@ public abstract class KeyObject {
     }
 
     /**
-     * 
-     * @return True if this key is ready to be used
-     */
-    public boolean keyReady() {
-        return secretKey != null;
-    }
-
-    /**
-     * Returns the key as an array of bytes in order to be stored somewhere else and retrieved using
-     * the setSecretKey(byte[] keyData) method.
-     * 
-     * @return the key as an array of bytes (or null if not ready)
-     */
-    public byte[] getSecretKeyInBytes() {
-        if (keyReady()) {
-            return secretKey.getEncoded();
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Set the secretKey
-     * 
+     *
      * @param secretKey
      */
     public void setSecretKey(Key secretKey) {
@@ -144,7 +121,7 @@ public abstract class KeyObject {
 
     /**
      * Create a Key from a File
-     * 
+     *
      * @param file
      * @throws CryptoException
      * @throws IOException
@@ -168,8 +145,30 @@ public abstract class KeyObject {
     }
 
     /**
+     *
+     * @return True if this key is ready to be used
+     */
+    public boolean keyReady() {
+        return secretKey != null;
+    }
+
+    /**
+     * Returns the key as an array of bytes in order to be stored somewhere else and retrieved using
+     * the setSecretKey(byte[] keyData) method.
+     *
+     * @return the key as an array of bytes (or null if not ready)
+     */
+    public byte[] getSecretKeyInBytes() {
+        if (keyReady()) {
+            return secretKey.getEncoded();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Save a Key to a File
-     * 
+     *
      * @param file
      * @throws CryptoException
      * @throws IOException
@@ -191,7 +190,7 @@ public abstract class KeyObject {
 
     /**
      * Generate a key from nothing
-     * 
+     *
      * @throws Exception
      */
     public void generateKey() throws Exception {
@@ -207,7 +206,7 @@ public abstract class KeyObject {
 
     /**
      * Returns a cipher for encryption associated with the key
-     * 
+     *
      * @return the cipher for encryption or null if it fails in case Encryption method or key is
      *         incorrect
      */
@@ -225,7 +224,7 @@ public abstract class KeyObject {
 
     /**
      * Crypt one array of bytes and returns the crypted array of bytes
-     * 
+     *
      * @param plaintext
      * @return the crypted array of bytes
      * @throws Exception
@@ -246,7 +245,7 @@ public abstract class KeyObject {
 
     /**
      * Crypt one array of bytes and returns the crypted String as HEX format
-     * 
+     *
      * @param plaintext
      * @return the crypted String as HEX format
      * @throws Exception
@@ -258,7 +257,7 @@ public abstract class KeyObject {
 
     /**
      * Crypt one String and returns the crypted array of bytes
-     * 
+     *
      * @param plaintext
      * @return the crypted array of bytes
      * @throws Exception
@@ -269,7 +268,7 @@ public abstract class KeyObject {
 
     /**
      * Crypt one String and returns the crypted String as HEX format
-     * 
+     *
      * @param plaintext
      * @return the crypted String as HEX format
      * @throws Exception
@@ -280,7 +279,7 @@ public abstract class KeyObject {
 
     /**
      * Returns a cipher for decryption associated with the key
-     * 
+     *
      * @return the cipher for decryption or null if it fails in case Encryption method or key is
      *         incorrect
      */
@@ -298,7 +297,7 @@ public abstract class KeyObject {
 
     /**
      * Decrypt an array of bytes and returns the uncrypted array of bytes
-     * 
+     *
      * @param ciphertext
      * @return the uncrypted array of bytes
      * @throws Exception
@@ -319,7 +318,7 @@ public abstract class KeyObject {
 
     /**
      * Decrypt an array of bytes and returns the uncrypted String
-     * 
+     *
      * @param ciphertext
      * @return the uncrypted array of bytes
      * @throws Exception
@@ -331,7 +330,7 @@ public abstract class KeyObject {
     /**
      * Decrypt a String as HEX format representing a crypted array of bytes and returns the
      * uncrypted array of bytes
-     * 
+     *
      * @param ciphertext
      * @return the uncrypted array of bytes
      * @throws Exception
@@ -344,7 +343,7 @@ public abstract class KeyObject {
     /**
      * Decrypt an array of bytes as HEX format representing a crypted array of bytes and returns the
      * uncrypted array of bytes
-     * 
+     *
      * @param ciphertext
      * @return the uncrypted array of bytes
      * @throws Exception
@@ -357,7 +356,7 @@ public abstract class KeyObject {
     /**
      * Decrypt a String as HEX format representing a crypted array of bytes and returns the
      * uncrypted String
-     * 
+     *
      * @param ciphertext
      * @return the uncrypted String
      * @throws Exception
@@ -368,7 +367,7 @@ public abstract class KeyObject {
 
     /**
      * Decode from a file containing a HEX crypted string
-     * 
+     *
      * @param file
      * @return the decoded uncrypted content of the file
      * @throws Exception
@@ -393,8 +392,9 @@ public abstract class KeyObject {
             try {
                 if (dis != null) {
                     dis.close();
-                } else if (inputStream != null)
+                } else if (inputStream != null) {
                     inputStream.close();
+                }
             } catch (IOException e1) {
             }
             throw e;
@@ -402,7 +402,7 @@ public abstract class KeyObject {
     }
 
     /**
-     * 
+     *
      * @param encoded
      * @return the array of bytes from encoded String (HEX)
      */
@@ -411,7 +411,7 @@ public abstract class KeyObject {
     }
 
     /**
-     * 
+     *
      * @param bytes
      * @return The encoded array of bytes in HEX
      */

@@ -1,21 +1,23 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.crypto;
+
+import org.waarp.common.exception.CryptoException;
+import org.waarp.common.utility.WaarpStringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,18 +28,15 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.waarp.common.exception.CryptoException;
-import org.waarp.common.utility.WaarpStringUtils;
-
 /**
- * 
+ *
  * Can implements AES, ARCFOUR, Blowfish, DES, DESede, RC2, RC4<br>
  * <br>
  * The time ratio are: RC4,ARCFOUR=1; AES,RC2=1,5; DES=2; Blowfish,DESede=4<br>
  * <b>AES is the best compromise in term of security and efficiency.</b>
- * 
+ *
  * @author frederic bregier
- * 
+ *
  */
 public class DynamicKeyManager extends KeyManager {
     /**
@@ -48,8 +47,9 @@ public class DynamicKeyManager extends KeyManager {
      * Extra information file extension
      */
     private static final String INFEXTENSION = ".inf";
+
     /**
-     * 
+     *
      * @return the current KeyManager
      */
     public static final KeyManager getInstance() {
@@ -135,7 +135,7 @@ public class DynamicKeyManager extends KeyManager {
                         continue;
                     }
                     keyObject = new DynamicKeyObject(keySize, algo, instance,
-                            extension);
+                                                     extension);
                 } catch (IOException e1) {
                     wrong.add(filename);
                     continue;
@@ -157,7 +157,7 @@ public class DynamicKeyManager extends KeyManager {
 
     /**
      * Specific functions to ease the process of reading the "inf" file
-     * 
+     *
      * @param inputStream
      * @return the String that should be read
      */
@@ -181,14 +181,14 @@ public class DynamicKeyManager extends KeyManager {
 
     @Override
     public void saveToFiles() throws CryptoException,
-            IOException {
+                                     IOException {
         Enumeration<String> names = keysConcurrentHashMap.keys();
         while (names.hasMoreElements()) {
             String name = names.nextElement();
             KeyObject key = keysConcurrentHashMap.get(name);
             key.saveSecretKey(new File(name + "." + key.getFileExtension()));
             FileOutputStream outputStream = new FileOutputStream(new File(name +
-                    "." + key.getFileExtension() + INFEXTENSION));
+                                                                          "." + key.getFileExtension() + INFEXTENSION));
             try {
                 outputStream.write(key.getKeySize());
                 String algo = key.getAlgorithm();

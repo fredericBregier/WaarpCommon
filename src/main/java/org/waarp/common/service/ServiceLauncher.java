@@ -1,28 +1,20 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.service;
-
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
@@ -31,6 +23,10 @@ import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
 import org.waarp.common.utility.WaarpThreadFactory;
+
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Launch the Engine from a variety of sources, either through a main() or invoked through
@@ -49,18 +45,9 @@ public abstract class ServiceLauncher implements Daemon {
     protected static EngineAbstract engine = null;
 
     protected static ServiceLauncher engineLauncherInstance = null;
-
-    protected ExecutorService executor = null;
-
     protected static DaemonController controller = null;
-
     protected static boolean stopCalledCorrectly = false;
-
-    /**
-     * 
-     * @return a new EngineAbstract
-     */
-    protected abstract EngineAbstract getNewEngineAbstract();
+    protected ExecutorService executor = null;
 
     public ServiceLauncher() {
         if (logger == null) {
@@ -99,7 +86,7 @@ public abstract class ServiceLauncher implements Daemon {
 
     /**
      * The Java entry point.
-     * 
+     *
      * @param args
      *            Command line arguments, all ignored.
      */
@@ -111,8 +98,9 @@ public abstract class ServiceLauncher implements Daemon {
         Scanner sc = new Scanner(System.in);
         // wait until receive stop command from keyboard
         System.out.printf("Enter 'stop' to halt: ");
-        while (!sc.nextLine().toLowerCase().equals("stop"))
+        while (!sc.nextLine().toLowerCase().equals("stop")) {
             ;
+        }
 
         if (!engine.isShutdown()) {
             engineLauncherInstance.terminate();
@@ -131,7 +119,7 @@ public abstract class ServiceLauncher implements Daemon {
      * <pre>
      * prunsrv.exe //IS/MyService --Classpath=C:\...\xxx.jar --Description=&quot;My Java Service&quot; --Jvm=auto --StartMode=jvm --StartClass=org.waarp.xxx.service.ServiceLauncher --StartMethod=windowsService --StartParams=start --StopMode=jvm --StopClass=org.waarp.xxx.service.ServiceLauncher --StopMethod=windowsService --StopParams=stop
      * </pre>
-     * 
+     *
      * @param args
      *            Arguments from prunsrv command line
      * @throws Exception
@@ -158,7 +146,7 @@ public abstract class ServiceLauncher implements Daemon {
      * <pre>
      * prunsrv.exe //IS/MyService --Classpath=C:\...\xxx.jar --Description=&quot;My Java Service&quot; --Jvm=auto --StartMode=jvm --StartClass=org.waarp.xxx.service.ServiceLauncher --StartMethod=windowsStart --StopMode=jvm --StopClass=org.waarp.xxx.service.ServiceLauncher --StopMethod=windowsStop
      * </pre>
-     * 
+     *
      * @param args
      *            Arguments are ignored
      * @throws Exception
@@ -177,7 +165,7 @@ public abstract class ServiceLauncher implements Daemon {
      * <pre>
      * prunsrv.exe //IS/MyService --Classpath=C:\...\xxx.jar --Description=&quot;My Java Service&quot; --Jvm=auto --StartMode=jvm --StartClass=org.waarp.xxx.service.ServiceLauncher --StartMethod=windowsStart --StopMode=jvm --StopClass=org.waarp.xxx.service.ServiceLauncher --StopMethod=windowsStop
      * </pre>
-     * 
+     *
      * @param args
      *            Arguments are ignored
      **/
@@ -188,8 +176,14 @@ public abstract class ServiceLauncher implements Daemon {
     }
 
     /**
+     *
+     * @return a new EngineAbstract
+     */
+    protected abstract EngineAbstract getNewEngineAbstract();
+
+    /**
      * Internal command
-     * 
+     *
      * @throws Exception
      */
     protected void windowsStart() throws Exception {

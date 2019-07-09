@@ -1,30 +1,22 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.database.model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.Timer;
-
 import oracle.jdbc.pool.OracleConnectionPoolDataSource;
-
 import org.waarp.common.database.DbAdmin;
 import org.waarp.common.database.DbConnectionPool;
 import org.waarp.common.database.DbConstant;
@@ -38,11 +30,17 @@ import org.waarp.common.database.exception.WaarpDatabaseSqlException;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Timer;
+
 /**
  * Oracle Database Model implementation
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public abstract class DbModelOracle extends DbModelAbstract {
     /**
@@ -56,13 +54,9 @@ public abstract class DbModelOracle extends DbModelAbstract {
     protected OracleConnectionPoolDataSource oracleConnectionPoolDataSource;
     protected DbConnectionPool pool;
 
-    public DbType getDbType() {
-        return type;
-    }
-
     /**
      * Create the object and initialize if necessary the driver
-     * 
+     *
      * @param dbserver
      * @param dbuser
      * @param dbpasswd
@@ -86,13 +80,13 @@ public abstract class DbModelOracle extends DbModelAbstract {
         oracleConnectionPoolDataSource.setPassword(dbpasswd);
         pool = new DbConnectionPool(oracleConnectionPoolDataSource, timer, delay);
         logger.info("Some info: MaxConn: " + pool.getMaxConnections() + " LogTimeout: "
-                + pool.getLoginTimeout()
-                + " ForceClose: " + pool.getTimeoutForceClose());
+                    + pool.getLoginTimeout()
+                    + " ForceClose: " + pool.getTimeoutForceClose());
     }
 
     /**
      * Create the object and initialize if necessary the driver
-     * 
+     *
      * @param dbserver
      * @param dbuser
      * @param dbpasswd
@@ -114,13 +108,13 @@ public abstract class DbModelOracle extends DbModelAbstract {
         oracleConnectionPoolDataSource.setPassword(dbpasswd);
         pool = new DbConnectionPool(oracleConnectionPoolDataSource);
         logger.warn("Some info: MaxConn: " + pool.getMaxConnections() + " LogTimeout: "
-                + pool.getLoginTimeout()
-                + " ForceClose: " + pool.getTimeoutForceClose());
+                    + pool.getLoginTimeout()
+                    + " ForceClose: " + pool.getTimeoutForceClose());
     }
 
     /**
      * Create the object and initialize if necessary the driver
-     * 
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     protected DbModelOracle() throws WaarpDatabaseNoConnectionException {
@@ -140,21 +134,26 @@ public abstract class DbModelOracle extends DbModelAbstract {
         }
     }
 
+    public DbType getDbType() {
+        return type;
+    }
+
     @Override
     public void releaseResources() {
-            if (pool != null) {
-        try {
+        if (pool != null) {
+            try {
                 pool.dispose();
-        } catch (SQLException e) {
+            } catch (SQLException e) {
+            }
         }
-    }
-      pool = null;
+        pool = null;
     }
 
     @Override
     public int currentNumberOfPooledConnections() {
-        if (pool != null)
+        if (pool != null) {
             return pool.getActiveConnections();
+        }
         return DbAdmin.getNbConnection();
     }
 
@@ -185,67 +184,6 @@ public abstract class DbModelOracle extends DbModelAbstract {
         }
     }
 
-    protected enum DBType {
-        CHAR(Types.CHAR, " CHAR(3) "),
-        VARCHAR(Types.VARCHAR, " VARCHAR2(4000) "),
-        NVARCHAR(Types.NVARCHAR, " VARCHAR2(1000) "),
-        LONGVARCHAR(Types.LONGVARCHAR, " CLOB "),
-        BIT(Types.BIT, " CHAR(1) "),
-        TINYINT(Types.TINYINT, " SMALLINT "),
-        SMALLINT(Types.SMALLINT, " SMALLINT "),
-        INTEGER(Types.INTEGER, " INTEGER "),
-        BIGINT(Types.BIGINT, " NUMBER(38,0) "),
-        REAL(Types.REAL, " REAL "),
-        DOUBLE(Types.DOUBLE, " DOUBLE PRECISION "),
-        VARBINARY(Types.VARBINARY, " BLOB "),
-        DATE(Types.DATE, " DATE "),
-        TIMESTAMP(Types.TIMESTAMP, " TIMESTAMP ");
-
-        public int type;
-
-        public String constructor;
-
-        DBType(int type, String constructor) {
-            this.type = type;
-            this.constructor = constructor;
-        }
-
-        public static String getType(int sqltype) {
-            switch (sqltype) {
-                case Types.CHAR:
-                    return CHAR.constructor;
-                case Types.VARCHAR:
-                    return VARCHAR.constructor;
-                case Types.NVARCHAR:
-                    return NVARCHAR.constructor;
-                case Types.LONGVARCHAR:
-                    return LONGVARCHAR.constructor;
-                case Types.BIT:
-                    return BIT.constructor;
-                case Types.TINYINT:
-                    return TINYINT.constructor;
-                case Types.SMALLINT:
-                    return SMALLINT.constructor;
-                case Types.INTEGER:
-                    return INTEGER.constructor;
-                case Types.BIGINT:
-                    return BIGINT.constructor;
-                case Types.REAL:
-                    return REAL.constructor;
-                case Types.DOUBLE:
-                    return DOUBLE.constructor;
-                case Types.VARBINARY:
-                    return VARBINARY.constructor;
-                case Types.DATE:
-                    return DATE.constructor;
-                case Types.TIMESTAMP:
-                    return TIMESTAMP.constructor;
-                default:
-                    return null;
-            }
-        }
-    }
-
     public void createTables(DbSession session) throws WaarpDatabaseNoConnectionException {
         // Create tables: configuration, hosts, rules, runner, cptrunner
         String createTableH2 = "CREATE TABLE ";
@@ -259,14 +197,14 @@ public abstract class DbModelOracle extends DbModelAbstract {
                 .values();
         for (int i = 0; i < ccolumns.length - 1; i++) {
             action += ccolumns[i].name() +
-                    DBType.getType(DbDataModel.dbTypes[i]) + notNull +
-                    ", ";
+                      DBType.getType(DbDataModel.dbTypes[i]) + notNull +
+                      ", ";
         }
         action += ccolumns[ccolumns.length - 1].name() +
-                DBType.getType(DbDataModel.dbTypes[ccolumns.length - 1]) +
-                notNull + ",";
+                  DBType.getType(DbDataModel.dbTypes[ccolumns.length - 1]) +
+                  notNull + ",";
         action += constraint + " conf_pk " + primaryKey + "("
-                + ccolumns[ccolumns.length - 1].name() + "))";
+                  + ccolumns[ccolumns.length - 1].name() + "))";
         logger.warn(action);
         DbRequest request = new DbRequest(session);
         try {
@@ -300,8 +238,8 @@ public abstract class DbModelOracle extends DbModelAbstract {
 
         // example sequence
         action = "CREATE SEQUENCE " + DbDataModel.fieldseq +
-                " MINVALUE " + (DbConstant.ILLEGALVALUE + 1) +
-                " START WITH " + (DbConstant.ILLEGALVALUE + 1);
+                 " MINVALUE " + (DbConstant.ILLEGALVALUE + 1) +
+                 " START WITH " + (DbConstant.ILLEGALVALUE + 1);
         logger.warn(action);
         try {
             request.query(action);
@@ -319,8 +257,8 @@ public abstract class DbModelOracle extends DbModelAbstract {
             throws WaarpDatabaseNoConnectionException {
         String action = "DROP SEQUENCE " + DbDataModel.fieldseq;
         String action2 = "CREATE SEQUENCE " + DbDataModel.fieldseq +
-                " MINVALUE " + (DbConstant.ILLEGALVALUE + 1) +
-                " START WITH " + (newvalue);
+                         " MINVALUE " + (DbConstant.ILLEGALVALUE + 1) +
+                         " START WITH " + (newvalue);
         DbRequest request = new DbRequest(session);
         try {
             request.query(action);
@@ -340,7 +278,7 @@ public abstract class DbModelOracle extends DbModelAbstract {
 
     public long nextSequence(DbSession dbSession)
             throws WaarpDatabaseNoConnectionException,
-            WaarpDatabaseSqlException, WaarpDatabaseNoDataException {
+                   WaarpDatabaseSqlException, WaarpDatabaseNoDataException {
         long result = DbConstant.ILLEGALVALUE;
         String action = "SELECT " + DbDataModel.fieldseq + ".NEXTVAL FROM DUAL";
         DbPreparedStatement preparedStatement = new DbPreparedStatement(
@@ -371,8 +309,70 @@ public abstract class DbModelOracle extends DbModelAbstract {
     }
 
     public String limitRequest(String allfields, String request, int nb) {
-        if (nb == 0)
+        if (nb == 0) {
             return request;
+        }
         return "select " + allfields + " from ( " + request + " ) where rownum <= " + nb;
+    }
+
+    protected enum DBType {
+        CHAR(Types.CHAR, " CHAR(3) "),
+        VARCHAR(Types.VARCHAR, " VARCHAR2(4000) "),
+        NVARCHAR(Types.NVARCHAR, " VARCHAR2(1000) "),
+        LONGVARCHAR(Types.LONGVARCHAR, " CLOB "),
+        BIT(Types.BIT, " CHAR(1) "),
+        TINYINT(Types.TINYINT, " SMALLINT "),
+        SMALLINT(Types.SMALLINT, " SMALLINT "),
+        INTEGER(Types.INTEGER, " INTEGER "),
+        BIGINT(Types.BIGINT, " NUMBER(38,0) "),
+        REAL(Types.REAL, " REAL "),
+        DOUBLE(Types.DOUBLE, " DOUBLE PRECISION "),
+        VARBINARY(Types.VARBINARY, " BLOB "),
+        DATE(Types.DATE, " DATE "),
+        TIMESTAMP(Types.TIMESTAMP, " TIMESTAMP ");
+
+        public int type;
+
+        public String constructor;
+
+        DBType(int type, String constructor) {
+            this.type = type;
+            this.constructor = constructor;
+        }
+
+        public static String getType(int sqltype) {
+            switch (sqltype) {
+            case Types.CHAR:
+                return CHAR.constructor;
+            case Types.VARCHAR:
+                return VARCHAR.constructor;
+            case Types.NVARCHAR:
+                return NVARCHAR.constructor;
+            case Types.LONGVARCHAR:
+                return LONGVARCHAR.constructor;
+            case Types.BIT:
+                return BIT.constructor;
+            case Types.TINYINT:
+                return TINYINT.constructor;
+            case Types.SMALLINT:
+                return SMALLINT.constructor;
+            case Types.INTEGER:
+                return INTEGER.constructor;
+            case Types.BIGINT:
+                return BIGINT.constructor;
+            case Types.REAL:
+                return REAL.constructor;
+            case Types.DOUBLE:
+                return DOUBLE.constructor;
+            case Types.VARBINARY:
+                return VARBINARY.constructor;
+            case Types.DATE:
+                return DATE.constructor;
+            case Types.TIMESTAMP:
+                return TIMESTAMP.constructor;
+            default:
+                return null;
+            }
+        }
     }
 }

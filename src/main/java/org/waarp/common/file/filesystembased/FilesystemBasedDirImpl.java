@@ -1,36 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.file.filesystembased;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.zip.CRC32;
-import java.util.zip.CheckedInputStream;
 
 import org.waarp.common.command.exception.CommandAbstractException;
 import org.waarp.common.command.exception.Reply550Exception;
@@ -49,11 +33,26 @@ import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.utility.DetectionUtils;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.zip.CRC32;
+import java.util.zip.CheckedInputStream;
+
 /**
  * Directory implementation for Filesystem Based
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public abstract class FilesystemBasedDirImpl extends AbstractDir {
     /**
@@ -69,14 +68,27 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
 
     /**
      * Initialize the filesystem
-     */
-    {
+     */ {
         initJdkDependent();
     }
 
     /**
+     * @param session
+     * @param optsMLSx
+     */
+    public FilesystemBasedDirImpl(SessionInterface session,
+                                  OptsMLSxInterface optsMLSx) {
+        this.session = session;
+        this.optsMLSx = optsMLSx;
+        this.optsMLSx.setOptsModify((byte) 1);
+        this.optsMLSx.setOptsPerm((byte) 1);
+        this.optsMLSx.setOptsSize((byte) 1);
+        this.optsMLSx.setOptsType((byte) 1);
+    }
+
+    /**
      * Init according to internals of JDK
-     * 
+     *
      */
     private static void initJdkDependent() {
         if (DetectionUtils.javaVersion() >= 6) {
@@ -88,9 +100,9 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
 
     /**
      * Init the dependant object according to internals of JDK
-     * 
+     *
      * @param filesystemBasedFtpDirJdkChoice
-     * 
+     *
      * @deprecated replaced by initJdkDependent()
      */
     @Deprecated
@@ -100,22 +112,8 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
     }
 
     /**
-     * @param session
-     * @param optsMLSx
-     */
-    public FilesystemBasedDirImpl(SessionInterface session,
-            OptsMLSxInterface optsMLSx) {
-        this.session = session;
-        this.optsMLSx = optsMLSx;
-        this.optsMLSx.setOptsModify((byte) 1);
-        this.optsMLSx.setOptsPerm((byte) 1);
-        this.optsMLSx.setOptsSize((byte) 1);
-        this.optsMLSx.setOptsType((byte) 1);
-    }
-
-    /**
      * Finds all files matching a wildcard expression (based on '?', '~' or '*').
-     * 
+     *
      * @param pathWithWildcard
      *            The wildcard expression with a business path.
      * @return List of String as relative paths matching the wildcard expression. Those files are
@@ -196,7 +194,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         for (File file : basedPaths) {
             String relativePath = ((FilesystemBasedAuthImpl) getSession()
                     .getAuth()).getRelativePath(normalizePath(file
-                    .getAbsolutePath()));
+                                                                      .getAbsolutePath()));
             String newpath = this.validatePath(relativePath);
             resultPaths.add(newpath);
         }
@@ -205,7 +203,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
 
     /**
      * Get the FileInterface from this path, checking first its validity
-     * 
+     *
      * @param path
      * @return the FileInterface
      * @throws CommandAbstractException
@@ -222,7 +220,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
 
     /**
      * Get the true file from the path
-     * 
+     *
      * @param path
      * @return the true File from the path
      * @throws CommandAbstractException
@@ -233,7 +231,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         List<String> paths = wildcardFiles(normalizePath(newpath));
         if (paths.size() != 1) {
             throw new Reply550Exception("File not found: " + paths.size() +
-                    " founds");
+                                        " founds");
         }
         String extDir = paths.get(0);
         extDir = this.validatePath(extDir);
@@ -246,7 +244,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
 
     /**
      * Get the relative path (without mount point)
-     * 
+     *
      * @param file
      * @return the relative path
      */
@@ -262,7 +260,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         if (paths.size() != 1) {
             logger.warn("CD error: {}", newpath);
             throw new Reply550Exception("Directory not found: " + paths.size() +
-                    " founds");
+                                        " founds");
         }
         String extDir = paths.get(0);
         extDir = this.validatePath(extDir);
@@ -280,7 +278,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         if (paths.size() != 1) {
             logger.warn("CD error: {}", newpath);
             throw new Reply550Exception("Directory not found: " + paths.size() +
-                    " founds");
+                                        " founds");
         }
         String extDir = paths.get(0);
         extDir = this.validatePath(extDir);
@@ -296,7 +294,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         List<String> paths = wildcardFiles(normalizePath(parent));
         if (paths.size() != 1) {
             throw new Reply550Exception("Base Directory not found: " +
-                    paths.size() + " founds");
+                                        paths.size() + " founds");
         }
         String newDir = paths.get(0) + SEPARATOR + dir.getName();
         newDir = this.validatePath(newDir);
@@ -313,7 +311,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         List<String> paths = wildcardFiles(normalizePath(newdirectory));
         if (paths.size() != 1) {
             throw new Reply550Exception("Directory not found: " + paths.size() +
-                    " founds");
+                                        " founds");
         }
         String extDir = paths.get(0);
         extDir = this.validatePath(extDir);
@@ -347,7 +345,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
 
     /**
      * Return the Modification time for the File
-     * 
+     *
      * @param file
      * @return the Modification time as a String YYYYMMDDHHMMSS.sss
      */
@@ -499,23 +497,23 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         List<String> paths = wildcardFiles(normalizePath(newpath));
         if (paths.size() != 1) {
             throw new Reply550Exception("No files found " + paths.size() +
-                    " founds");
+                                        " founds");
         }
         File file = getFileFromPath(paths.get(0));
         if (file.exists()) {
             if (lsFormat) {
                 return "Listing of \"" + paths.get(0) + "\"\n" + lsInfo(file) +
-                        "\nEnd of listing";
+                       "\nEnd of listing";
             }
             return "Listing of \"" + paths.get(0) + "\"\n" + mlsxInfo(file) +
-                    "\nEnd of listing";
+                   "\nEnd of listing";
         }
         return "No file with name \"" + path + "\"";
     }
 
     /**
      * Decide if Full time or partial time as in 'ls' command
-     * 
+     *
      * @return True if Full Time, False is Default (as in 'ls' command)
      */
     protected boolean isFullTime() {
@@ -524,7 +522,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
     }
 
     /**
-     * 
+     *
      * @param file
      * @return the ls format information
      */
@@ -533,20 +531,21 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         // link(?),owner(?),group(?),size,date
         // and filename
         StringBuilder builder = new StringBuilder()
-                .append((file.isDirectory() ? 'd' : '-'))
-                .append((file.canRead() ? 'r' : '-'))
-                .append((file.canWrite() ? 'w' : '-'));
-        if (filesystemBasedFtpDirJdk != null)
-            builder.append(filesystemBasedFtpDirJdk.canExecute(file) ? 'x' : '-');
-        else
+                .append((file.isDirectory()? 'd' : '-'))
+                .append((file.canRead()? 'r' : '-'))
+                .append((file.canWrite()? 'w' : '-'));
+        if (filesystemBasedFtpDirJdk != null) {
+            builder.append(filesystemBasedFtpDirJdk.canExecute(file)? 'x' : '-');
+        } else {
             builder.append('-');
+        }
         // Group and others not supported
         builder.append("---").append("---").append(' ')
-                .append("1 ")// hard link ?
-                .append("anybody\t")// owner ?
-                .append("anygroup\t")// group ?
-                .append(file.length())// size
-                .append('\t');
+               .append("1 ")// hard link ?
+               .append("anybody\t")// owner ?
+               .append("anygroup\t")// group ?
+               .append(file.length())// size
+               .append('\t');
         long lastmod = file.lastModified();
         String fmt = null;
         // It seems Full Time is not recognized by some FTP client
@@ -555,7 +554,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
          */
         long currentTime = System.currentTimeMillis();
         if (currentTime > lastmod + 6L * 30L * 24L * 60L * 60L * 1000L // Old.
-                || currentTime < lastmod - 60L * 60L * 1000L) { // In the
+            || currentTime < lastmod - 60L * 60L * 1000L) { // In the
             // future.
             // The file is fairly old or in the future.
             // POSIX says the cutoff is 6 months old;
@@ -570,15 +569,15 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         /* } */
         SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat
                 .getDateTimeInstance(DateFormat.LONG, DateFormat.LONG,
-                        Locale.ENGLISH);
+                                     Locale.ENGLISH);
         dateFormat.applyPattern(fmt);
         builder.append(dateFormat.format(new Date(lastmod)))// date
-                .append('\t').append(file.getName());
+               .append('\t').append(file.getName());
         return builder.toString();
     }
 
     /**
-     * 
+     *
      * @param file
      * @return the MLSx information: ' Fact=facts;...; filename'
      */
@@ -646,10 +645,11 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
     public long getFreeSpace() throws CommandAbstractException {
         checkIdentify();
         File directory = getFileFromPath(currentDir);
-        if (filesystemBasedFtpDirJdk != null)
+        if (filesystemBasedFtpDirJdk != null) {
             return filesystemBasedFtpDirJdk.getFreeSpace(directory);
-        else
+        } else {
             return Integer.MAX_VALUE;
+        }
     }
 
     public FileInterface setUniqueFile()
@@ -658,7 +658,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
         File file = null;
         try {
             file = File.createTempFile(getSession().getAuth().getUser(),
-                    this.session.getUniqueExtension(), getFileFromPath(currentDir));
+                                       this.session.getUniqueExtension(), getFileFromPath(currentDir));
         } catch (IOException e) {
             throw new Reply550Exception("Cannot create unique file");
         }
@@ -689,7 +689,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
             try {
                 // Computer CRC32 checksum
                 cis = new CheckedInputStream(new FileInputStream(file),
-                        new CRC32());
+                                             new CRC32());
             } catch (FileNotFoundException e) {
                 throw new Reply550Exception("File not found: " + path);
             }

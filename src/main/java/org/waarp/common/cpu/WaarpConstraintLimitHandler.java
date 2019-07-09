@@ -1,61 +1,58 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.cpu;
+
+import io.netty.handler.traffic.AbstractTrafficShapingHandler;
+import org.waarp.common.database.DbAdmin;
+import org.waarp.common.logging.WaarpLogger;
+import org.waarp.common.logging.WaarpLoggerFactory;
 
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import io.netty.handler.traffic.AbstractTrafficShapingHandler;
-
-import org.waarp.common.database.DbAdmin;
-import org.waarp.common.logging.WaarpLogger;
-import org.waarp.common.logging.WaarpLoggerFactory;
-
 /**
  * Abstract class for Constraint Limit Handler for Waarp project
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public abstract class WaarpConstraintLimitHandler implements Runnable {
+    public static final long LOWBANDWIDTH_DEFAULT = 1048576;
     /**
      * Internal Logger
      */
     private static final WaarpLogger logger = WaarpLoggerFactory
             .getLogger(WaarpConstraintLimitHandler.class);
-
     private static final String NOALERT = "noAlert";
-    public static final long LOWBANDWIDTH_DEFAULT = 1048576;
+    private static final int payload = 5; // 5 seconds of payload when new high cpu
+    private final Random random = new Random();
+    private final LinkedList<CurLimits> curLimits = new LinkedList<WaarpConstraintLimitHandler.CurLimits>();
     public String lastAlert = NOALERT;
     private boolean constraintInactive = true;
     private boolean useCpuLimits = false;
     private boolean useBandwidthLimit = false;
-
-    private final Random random = new Random();
     private CpuManagementInterface cpuManagement;
     private double cpuLimit = 1.0; // was 0.8;
     private int channelLimit = 0; // was 1000;
     private boolean isServer = false;
     private double lastLA = 0.0;
     private long lastTime;
-
     // Dynamic throttling
     private long WAITFORNETOP = 1000;
     private long TIMEOUTCON = 10000;
@@ -66,34 +63,21 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     private long limitLowBandwidth = LOWBANDWIDTH_DEFAULT;
     private AbstractTrafficShapingHandler handler;
     private ScheduledThreadPoolExecutor executor = null;
-
-    private static class CurLimits {
-        long read;
-        long write;
-
-        private CurLimits(long read, long write) {
-            this.read = read;
-            this.write = write;
-        }
-    }
-
-    private final LinkedList<CurLimits> curLimits = new LinkedList<WaarpConstraintLimitHandler.CurLimits>();
     private int nbSinceLastDecrease = 0;
-    private static final int payload = 5; // 5 seconds of payload when new high cpu
-
     /**
      * Empty constructor
      */
     public WaarpConstraintLimitHandler() {
         // Do nothing except setup standard value for inactivity
-        if (cpuManagement == null)
+        if (cpuManagement == null) {
             cpuManagement = new CpuManagementNoInfo();
+        }
     }
 
     /**
      * This constructor enables only throttling bandwidth with cpu usage
-     * 
-     * 
+     *
+     *
      * @param WAITFORNETOP2
      *            1000 ms as wait for a network operation
      * @param TIMEOUTCON2
@@ -118,18 +102,18 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
      *            limit = 4096)
      */
     public WaarpConstraintLimitHandler(long WAITFORNETOP2, long TIMEOUTCON2,
-            boolean useJdkCpuLimit,
-            double lowcpuLimit, double highcpuLimit, double percentageDecrease,
-            AbstractTrafficShapingHandler handler, long delay, long limitLowBandwidth) {
+                                       boolean useJdkCpuLimit,
+                                       double lowcpuLimit, double highcpuLimit, double percentageDecrease,
+                                       AbstractTrafficShapingHandler handler, long delay, long limitLowBandwidth) {
         this(WAITFORNETOP2, TIMEOUTCON2,
-                true, useJdkCpuLimit, 0, 0,
-                lowcpuLimit, highcpuLimit, percentageDecrease,
-                handler, delay, limitLowBandwidth);
+             true, useJdkCpuLimit, 0, 0,
+             lowcpuLimit, highcpuLimit, percentageDecrease,
+             handler, delay, limitLowBandwidth);
     }
 
     /**
      * This constructor enables only Connection check ability
-     * 
+     *
      * @param useCpuLimit
      *            True to enable cpuLimit on connection check
      * @param useJdKCpuLimit
@@ -140,15 +124,15 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
      *            number of connection limit (0<= x)
      */
     public WaarpConstraintLimitHandler(long WAITFORNETOP2, long TIMEOUTCON2, boolean useCpuLimit,
-            boolean useJdKCpuLimit, double cpulimit, int channellimit) {
+                                       boolean useJdKCpuLimit, double cpulimit, int channellimit) {
         this(WAITFORNETOP2, TIMEOUTCON2, useCpuLimit, useJdKCpuLimit, cpulimit, channellimit,
-                0, 0, 0.01, null, 1000000, LOWBANDWIDTH_DEFAULT);
+             0, 0, 0.01, null, 1000000, LOWBANDWIDTH_DEFAULT);
     }
 
     /**
      * This constructor enables both Connection check ability and throttling bandwidth with cpu
      * usage
-     * 
+     *
      * @param WAITFORNETOP2
      *            1000 ms as wait for a network operation
      * @param TIMEOUTCON2
@@ -179,10 +163,10 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
      *            limit = 4096)
      */
     public WaarpConstraintLimitHandler(long WAITFORNETOP2, long TIMEOUTCON2,
-            boolean useCpuLimit,
-            boolean useJdKCpuLimit, double cpulimit, int channellimit,
-            double lowcpuLimit, double highcpuLimit, double percentageDecrease,
-            AbstractTrafficShapingHandler handler, long delay, long limitLowBandwidth) {
+                                       boolean useCpuLimit,
+                                       boolean useJdKCpuLimit, double cpulimit, int channellimit,
+                                       double lowcpuLimit, double highcpuLimit, double percentageDecrease,
+                                       AbstractTrafficShapingHandler handler, long delay, long limitLowBandwidth) {
         useCpuLimits = useCpuLimit;
         WAITFORNETOP = WAITFORNETOP2;
         TIMEOUTCON = TIMEOUTCON2;
@@ -245,7 +229,7 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
 
     /**
      * To explicitly set this handler as server mode
-     * 
+     *
      * @param isServer
      */
     public void setServer(boolean isServer) {
@@ -268,12 +252,13 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     * 
+     *
      * @return True if one of the limit is exceeded. Always False if not a server mode
      */
     public boolean checkConstraints() {
-        if (!isServer)
+        if (!isServer) {
             return false;
+        }
         if ((useCpuLimits) && cpuLimit < 1 && cpuLimit > 0) {
             getLastLA();
             if (lastLA <= cpuLimit) {
@@ -305,7 +290,7 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     * 
+     *
      * @return the current number of active Local Channel
      */
     protected abstract int getNumberLocalChannel();
@@ -313,14 +298,15 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     /**
      * Same as checkConstraints except that the thread will sleep some time proportionally to the
      * current Load (if CPU related)
-     * 
+     *
      * @param step
      *            the current step in retry
      * @return True if one of the limit is exceeded. Always False if not a server mode
      */
     public boolean checkConstraintsSleep(int step) {
-        if (!isServer)
+        if (!isServer) {
             return false;
+        }
         long delay = WAITFORNETOP >> 1;
         if ((useCpuLimits) && cpuLimit < 1 && cpuLimit > 0) {
             long newTime = System.currentTimeMillis();
@@ -357,7 +343,7 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     * 
+     *
      * @return a time below TIMEOUTCON with a random
      */
     public long getSleepTime() {
@@ -397,7 +383,7 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     /**
      * Get the current setting on Read Limit (supposed to be not the value in the handler but in the
      * configuration)
-     * 
+     *
      * @return the current setting on Read Limit
      */
     protected abstract long getReadLimit();
@@ -405,14 +391,14 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     /**
      * Get the current setting on Write Limit (supposed to be not the value in the handler but in
      * the configuration)
-     * 
+     *
      * @return the current setting on Write Limit
      */
     protected abstract long getWriteLimit();
 
     /**
      * Set the handler
-     * 
+     *
      * @param handler
      */
     public void setHandler(AbstractTrafficShapingHandler handler) {
@@ -436,11 +422,13 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
      * Check every delay if the current cpu usage needs to relax or to constraint the bandwidth
      */
     public void run() {
-        if (constraintInactive)
+        if (constraintInactive) {
             return;
+        }
         double curLA = getLastLA();
-        if (!useBandwidthLimit)
+        if (!useBandwidthLimit) {
             return;
+        }
         if (curLA > highCpuLimit) {
             CurLimits curlimit = null;
             if (curLimits.isEmpty()) {
@@ -476,7 +464,7 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
                 // Not same limit so add this limit
                 curLimits.add(newlimit);
                 logger.debug("Set new low limit since CPU = " + curLA + " " + newwrite + ":"
-                        + newread);
+                             + newread);
                 handler.configure(newlimit.write, newlimit.read);
                 nbSinceLastDecrease += payload;
             }
@@ -505,11 +493,21 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
                 long newread = newlimit.read;
                 long newwrite = newlimit.write;
                 logger.debug("Set new upper limit since CPU = " + curLA + " " + newwrite + ":"
-                        + newread);
+                             + newread);
                 handler.configure(newwrite, newread);
                 // give extra payload to prevent a brutal return to normal
                 nbSinceLastDecrease = payload;
             }
+        }
+    }
+
+    private static class CurLimits {
+        long read;
+        long write;
+
+        private CurLimits(long read, long write) {
+            this.read = read;
+            this.write = write;
         }
     }
 }

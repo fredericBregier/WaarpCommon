@@ -1,22 +1,18 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with Waarp .  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility.test;
 
@@ -107,13 +103,15 @@ public class LongUuidTest {
         LongUuid[] uuidArray = new LongUuid[n];
 
         long start = System.currentTimeMillis();
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++) {
             uuidArray[i] = new LongUuid();
+        }
         long stop = System.currentTimeMillis();
         System.out.println("Time = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s");
 
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++) {
             uuids.add(uuidArray[i].getLong());
+        }
 
         System.out.println("Create " + n + " and get: " + uuids.size());
         assertEquals(n, uuids.size());
@@ -134,33 +132,14 @@ public class LongUuidTest {
                 }
             }
         }
-        if (largest == 0)
+        if (largest == 0) {
             largest = n;
+        }
         System.out.println(uuidArray[0] + "(" + uuidArray[0].getTimestamp() + ":" + uuidArray[0].getLong() + ") - " +
-                uuidArray[n - 1] + "(" + uuidArray[n - 1].getTimestamp() + ":" + uuidArray[n - 1].getLong() + ") = "
-                + (uuidArray[n - 1].getLong() - uuidArray[0].getLong() + 1));
+                           uuidArray[n - 1] + "(" + uuidArray[n - 1].getTimestamp() + ":" + uuidArray[n - 1].getLong() +
+                           ") = "
+                           + (uuidArray[n - 1].getLong() - uuidArray[0].getLong() + 1));
         System.out.println(largest + " different consecutive elements");
-    }
-
-    private static class Generator extends Thread {
-        private LongUuid[] uuids;
-        int id;
-        int n;
-        int numThreads;
-
-        public Generator(int n, LongUuid[] uuids, int id, int numThreads) {
-            this.n = n;
-            this.uuids = uuids;
-            this.id = id;
-            this.numThreads = numThreads;
-        }
-
-        @Override
-        public void run() {
-            for (int i = 0; i < n; i++) {
-                uuids[numThreads * i + id] = new LongUuid();
-            }
-        }
     }
 
     @Test
@@ -176,17 +155,40 @@ public class LongUuidTest {
             threads[i].start();
         }
 
-        for (int i = 0; i < numThreads; i++)
+        for (int i = 0; i < numThreads; i++) {
             threads[i].join();
+        }
         long stop = System.currentTimeMillis();
         System.out.println("Time = " + (stop - start) + " so " + (n * 1000 / (stop - start)) + " Uuids/s");
 
         Set<LongUuid> uuidSet = new HashSet<LongUuid>();
 
         int effectiveN = n / numThreads * numThreads;
-        for (int i = 0; i < effectiveN; i++)
+        for (int i = 0; i < effectiveN; i++) {
             uuidSet.add(uuids[i]);
+        }
 
         assertEquals(effectiveN, uuidSet.size());
+    }
+
+    private static class Generator extends Thread {
+        int id;
+        int n;
+        int numThreads;
+        private LongUuid[] uuids;
+
+        public Generator(int n, LongUuid[] uuids, int id, int numThreads) {
+            this.n = n;
+            this.uuids = uuids;
+            this.id = id;
+            this.numThreads = numThreads;
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < n; i++) {
+                uuids[numThreads * i + id] = new LongUuid();
+            }
+        }
     }
 }

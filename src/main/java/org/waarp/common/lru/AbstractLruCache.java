@@ -1,17 +1,16 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp. If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -21,24 +20,25 @@ import java.util.concurrent.Callable;
 
 /**
  * Base class for concrete implementations
- * 
+ *
  * @author Frederic Bregier
  * @author Damian Momot
- * 
+ *
  */
 public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> {
     private long ttl;
 
     /**
      * Constructs BaseLruCache
-     * 
+     *
      * @param ttl
      * @throws IllegalArgumentException
      *             if ttl is not positive
      */
     protected AbstractLruCache(long ttl) {
-        if (ttl <= 0)
+        if (ttl <= 0) {
             throw new IllegalArgumentException("ttl must be positive");
+        }
 
         this.ttl = ttl;
     }
@@ -52,9 +52,9 @@ public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> 
 
     /**
      * Creates new LruCacheEntry<V>.
-     * 
+     *
      * It can be used to change implementation of LruCacheEntry
-     * 
+     *
      * @param value
      * @param ttl
      * @return LruCacheEntry<V>
@@ -88,14 +88,15 @@ public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> 
     }
 
     public void setNewTtl(long ttl) {
-        if (ttl <= 0)
+        if (ttl <= 0) {
             throw new IllegalArgumentException("ttl must be positive");
+        }
         this.ttl = ttl;
     }
 
     /**
      * Returns LruCacheEntry mapped by key or null if it does not exist
-     * 
+     *
      * @param key
      * @return LruCacheEntry<V>
      */
@@ -111,7 +112,7 @@ public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> 
     /**
      * Tries to retrieve value by it's key. Automatically removes entry if it's not valid
      * (LruCacheEntry.getValue() returns null)
-     * 
+     *
      * @param key
      * @return Value
      */
@@ -141,13 +142,14 @@ public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> 
     }
 
     public void put(K key, V value, long ttl) {
-        if (value != null)
+        if (value != null) {
             putEntry(key, createEntry(value, ttl));
+        }
     }
 
     /**
      * Puts entry into cache
-     * 
+     *
      * @param key
      * @param entry
      */

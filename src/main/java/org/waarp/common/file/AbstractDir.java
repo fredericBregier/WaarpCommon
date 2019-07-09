@@ -1,28 +1,20 @@
 /**
  * This file is part of Waarp Project.
- * 
- * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the
- * COPYRIGHT.txt in the distribution for a full listing of individual contributors.
- * 
- * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author tags. See the COPYRIGHT.txt in the
+ * distribution for a full listing of individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * <p>
  * You should have received a copy of the GNU General Public License along with Waarp . If not, see
  * <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.file;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.waarp.common.command.exception.CommandAbstractException;
 import org.waarp.common.command.exception.Reply501Exception;
@@ -34,32 +26,20 @@ import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.utility.DetectionUtils;
 import org.waarp.common.utility.WaarpStringUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Abstract Main Implementation of Directory
- * 
+ *
  * @author Frederic Bregier
- * 
+ *
  */
 public abstract class AbstractDir implements DirInterface {
-    /**
-     * Internal Logger
-     */
-    private static final WaarpLogger logger = WaarpLoggerFactory
-            .getLogger(AbstractDir.class);
-    /**
-     * Current Directory
-     */
-    protected String currentDir = null;
-    /**
-     * SessionInterface
-     */
-    protected SessionInterface session;
-
-    /**
-     * Opts command for MLSx. (-1) means not supported, 0 supported but not active, 1 supported and
-     * active
-     */
-    protected OptsMLSxInterface optsMLSx;
     /**
      * Hack to say Windows or Unix (root like X:\ or /)
      */
@@ -68,6 +48,11 @@ public abstract class AbstractDir implements DirInterface {
      * Roots for Windows system
      */
     protected static final File[] roots;
+    /**
+     * Internal Logger
+     */
+    private static final WaarpLogger logger = WaarpLoggerFactory
+            .getLogger(AbstractDir.class);
 
     /**
      * Init Windows Support
@@ -82,7 +67,62 @@ public abstract class AbstractDir implements DirInterface {
     }
 
     /**
-     * 
+     * Current Directory
+     */
+    protected String currentDir = null;
+    /**
+     * SessionInterface
+     */
+    protected SessionInterface session;
+    /**
+     * Opts command for MLSx. (-1) means not supported, 0 supported but not active, 1 supported and
+     * active
+     */
+    protected OptsMLSxInterface optsMLSx;
+
+    /**
+     * Normalize Path to Internal unique representation
+     *
+     * @param path
+     * @return the normalized path
+     */
+    public static String normalizePath(String path) {
+        return path.replace('\\', SEPARATORCHAR);
+    }
+
+    /**
+     * Convert the URI representation of a file path to a simple path.
+     *
+     * If the path is not an URI, this method does nothing.
+     *
+     * @param path
+     * @return the normalized path
+     */
+    public static String pathFromURI(String path) {
+
+        if (path.startsWith("file://")) {
+            int charToRemove = 7;
+
+            if (path.charAt(7) == '/' && path.charAt(9) == ':') {
+                charToRemove++;
+            }
+
+            path = path.substring(charToRemove);
+            if (path.contains("%")) {
+                try {
+                    path = URLDecoder.decode(path, WaarpStringUtils.UTF8.name());
+                } catch (UnsupportedEncodingException e) {
+                    logger.warn("Cannot convert filename to UTF-8: " + path);
+                } catch (IllegalArgumentException e) {
+                    // ignore: it was propably not url-encoded!
+                }
+            }
+        }
+        return path;
+    }
+
+    /**
+     *
      * @param file
      * @return The corresponding Root file
      */
@@ -102,48 +142,7 @@ public abstract class AbstractDir implements DirInterface {
     }
 
     /**
-     * Normalize Path to Internal unique representation
-     * 
-     * @param path
-     * @return the normalized path
-     */
-    public static String normalizePath(String path) {
-        return path.replace('\\', SEPARATORCHAR);
-    }
-
-    /**
-     * Convert the URI representation of a file path to a simple path.
-     * 
-     * If the path is not an URI, this method does nothing.
-     * 
-     * @param path
-     * @return the normalized path
-     */
-    public static String pathFromURI(String path) {
-
-        if (path.startsWith("file://")) {
-            int charToRemove = 7;
-
-            if (path.charAt(7) == '/' && path.charAt(9) == ':') {
-                charToRemove++; 
-            }
-
-            path = path.substring(charToRemove);
-            if (path.contains("%")) {
-                try {
-                    path = URLDecoder.decode(path, WaarpStringUtils.UTF8.name());
-                } catch (UnsupportedEncodingException e) {
-                    logger.warn("Cannot convert filename to UTF-8: " + path);
-                } catch (IllegalArgumentException e) {
-                    // ignore: it was propably not url-encoded!
-                }
-            }
-        }
-        return path;
-    }
-
-    /**
-     * 
+     *
      * @return the SessionInterface
      */
     public SessionInterface getSession() {
@@ -174,7 +173,7 @@ public abstract class AbstractDir implements DirInterface {
     }
 
     /**
-     * 
+     *
      * @param path
      * @return True if the given Path is an absolute one under Windows System or should be an absolute one on Unix
      */
@@ -192,7 +191,7 @@ public abstract class AbstractDir implements DirInterface {
 
     /**
      * Consolidate Path as relative or absolute path to an absolute path
-     * 
+     *
      * @param path
      * @return the consolidated path
      * @throws CommandAbstractException
@@ -215,7 +214,7 @@ public abstract class AbstractDir implements DirInterface {
 
     /**
      * Construct the CanonicalPath without taking into account symbolic link
-     * 
+     *
      * @param dir
      * @return the canonicalPath
      */
@@ -268,7 +267,7 @@ public abstract class AbstractDir implements DirInterface {
 
     /**
      * Same as validatePath but from a FileInterface
-     * 
+     *
      * @param dir
      * @return the construct and validated path (could be different than the one given as argument,
      *         example: '..' are removed)
@@ -308,7 +307,7 @@ public abstract class AbstractDir implements DirInterface {
 
     /**
      * Validate a file according to the current Directory
-     * 
+     *
      * @param dir
      * @return True if validated
      * @throws CommandAbstractException
@@ -328,7 +327,7 @@ public abstract class AbstractDir implements DirInterface {
 
     /**
      * Finds all files matching a wildcard expression (based on '?', '~' or '*').
-     * 
+     *
      * @param pathWithWildcard
      *            The wildcard expression with a business path.
      * @return List of String as relative paths matching the wildcard expression. Those files are
@@ -348,13 +347,13 @@ public abstract class AbstractDir implements DirInterface {
     }
 
     public FileInterface setFile(String path,
-            boolean append) throws CommandAbstractException {
+                                 boolean append) throws CommandAbstractException {
         checkIdentify();
         String newpath = consolidatePath(path);
         List<String> paths = wildcardFiles(newpath);
         if (paths.size() != 1) {
             throw new Reply550Exception("File not found: " +
-                    paths.size() + " founds");
+                                        paths.size() + " founds");
         }
         String extDir = paths.get(0);
         return newFile(extDir, append);

@@ -31,163 +31,166 @@ import java.util.regex.Pattern;
  */
 public final class PatternPathRouterWithGroups<T> {
 
-  //GROUP_PATTERN is used for named wild card pattern in paths which is specified within braces.
-  //Example: {id}
-  public static final Pattern GROUP_PATTERN = Pattern.compile("\\{(.*?)\\}");
+    //GROUP_PATTERN is used for named wild card pattern in paths which is specified within braces.
+    //Example: {id}
+    public static final Pattern GROUP_PATTERN = Pattern.compile("\\{(.*?)\\}");
 
-  // non-greedy wild card match.
-  private static final Pattern WILD_CARD_PATTERN = Pattern.compile("\\*\\*");
+    // non-greedy wild card match.
+    private static final Pattern WILD_CARD_PATTERN = Pattern.compile("\\*\\*");
 
-  private final int maxPathParts;
-  private final List<ImmutablePair<Pattern, RouteDestinationWithGroups>> patternRouteList;
-
-  public static <T> PatternPathRouterWithGroups<T> create(int maxPathParts) {
-    return new PatternPathRouterWithGroups<T>(maxPathParts);
-  }
-
-  /**
-   * Initialize PatternPathRouterWithGroups.
-   */
-  public PatternPathRouterWithGroups(int maxPathParts) {
-    this.maxPathParts = maxPathParts;
-    this.patternRouteList = new ArrayList<ImmutablePair<Pattern, RouteDestinationWithGroups>>();
-  }
-
-  /**
-   * Add a source and destination.
-   *
-   * @param source  Source path to be routed. Routed path can have named wild-card pattern with braces "{}".
-   * @param destination Destination of the path.
-   */
-  public void add(final String source, final T destination) {
-
-    // replace multiple slashes with a single slash.
-    String path = source.replaceAll("/+", "/");
-
-    path = (path.endsWith("/") && path.length() > 1)
-      ? path.substring(0, path.length() - 1) : path;
-
-
-    String[] parts = path.split("/", maxPathParts + 2);
-    if (parts.length - 1 > maxPathParts) {
-      throw new IllegalArgumentException(String.format("Number of parts of path %s exceeds allowed limit %s",
-                                                       source, maxPathParts));
-    }
-    StringBuilder sb =  new StringBuilder();
-    List<String> groupNames = new ArrayList<String>();
-
-    for (String part : parts) {
-      Matcher groupMatcher = GROUP_PATTERN.matcher(part);
-      if (groupMatcher.matches()) {
-        groupNames.add(groupMatcher.group(1));
-        sb.append("([^/]+?)");
-      } else if (WILD_CARD_PATTERN.matcher(part).matches()) {
-        sb.append(".*?");
-      } else {
-        sb.append(part);
-      }
-      sb.append("/");
-    }
-
-    //Ignore the last "/"
-    sb.setLength(sb.length() - 1);
-
-    Pattern pattern = Pattern.compile(sb.toString());
-    patternRouteList.add(ImmutablePair.of(pattern, new RouteDestinationWithGroups(destination, groupNames)));
-  }
-
-  /**
-   * Get a list of destinations and the values matching templated parameter for the given path.
-   * Returns an empty list when there are no destinations that are matched.
-   *
-   * @param path path to be routed.
-   * @return List of Destinations matching the given route.
-   */
-  public List<RoutableDestination<T>> getDestinations(String path) {
-
-    String cleanPath = (path.endsWith("/") && path.length() > 1)
-      ? path.substring(0, path.length() - 1) : path;
-
-    List<RoutableDestination<T>> result = new ArrayList<RoutableDestination<T>>();
-
-    for (ImmutablePair<Pattern, RouteDestinationWithGroups> patternRoute : patternRouteList) {
-      Map<String, String> groupNameValuesBuilder = new HashMap<String, String>();
-      Matcher matcher =  patternRoute.getFirst().matcher(cleanPath);
-      if (matcher.matches()) {
-        int matchIndex = 1;
-        for (String name : patternRoute.getSecond().getGroupNames()) {
-          String value = matcher.group(matchIndex);
-          groupNameValuesBuilder.put(name, value);
-          matchIndex++;
-        }
-        result.add(new RoutableDestination<T>(patternRoute.getSecond().getDestination(), groupNameValuesBuilder));
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Helper class to store the groupNames and Destination.
-   */
-  private final class RouteDestinationWithGroups {
-
-    private final T destination;
-    private final List<String> groupNames;
-
-    public RouteDestinationWithGroups (T destination, List<String> groupNames) {
-      this.destination = destination;
-      this.groupNames = groupNames;
-    }
-
-    public T getDestination() {
-      return destination;
-    }
-
-    public List<String> getGroupNames() {
-      return groupNames;
-    }
-  }
-
-  /**
-   * Represents a matched destination.
-   * @param <T> Type of destination.
-   */
-  public static final class RoutableDestination<T> {
-    private final T destination;
-    private final Map<String, String> groupNameValues;
+    private final int maxPathParts;
+    private final List<ImmutablePair<Pattern, RouteDestinationWithGroups>> patternRouteList;
 
     /**
-     * Construct the RouteableDestination with the given parameters.
+     * Initialize PatternPathRouterWithGroups.
+     */
+    public PatternPathRouterWithGroups(int maxPathParts) {
+        this.maxPathParts = maxPathParts;
+        this.patternRouteList = new ArrayList<ImmutablePair<Pattern, RouteDestinationWithGroups>>();
+    }
+
+    public static <T> PatternPathRouterWithGroups<T> create(int maxPathParts) {
+        return new PatternPathRouterWithGroups<T>(maxPathParts);
+    }
+
+    /**
+     * Add a source and destination.
      *
-     * @param destination      destination of the route.
-     * @param groupNameValues  parameters
+     * @param source Source path to be routed. Routed path can have named wild-card pattern with braces "{}".
+     * @param destination Destination of the path.
      */
-    public RoutableDestination(T destination, Map<String, String> groupNameValues) {
-      this.destination = destination;
-      this.groupNameValues = groupNameValues;
+    public void add(final String source, final T destination) {
+
+        // replace multiple slashes with a single slash.
+        String path = source.replaceAll("/+", "/");
+
+        path = (path.endsWith("/") && path.length() > 1)
+                ? path.substring(0, path.length() - 1) : path;
+
+
+        String[] parts = path.split("/", maxPathParts + 2);
+        if (parts.length - 1 > maxPathParts) {
+            throw new IllegalArgumentException(String.format("Number of parts of path %s exceeds allowed limit %s",
+                                                             source, maxPathParts));
+        }
+        StringBuilder sb = new StringBuilder();
+        List<String> groupNames = new ArrayList<String>();
+
+        for (String part : parts) {
+            Matcher groupMatcher = GROUP_PATTERN.matcher(part);
+            if (groupMatcher.matches()) {
+                groupNames.add(groupMatcher.group(1));
+                sb.append("([^/]+?)");
+            } else if (WILD_CARD_PATTERN.matcher(part).matches()) {
+                sb.append(".*?");
+            } else {
+                sb.append(part);
+            }
+            sb.append("/");
+        }
+
+        //Ignore the last "/"
+        sb.setLength(sb.length() - 1);
+
+        Pattern pattern = Pattern.compile(sb.toString());
+        patternRouteList.add(ImmutablePair.of(pattern, new RouteDestinationWithGroups(destination, groupNames)));
     }
 
     /**
-     * @return destination of the route.
+     * Get a list of destinations and the values matching templated parameter for the given path. Returns an empty list
+     * when there are no destinations that are matched.
+     *
+     * @param path path to be routed.
+     *
+     * @return List of Destinations matching the given route.
      */
-    public T getDestination() {
-      return destination;
+    public List<RoutableDestination<T>> getDestinations(String path) {
+
+        String cleanPath = (path.endsWith("/") && path.length() > 1)
+                ? path.substring(0, path.length() - 1) : path;
+
+        List<RoutableDestination<T>> result = new ArrayList<RoutableDestination<T>>();
+
+        for (ImmutablePair<Pattern, RouteDestinationWithGroups> patternRoute : patternRouteList) {
+            Map<String, String> groupNameValuesBuilder = new HashMap<String, String>();
+            Matcher matcher = patternRoute.getFirst().matcher(cleanPath);
+            if (matcher.matches()) {
+                int matchIndex = 1;
+                for (String name : patternRoute.getSecond().getGroupNames()) {
+                    String value = matcher.group(matchIndex);
+                    groupNameValuesBuilder.put(name, value);
+                    matchIndex++;
+                }
+                result.add(
+                        new RoutableDestination<T>(patternRoute.getSecond().getDestination(), groupNameValuesBuilder));
+            }
+        }
+        return result;
     }
 
     /**
-     * @return Map of templated parameter and string representation group value matching the templated parameter as
-     * the value.
+     * Represents a matched destination.
+     *
+     * @param <T> Type of destination.
      */
-    public Map<String, String> getGroupNameValues() {
-      return groupNameValues;
+    public static final class RoutableDestination<T> {
+        private final T destination;
+        private final Map<String, String> groupNameValues;
+
+        /**
+         * Construct the RouteableDestination with the given parameters.
+         *
+         * @param destination destination of the route.
+         * @param groupNameValues parameters
+         */
+        public RoutableDestination(T destination, Map<String, String> groupNameValues) {
+            this.destination = destination;
+            this.groupNameValues = groupNameValues;
+        }
+
+        /**
+         * @return destination of the route.
+         */
+        public T getDestination() {
+            return destination;
+        }
+
+        /**
+         * @return Map of templated parameter and string representation group value matching the templated parameter as
+         * the value.
+         */
+        public Map<String, String> getGroupNameValues() {
+            return groupNameValues;
+        }
+
+        @Override
+        public String toString() {
+            return "RoutableDestination{" +
+                   "destination=" + destination +
+                   ", groupNameValues=" + groupNameValues +
+                   '}';
+        }
     }
 
-    @Override
-    public String toString() {
-      return "RoutableDestination{" +
-        "destination=" + destination +
-        ", groupNameValues=" + groupNameValues +
-        '}';
+    /**
+     * Helper class to store the groupNames and Destination.
+     */
+    private final class RouteDestinationWithGroups {
+
+        private final T destination;
+        private final List<String> groupNames;
+
+        public RouteDestinationWithGroups(T destination, List<String> groupNames) {
+            this.destination = destination;
+            this.groupNames = groupNames;
+        }
+
+        public T getDestination() {
+            return destination;
+        }
+
+        public List<String> getGroupNames() {
+            return groupNames;
+        }
     }
-  }
 }
