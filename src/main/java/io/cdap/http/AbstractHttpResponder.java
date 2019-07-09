@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * This file is part of Waarp Project (named also Waarp or GG).
+ *
+ *  Copyright (c) 2019, Waarp SAS, and individual contributors by the @author
+ *  tags. See the COPYRIGHT.txt in the distribution for a full listing of
+ *  individual contributors.
+ *
+ *  All Waarp Project is free software: you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or (at your
+ *  option) any later version.
+ *
+ *  Waarp is distributed in the hope that it will be useful, but WITHOUT ANY
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ *  A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along with
+ *  Waarp . If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+
 /*
  * Copyright © 2014-2019 Cask Data, Inc.
  *
@@ -26,19 +46,48 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
- * Base implementation of {@link HttpResponder} to simplify child implementations.
+ * Base implementation of {@link HttpResponder} to simplify child
+ * implementations.
  */
 public abstract class AbstractHttpResponder implements HttpResponder {
 
   protected static final String OCTET_STREAM_TYPE = "application/octet-stream";
+
   @Override
   public void sendJson(HttpResponseStatus status, String jsonString) {
-    sendString(status, jsonString, new DefaultHttpHeaders().add(HttpHeaderNames.CONTENT_TYPE.toString(),
-                                                                "application/json"));
+    sendString(status, jsonString, new DefaultHttpHeaders()
+        .add(HttpHeaderNames.CONTENT_TYPE.toString(),
+             "application/json"));
+  }
+
+  @Override
+  public void sendString(HttpResponseStatus status, String data,
+                         HttpHeaders headers) {
+    if (data == null) {
+      sendStatus(status, headers);
+      return;
+    }
+    ByteBuf buffer = Unpooled.wrappedBuffer(InternalUtil.UTF_8.encode(data));
+    sendContent(status, buffer,
+                addContentTypeIfMissing(new DefaultHttpHeaders().add(headers),
+                                        "text/plain; charset=utf-8"));
+  }
+
+  @Override
+  public void sendStatus(HttpResponseStatus status, HttpHeaders headers) {
+    sendContent(status, Unpooled.EMPTY_BUFFER, headers);
+  }
+
+  protected final HttpHeaders addContentTypeIfMissing(HttpHeaders headers,
+                                                      String contentType) {
+    if (!headers.contains(HttpHeaderNames.CONTENT_TYPE)) {
+      headers.set(HttpHeaderNames.CONTENT_TYPE, contentType);
+    }
+
+    return headers;
   }
 
   @Override
@@ -47,34 +96,20 @@ public abstract class AbstractHttpResponder implements HttpResponder {
   }
 
   @Override
-  public void sendString(HttpResponseStatus status, String data, HttpHeaders headers) {
-    if (data == null) {
-      sendStatus(status, headers);
-      return;
-    }
-    ByteBuf buffer = Unpooled.wrappedBuffer(InternalUtil.UTF_8.encode(data));
-    sendContent(status, buffer, addContentTypeIfMissing(new DefaultHttpHeaders().add(headers),
-                                                        "text/plain; charset=utf-8"));
-  }
-
-  @Override
   public void sendStatus(HttpResponseStatus status) {
     sendContent(status, Unpooled.EMPTY_BUFFER, EmptyHttpHeaders.INSTANCE);
   }
 
   @Override
-  public void sendStatus(HttpResponseStatus status, HttpHeaders headers) {
-    sendContent(status, Unpooled.EMPTY_BUFFER, headers);
-  }
-
-  @Override
-  public void sendByteArray(HttpResponseStatus status, byte[] bytes, HttpHeaders headers) {
+  public void sendByteArray(HttpResponseStatus status, byte[] bytes,
+                            HttpHeaders headers) {
     ByteBuf buffer = Unpooled.wrappedBuffer(bytes);
     sendContent(status, buffer, headers);
   }
 
   @Override
-  public void sendBytes(HttpResponseStatus status, ByteBuffer buffer, HttpHeaders headers) {
+  public void sendBytes(HttpResponseStatus status, ByteBuffer buffer,
+                        HttpHeaders headers) {
     sendContent(status, Unpooled.wrappedBuffer(buffer), headers);
   }
 
@@ -86,13 +121,5 @@ public abstract class AbstractHttpResponder implements HttpResponder {
   @Override
   public ChunkResponder sendChunkStart(HttpResponseStatus status) {
     return sendChunkStart(status, EmptyHttpHeaders.INSTANCE);
-  }
-
-  protected final HttpHeaders addContentTypeIfMissing(HttpHeaders headers, String contentType) {
-    if (!headers.contains(HttpHeaderNames.CONTENT_TYPE)) {
-      headers.set(HttpHeaderNames.CONTENT_TYPE, contentType);
-    }
-
-    return headers;
   }
 }
