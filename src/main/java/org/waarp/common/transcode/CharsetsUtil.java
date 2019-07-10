@@ -35,16 +35,13 @@ import java.util.SortedMap;
 /**
  * Helper to print in output the Charsets available in the JVM.<br>
  * <br>
- * -html will output HTML format<br>
- * -text (default) will output TEXT format<br>
- * -csv will output CSV (comma separated) format<br>
+ * -html will output HTML format<br> -text (default) will output TEXT format<br> -csv will output CSV (comma separated)
+ * format<br>
  * <br>
- * Allow also to transcode one file to another: all arguments mandatory<br>
- * -from filename charset<br>
- * -to filename charset<br>
+ * Allow also to transcode one file to another: all arguments mandatory<br> -from filename charset<br> -to filename
+ * charset<br>
  *
  * @author Frederic Bregier
- *
  */
 public class CharsetsUtil {
     /**
@@ -94,9 +91,7 @@ public class CharsetsUtil {
     }
 
     /**
-     *
-     * @param format
-     *            0 = html, 1 = text, 2 = csv
+     * @param format 0 = html, 1 = text, 2 = csv
      */
     public static void printOutCharsetsAvailable(int format) {
         SortedMap<String, Charset> map = Charset.availableCharsets();
@@ -193,6 +188,7 @@ public class CharsetsUtil {
      * @param toFilename
      * @param toCharset
      * @param bufferSize
+     *
      * @return True if OK, else False (will log the reason)
      */
     public static boolean transcode(String srcFilename, String fromCharset, String toFilename, String toCharset,

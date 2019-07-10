@@ -44,7 +44,6 @@ import java.util.Map;
  * JSON handler using adaptative format (Smile or Json - in that order -)
  *
  * @author "Frederic Bregier"
- *
  */
 public class AdaptativeJsonHandler {
 
@@ -60,6 +59,7 @@ public class AdaptativeJsonHandler {
     private static final HashMap<String, JsonCodec> factoryForName = JsonCodec.getHashMap();
     ObjectMapper mapper;
     private JsonCodec codec;
+
     public AdaptativeJsonHandler(JsonCodec codec) {
         this.codec = codec;
         mapper = codec.mapper;
@@ -110,7 +110,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @return the associated codec
      */
     public JsonCodec getCodec() {
@@ -118,7 +117,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @return an empty ObjectNode
      */
     public final ObjectNode createObjectNode() {
@@ -126,7 +124,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @return an empty ArrayNode
      */
     public final ArrayNode createArrayNode() {
@@ -134,8 +131,8 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param value
+     *
      * @return the objectNode or null if an error occurs
      */
     public final ObjectNode getFromString(String value) {
@@ -149,8 +146,8 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param object
+     *
      * @return the Json representation of the object
      */
     public final String writeAsString(Object object) {
@@ -162,9 +159,9 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
+     *
      * @return the String if the field exists, else null
      */
     public final String getString(ObjectNode node, String field) {
@@ -172,9 +169,9 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
+     *
      * @return the String if the field exists, else null
      */
     public final String getString(ObjectNode node, Enum<?> field) {
@@ -182,10 +179,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the String if the field exists, else defValue
      */
     public final String getValue(ObjectNode node, String field, String defValue) {
@@ -201,10 +198,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Boolean if the field exists, else defValue
      */
     public final Boolean getValue(ObjectNode node, String field, boolean defValue) {
@@ -212,10 +209,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Double if the field exists, else defValue
      */
     public final Double getValue(ObjectNode node, String field, double defValue) {
@@ -223,10 +220,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Long if the field exists, else defValue
      */
     public final Long getValue(ObjectNode node, String field, long defValue) {
@@ -234,10 +231,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Integer if the field exists, else defValue
      */
     public final Integer getValue(ObjectNode node, String field, int defValue) {
@@ -245,10 +242,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the byte array if the field exists, else defValue
      */
     public final byte[] getValue(ObjectNode node, String field, byte[] defValue) {
@@ -264,7 +261,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -274,7 +270,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -284,7 +279,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -294,7 +288,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -304,7 +297,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -317,7 +309,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -330,9 +321,9 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
+     *
      * @return True if all fields exist
      */
     public final boolean exist(ObjectNode node, String... field) {
@@ -345,10 +336,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the String if the field exists, else defValue
      */
     public final String getValue(ObjectNode node, Enum<?> field, String defValue) {
@@ -356,10 +347,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Boolean if the field exists, else defValue
      */
     public final Boolean getValue(ObjectNode node, Enum<?> field, boolean defValue) {
@@ -367,10 +358,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Double if the field exists, else defValue
      */
     public final Double getValue(ObjectNode node, Enum<?> field, double defValue) {
@@ -378,10 +369,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Long if the field exists, else defValue
      */
     public final Long getValue(ObjectNode node, Enum<?> field, long defValue) {
@@ -389,10 +380,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Integer if the field exists, else defValue
      */
     public final Integer getValue(ObjectNode node, Enum<?> field, int defValue) {
@@ -400,10 +391,10 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the byte array if the field exists, else defValue
      */
     public final byte[] getValue(ObjectNode node, Enum<?> field, byte[] defValue) {
@@ -411,7 +402,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -421,7 +411,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -431,7 +420,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -441,7 +429,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -451,7 +438,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -464,7 +450,6 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -477,9 +462,9 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
+     *
      * @return True if all fields exist
      */
     public final boolean exist(ObjectNode node, Enum<?>... field) {
@@ -492,8 +477,8 @@ public class AdaptativeJsonHandler {
     }
 
     /**
-     *
      * @param value
+     *
      * @return the corresponding HashMap
      */
     public final Map<String, Object> getMapFromString(String value) {

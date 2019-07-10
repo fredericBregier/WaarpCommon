@@ -22,12 +22,11 @@ import java.io.File;
  * JDK6 version of specific functions for Filesystem.
  *
  * @author Frederic Bregier
- *
  */
 public class FilesystemBasedDirJdk6 extends FilesystemBasedDirJdkAbstract {
     /**
-     *
      * @param file
+     *
      * @return True if the file is executable
      */
     @Override
@@ -36,8 +35,8 @@ public class FilesystemBasedDirJdk6 extends FilesystemBasedDirJdkAbstract {
     }
 
     /**
-     *
      * @param directory
+     *
      * @return the free space of the given Directory
      */
     @Override

@@ -29,7 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Example of usage for MachineState based on ExampleEnumState enum class
  *
  * @author Frederic Bregier
- *
  */
 public class ExampleUsageMachineState {
     /**

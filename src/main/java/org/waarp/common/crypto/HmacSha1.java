@@ -20,8 +20,7 @@ import javax.crypto.Cipher;
 import javax.crypto.Mac;
 
 /**
- * This class handles methods to crypt (not decrypt) messages with HmacSha1 algorithm (very efficient:
- * 136000/s).<br>
+ * This class handles methods to crypt (not decrypt) messages with HmacSha1 algorithm (very efficient: 136000/s).<br>
  * <br>
  * Usage:<br>
  * <ul>
@@ -37,7 +36,6 @@ import javax.crypto.Mac;
  * </ul>
  *
  * @author frederic bregier
- *
  */
 public class HmacSha1 extends KeyObject {
     public final static String EXTENSION = "hs1";

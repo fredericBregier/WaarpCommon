@@ -25,7 +25,6 @@ import java.util.List;
  * This interface is for Object used in Passthrough mode.
  *
  * @author Frederic Bregier
- *
  */
 public interface PassthroughFile {
 
@@ -58,11 +57,13 @@ public interface PassthroughFile {
     public void flush() throws PassthroughException;
 
     /**
-     * Note: be aware to not directly use transferTo or transferFrom at once but to use them by
-     * chunk to prevent memory usage (mmap used under the wood by the JVM)
+     * Note: be aware to not directly use transferTo or transferFrom at once but to use them by chunk to prevent memory
+     * usage (mmap used under the wood by the JVM)
      *
      * @param out
+     *
      * @return the size in bytes transfered
+     *
      * @throws PassthroughException
      */
     public long transferTo(FileChannel out) throws PassthroughException;

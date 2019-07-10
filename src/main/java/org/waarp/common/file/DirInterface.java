@@ -25,7 +25,6 @@ import java.util.List;
  * Interface for Directory support
  *
  * @author Frederic Bregier
- *
  */
 public interface DirInterface {
     /**
@@ -39,7 +38,6 @@ public interface DirInterface {
     public static final char SEPARATORCHAR = '/';
 
     /**
-     *
      * @return the current value of Options for MLSx
      */
     public OptsMLSxInterface getOptsMLSx();
@@ -51,7 +49,6 @@ public interface DirInterface {
 
     /**
      * Init DirInterface after authentication is done
-     *
      */
     public void initAfterIdentification();
 
@@ -63,7 +60,6 @@ public interface DirInterface {
     public void checkIdentify() throws Reply530Exception;
 
     /**
-     *
      * @return the FtpSession
      */
     public SessionInterface getSession();
@@ -74,8 +70,10 @@ public interface DirInterface {
      * Construct and Check if the given path is valid from business point of view (see {@link AuthInterface})
      *
      * @param path
-     * @return the construct and validated path (could be different than the one given as argument,
-     *         example: '..' are removed)
+     *
+     * @return the construct and validated path (could be different than the one given as argument, example: '..' are
+     * removed)
+     *
      * @throws CommandAbstractException
      */
     public abstract String validatePath(String path)
@@ -85,13 +83,15 @@ public interface DirInterface {
      * Check if the given path is valid in the sens starting from the current directory
      *
      * @param path
+     *
      * @return True if OK
      */
     public abstract boolean isPathInCurrentDir(String path);
 
     /**
      * @return the current PWD
-     * @exception CommandAbstractException
+     *
+     * @throws CommandAbstractException
      */
     public abstract String getPwd() throws CommandAbstractException;
 
@@ -99,7 +99,9 @@ public interface DirInterface {
      * Change directory with the one given as argument
      *
      * @param path
+     *
      * @return True if the change is valid
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean changeDirectory(String path)
@@ -109,7 +111,9 @@ public interface DirInterface {
      * Change directory with the one given as argument without checking existence
      *
      * @param path
+     *
      * @return True if the change is valid
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean changeDirectoryNotChecked(String path)
@@ -119,6 +123,7 @@ public interface DirInterface {
      * Change for parent directory
      *
      * @return True if the change is valid
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean changeParentDirectory()
@@ -128,8 +133,10 @@ public interface DirInterface {
      * Create the directory associated with the String as path
      *
      * @param directory
+     *
      * @return the full path of the new created directory
-     * @exception CommandAbstractException
+     *
+     * @throws CommandAbstractException
      */
     public abstract String mkdir(String directory)
             throws CommandAbstractException;
@@ -138,8 +145,10 @@ public interface DirInterface {
      * Delete the directory associated with the String as path
      *
      * @param directory
+     *
      * @return the full path of the new deleted directory
-     * @exception CommandAbstractException
+     *
+     * @throws CommandAbstractException
      */
     public abstract String rmdir(String directory)
             throws CommandAbstractException;
@@ -148,7 +157,9 @@ public interface DirInterface {
      * Is the given path a directory and exists
      *
      * @param path
+     *
      * @return True if it is a directory and it exists
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean isDirectory(String path)
@@ -158,7 +169,9 @@ public interface DirInterface {
      * Is the given path a file and exists
      *
      * @param path
+     *
      * @return True if it is a file and it exists
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean isFile(String path) throws CommandAbstractException;
@@ -167,7 +180,9 @@ public interface DirInterface {
      * Return the Modification time for the path
      *
      * @param path
+     *
      * @return the Modification time as a String YYYYMMDDHHMMSS.sss
+     *
      * @throws CommandAbstractException
      */
     public abstract String getModificationTime(String path)
@@ -177,7 +192,9 @@ public interface DirInterface {
      * List all files from the given path (could be a file or a directory)
      *
      * @param path
+     *
      * @return the list of paths
+     *
      * @throws CommandAbstractException
      */
     public abstract List<String> list(String path)
@@ -187,9 +204,10 @@ public interface DirInterface {
      * List all files with other informations from the given path (could be a file or a directory)
      *
      * @param path
-     * @param lsFormat
-     *            True if ls Format, else MLSx format
+     * @param lsFormat True if ls Format, else MLSx format
+     *
      * @return the list of paths and other informations
+     *
      * @throws CommandAbstractException
      */
     public abstract List<String> listFull(String path, boolean lsFormat)
@@ -199,17 +217,18 @@ public interface DirInterface {
      * Give for 1 file all informations from the given path (could be a file or a directory)
      *
      * @param path
-     * @param lsFormat
-     *            True if ls Format, else MLSx format
+     * @param lsFormat True if ls Format, else MLSx format
+     *
      * @return the path and other informations
+     *
      * @throws CommandAbstractException
      */
     public abstract String fileFull(String path, boolean lsFormat)
             throws CommandAbstractException;
 
     /**
-     *
      * @return the free space of the current Directory
+     *
      * @throws CommandAbstractException
      */
     public abstract long getFreeSpace() throws CommandAbstractException;
@@ -221,7 +240,9 @@ public interface DirInterface {
      *
      * @param path
      * @param append
+     *
      * @return the new FileInterface
+     *
      * @throws CommandAbstractException
      */
     public abstract FileInterface newFile(String path, boolean append)
@@ -231,10 +252,10 @@ public interface DirInterface {
      * Set a path as the current FileInterface
      *
      * @param path
-     * @param append
-     *            True if this file is supposed to be in append mode (APPE), False in any other
-     *            cases
+     * @param append True if this file is supposed to be in append mode (APPE), False in any other cases
+     *
      * @return the FileInterface if it is correctly initiate
+     *
      * @throws CommandAbstractException
      */
     public abstract FileInterface setFile(String path, boolean append)
@@ -244,6 +265,7 @@ public interface DirInterface {
      * Set a new unique path as the current FileInterface from the current Directory (STOU)
      *
      * @return the FileInterface if it is correctly initiate
+     *
      * @throws CommandAbstractException
      */
     public abstract FileInterface setUniqueFile()
@@ -251,20 +273,21 @@ public interface DirInterface {
 
     /**
      * @return True if the current FileInterface is ready for reading
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean canRead() throws CommandAbstractException;
 
     /**
-     *
      * @return True if the current FileInterface is ready for writing
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean canWrite() throws CommandAbstractException;
 
     /**
-     *
      * @return True if the current FileInterface exists
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean exists() throws CommandAbstractException;
@@ -273,7 +296,9 @@ public interface DirInterface {
      * Get the CRC of the given FileInterface
      *
      * @param path
+     *
      * @return the CRC
+     *
      * @throws CommandAbstractException
      */
     public abstract long getCRC(String path) throws CommandAbstractException;
@@ -282,7 +307,9 @@ public interface DirInterface {
      * Get the MD5 of the given FileInterface
      *
      * @param path
+     *
      * @return the MD5
+     *
      * @throws CommandAbstractException
      */
     public abstract byte[] getMD5(String path) throws CommandAbstractException;
@@ -291,7 +318,9 @@ public interface DirInterface {
      * Get the SHA-1 of the given FileInterface
      *
      * @param path
+     *
      * @return the SHA-1
+     *
      * @throws CommandAbstractException
      */
     public abstract byte[] getSHA1(String path) throws CommandAbstractException;

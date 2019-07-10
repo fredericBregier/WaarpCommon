@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 502 Command not implemented.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply502Exception extends CommandAbstractException {
 

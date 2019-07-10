@@ -85,6 +85,7 @@ public final class NettyHttpService {
     private ChannelGroup channelGroup;
     private EventExecutorGroup eventExecutorGroup;
     private InetSocketAddress bindAddress;
+
     /**
      * Initialize NettyHttpService. Also includes SSL implementation.
      *

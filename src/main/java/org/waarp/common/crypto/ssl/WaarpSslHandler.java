@@ -25,7 +25,6 @@ import javax.net.ssl.SSLEngine;
 
 /**
  * @author "Frederic Bregier"
- *
  */
 public class WaarpSslHandler extends SslHandler {
     /**

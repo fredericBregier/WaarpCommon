@@ -21,7 +21,6 @@ import com.jezhumble.javasysmon.JavaSysMon;
 
 /**
  * @author bregier
- *
  */
 class CpuManagementSysmon implements CpuManagementInterface {
     public static long delay = 1000;
@@ -33,9 +32,7 @@ class CpuManagementSysmon implements CpuManagementInterface {
     long time;
 
     /**
-     *
-     * @throws UnsupportedOperationException
-     *             if System Load Average is not supported
+     * @throws UnsupportedOperationException if System Load Average is not supported
      */
     public CpuManagementSysmon() throws UnsupportedOperationException {
         sysMon = new JavaSysMon();
@@ -45,7 +42,6 @@ class CpuManagementSysmon implements CpuManagementInterface {
     }
 
     /**
-     *
      * @return the load average
      */
     public double getLoadAverage() {

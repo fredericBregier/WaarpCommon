@@ -23,7 +23,6 @@ import java.sql.Timestamp;
  * Type of Classes supported in Enum type
  *
  * @author Frederic Bregier
- *
  */
 public enum XmlType {
     BOOLEAN(Boolean.TYPE), INTEGER(Integer.TYPE), FLOAT(Float.TYPE), CHARACTER(
@@ -42,7 +41,6 @@ public enum XmlType {
     }
 
     /**
-     *
      * @return the associated Native Java class
      */
     public Class<?> getClassType() {
@@ -50,8 +48,8 @@ public enum XmlType {
     }
 
     /**
-     *
      * @param value
+     *
      * @return True if the Object is natively compatible with the internal Type
      */
     public boolean isNativelyCompatible(Object value) {

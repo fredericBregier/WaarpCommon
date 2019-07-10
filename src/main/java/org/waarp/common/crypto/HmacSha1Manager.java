@@ -25,7 +25,6 @@ public class HmacSha1Manager extends KeyManager {
     static final HmacSha1Manager manager = new HmacSha1Manager();
 
     /**
-     *
      * @return the current KeyManager
      */
     public static final KeyManager getInstance() {

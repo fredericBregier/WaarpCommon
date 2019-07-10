@@ -45,14 +45,14 @@ import java.util.List;
  * </ul>
  *
  * @author Frederic Bregier
- *
  */
 public class XmlUtil {
 
     /**
-     *
      * @param filename
+     *
      * @return Existing Document from filename
+     *
      * @throws IOException
      * @throws DocumentException
      */
@@ -66,9 +66,10 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param file
+     *
      * @return Existing Document from file
+     *
      * @throws IOException
      * @throws DocumentException
      */
@@ -84,9 +85,10 @@ public class XmlUtil {
     /**
      * Read the document from the string
      *
-     * @param document
-     *            as String
+     * @param document as String
+     *
      * @return the Document
+     *
      * @throws DocumentException
      */
     static public Document readDocument(String document)
@@ -95,8 +97,8 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param document
+     *
      * @return the document as an XML string
      */
     static public String writeToString(Document document) {
@@ -104,8 +106,8 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param element
+     *
      * @return the element as an XML string
      */
     static public String writeToString(Element element) {
@@ -113,7 +115,6 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @return an empty new Document
      */
     static public Document createEmptyDocument() {
@@ -125,6 +126,7 @@ public class XmlUtil {
      *
      * @param filename
      * @param document
+     *
      * @throws IOException
      */
     static public void saveDocument(String filename, Document document)
@@ -138,6 +140,7 @@ public class XmlUtil {
      *
      * @param file
      * @param document
+     *
      * @throws IOException
      */
     static public void saveDocument(File file, Document document)
@@ -154,6 +157,7 @@ public class XmlUtil {
      *
      * @param outWriter
      * @param document
+     *
      * @throws IOException
      */
     static public void saveDocument(Writer outWriter, Document document)
@@ -171,6 +175,7 @@ public class XmlUtil {
      *
      * @param filename
      * @param element
+     *
      * @throws IOException
      */
     static public void saveElement(String filename, Element element)
@@ -184,6 +189,7 @@ public class XmlUtil {
      *
      * @param file
      * @param element
+     *
      * @throws IOException
      */
     static public void saveElement(File file, Element element)
@@ -200,8 +206,8 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param document
+     *
      * @return the root Element from the document
      */
     static public Element getRootElement(Document document) {
@@ -209,12 +215,12 @@ public class XmlUtil {
     }
 
     /**
-     * Add or Get (if already existing) an element given by the path relative to the referent
-     * element and set the value
+     * Add or Get (if already existing) an element given by the path relative to the referent element and set the value
      *
      * @param ref
      * @param path
      * @param value
+     *
      * @return the new added or already existing element with new value
      */
     static public Element addOrSetElement(Element ref, String path, String value) {
@@ -224,11 +230,11 @@ public class XmlUtil {
     }
 
     /**
-     * Add or Get (if already existing) an element given by the path relative to the referent
-     * element
+     * Add or Get (if already existing) an element given by the path relative to the referent element
      *
      * @param ref
      * @param path
+     *
      * @return the new added or already existing element
      */
     static public Element addOrGetElement(Element ref, String path) {
@@ -253,6 +259,7 @@ public class XmlUtil {
      * @param ref
      * @param path
      * @param value
+     *
      * @return the new added element with value
      */
     static public Element addAndSetElementMultiple(Element ref, String path,
@@ -267,6 +274,7 @@ public class XmlUtil {
      *
      * @param ref
      * @param path
+     *
      * @return the new added element
      */
     static public Element addAndGetElementMultiple(Element ref, String path) {
@@ -291,10 +299,11 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param ref
      * @param path
+     *
      * @return the parent element associated with the path relatively to the referent element
+     *
      * @throws DocumentException
      */
     static public Element getParentElement(Element ref, String path)
@@ -311,10 +320,11 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param ref
      * @param path
+     *
      * @return the element associated with the path relatively to the referent element
+     *
      * @throws DocumentException
      */
     static public Element getElement(Element ref, String path)
@@ -331,10 +341,11 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param ref
      * @param path
+     *
      * @return the element associated with the path relatively to the referent element
+     *
      * @throws DocumentException
      */
     @SuppressWarnings("unchecked")
@@ -352,12 +363,12 @@ public class XmlUtil {
     }
 
     /**
-     * Add or Get (if already existing) an element given by the path relative to the document and
-     * set the value
+     * Add or Get (if already existing) an element given by the path relative to the document and set the value
      *
      * @param doc
      * @param path
      * @param value
+     *
      * @return the new added or already existing element with new value
      */
     static public Element addOrSetElement(Document doc, String path,
@@ -372,6 +383,7 @@ public class XmlUtil {
      *
      * @param doc
      * @param path
+     *
      * @return the new added or already existing element
      */
     static public Element addOrGetElement(Document doc, String path) {
@@ -409,6 +421,7 @@ public class XmlUtil {
      * @param doc
      * @param path
      * @param value
+     *
      * @return the new added element with value
      */
     static public Element addAndSetElementMultiple(Document doc, String path,
@@ -423,6 +436,7 @@ public class XmlUtil {
      *
      * @param doc
      * @param path
+     *
      * @return the new added element
      */
     static public Element addAndGetElementMultiple(Document doc, String path) {
@@ -464,10 +478,11 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param doc
      * @param path
+     *
      * @return the Parent element associated with the path relatively to the document
+     *
      * @throws DocumentException
      */
     static public Element getParentElement(Document doc, String path)
@@ -480,10 +495,11 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param doc
      * @param path
+     *
      * @return the element associated with the path relatively to the document
+     *
      * @throws DocumentException
      */
     static public Element getElement(Document doc, String path)
@@ -496,10 +512,11 @@ public class XmlUtil {
     }
 
     /**
-     *
      * @param doc
      * @param path
+     *
      * @return the element associated with the path relatively to the document
+     *
      * @throws DocumentException
      */
     @SuppressWarnings("unchecked")
@@ -517,6 +534,7 @@ public class XmlUtil {
      *
      * @param doc
      * @param decls
+     *
      * @return XmlValues
      */
     static public XmlValue[] read(Document doc, XmlDecl[] decls) {
@@ -603,6 +621,7 @@ public class XmlUtil {
      *
      * @param ref
      * @param decls
+     *
      * @return XmlValues
      */
     static public XmlValue[] read(Element ref, XmlDecl[] decls) {
@@ -1021,9 +1040,9 @@ public class XmlUtil {
      * Write the given XML document to filename using the encoding
      *
      * @param filename
-     * @param encoding
-     *            if null, default encoding UTF-8 will be used
+     * @param encoding if null, default encoding UTF-8 will be used
      * @param document
+     *
      * @throws IOException
      */
     public static void writeXML(String filename, String encoding, Document document)

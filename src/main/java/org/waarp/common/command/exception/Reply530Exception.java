@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 530 Not logged in.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply530Exception extends CommandAbstractException {
 

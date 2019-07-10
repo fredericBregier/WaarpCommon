@@ -33,19 +33,16 @@ import java.util.List;
 
 /**
  * @author Frederic Bregier
- *
  */
 public class ZipUtility {
 
     /**
      * Create a new Zip from a root directory
      *
-     * @param directory
-     *            the base directory
-     * @param filename
-     *            the output filename
-     * @param absolute
-     *            store absolute filepath (from directory) or only filename
+     * @param directory the base directory
+     * @param filename the output filename
+     * @param absolute store absolute filepath (from directory) or only filename
+     *
      * @return True if OK
      */
     public static boolean createZipFromDirectory(String directory, String filename, boolean absolute) {
@@ -93,6 +90,7 @@ public class ZipUtility {
      * @param file
      * @param zaos
      * @param absolute
+     *
      * @throws IOException
      */
     private static void recurseFiles(File root, File file, ZipArchiveOutputStream zaos,
@@ -122,10 +120,9 @@ public class ZipUtility {
     /**
      * Create a new Zip from a list of Files (only name of files will be used)
      *
-     * @param files
-     *            list of files to add
-     * @param filename
-     *            the output filename
+     * @param files list of files to add
+     * @param filename the output filename
+     *
      * @return True if OK
      */
     public static boolean createZipFromFiles(List<File> files, String filename) {
@@ -135,10 +132,9 @@ public class ZipUtility {
     /**
      * Create a new Zip from an array of Files (only name of files will be used)
      *
-     * @param files
-     *            array of files to add
-     * @param filename
-     *            the output filename
+     * @param files array of files to add
+     * @param filename the output filename
+     *
      * @return True if OK
      */
     public static boolean createZipFromFiles(File[] files, String filename) {
@@ -184,6 +180,7 @@ public class ZipUtility {
      *
      * @param file
      * @param zaos
+     *
      * @throws IOException
      */
     private static void addFile(File file, ZipArchiveOutputStream zaos) throws IOException {
@@ -202,7 +199,9 @@ public class ZipUtility {
      *
      * @param tarFile
      * @param directory
+     *
      * @return the list of extracted filenames
+     *
      * @throws IOException
      */
     public static List<String> unZip(File tarFile, File directory) throws IOException {

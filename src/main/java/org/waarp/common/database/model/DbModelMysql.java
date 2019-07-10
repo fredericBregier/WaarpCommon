@@ -41,7 +41,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * MySQL Database Model implementation
  *
  * @author Frederic Bregier
- *
  */
 public abstract class DbModelMysql extends DbModelAbstract {
     /**
@@ -63,6 +62,7 @@ public abstract class DbModelMysql extends DbModelAbstract {
      * @param dbpasswd
      * @param timer
      * @param delay
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbModelMysql(String dbserver, String dbuser, String dbpasswd, Timer timer, long delay)
@@ -85,6 +85,7 @@ public abstract class DbModelMysql extends DbModelAbstract {
      * @param dbserver
      * @param dbuser
      * @param dbpasswd
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbModelMysql(String dbserver, String dbuser, String dbpasswd)

@@ -36,7 +36,6 @@ import java.text.SimpleDateFormat;
  * Database Value to help getting and setting value from and to database
  *
  * @author Frederic Bregier
- *
  */
 public class DbValue {
     /**
@@ -208,7 +207,6 @@ public class DbValue {
     }
 
     /**
-     *
      * @return the type in full string format
      */
     public String getType() {

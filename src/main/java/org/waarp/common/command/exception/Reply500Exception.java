@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 500 Syntax error, command unrecognized. This may include errors such as command line too long.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply500Exception extends CommandAbstractException {
 
@@ -32,8 +31,7 @@ public class Reply500Exception extends CommandAbstractException {
     private static final long serialVersionUID = 500L;
 
     /**
-     * 500 Syntax error, command unrecognized. This may include errors such as command line too
-     * long.
+     * 500 Syntax error, command unrecognized. This may include errors such as command line too long.
      *
      * @param message
      */

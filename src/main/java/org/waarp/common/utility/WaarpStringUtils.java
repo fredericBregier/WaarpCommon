@@ -38,7 +38,6 @@ import java.util.GregorianCalendar;
  * Various utilities for reading files, transforming dates, ...
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpStringUtils {
     public static final String UTF_8 = "UTF-8";
@@ -56,11 +55,11 @@ public class WaarpStringUtils {
      * Read a file and return its content in String format
      *
      * @param filename
+     *
      * @return the content of the File in String format
-     * @throws InvalidArgumentException
-     *             for File not found
-     * @throws FileTransferException
-     *             for reading exception
+     *
+     * @throws InvalidArgumentException for File not found
+     * @throws FileTransferException for reading exception
      */
     public static String readFileException(String filename) throws InvalidArgumentException,
                                                                    FileTransferException {
@@ -101,6 +100,7 @@ public class WaarpStringUtils {
      * Read file and return "" if an error occurs
      *
      * @param filename
+     *
      * @return the string associated with the file, or "" if an error occurs
      */
     public static String readFile(String filename) {
@@ -119,6 +119,7 @@ public class WaarpStringUtils {
      * Get a date in String and return the corresponding Timestamp
      *
      * @param date
+     *
      * @return the corresponding Timestamp
      */
     public final static Timestamp fixDate(String date) {
@@ -144,13 +145,13 @@ public class WaarpStringUtils {
     }
 
     /**
-     * From a date in String format and a Timestamp, return the Timestamp as :<br>
-     * if before = null as date<br>
-     * if before != null and before < date, as date<br>
-     * if before != null and before >= date, as before end of day (23:59:59:9999)
+     * From a date in String format and a Timestamp, return the Timestamp as :<br> if before = null as date<br> if
+     * before != null and before < date, as date<br> if before != null and before >= date, as before end of day
+     * (23:59:59:9999)
      *
      * @param date
      * @param before
+     *
      * @return the end date
      */
     public final static Timestamp fixDate(String date, Timestamp before) {
@@ -194,6 +195,7 @@ public class WaarpStringUtils {
      * Read a boolean value (0,1,true,false) from a node
      *
      * @param node
+     *
      * @return the corresponding value
      */
     public static boolean getBoolean(Node node) {
@@ -212,7 +214,9 @@ public class WaarpStringUtils {
      * Read an integer value from a node
      *
      * @param node
+     *
      * @return the corresponding value
+     *
      * @throws InvalidArgumentException
      */
     public static int getInteger(Node node) throws InvalidArgumentException {
@@ -235,6 +239,7 @@ public class WaarpStringUtils {
      * @param builder
      * @param find
      * @param replace
+     *
      * @return True if one element is found
      */
     public final static boolean replace(StringBuilder builder, String find, String replace) {
@@ -271,6 +276,7 @@ public class WaarpStringUtils {
      *
      * @param fillChar
      * @param count
+     *
      * @return the String of length count filled with fillChar
      */
     public final static String fillString(char fillChar, int count) {
@@ -281,7 +287,9 @@ public class WaarpStringUtils {
 
     /**
      * Clean the String that could contain '\' or '\n', '\r' into something compatible with HTML
+     *
      * @param json
+     *
      * @return the cleaned String
      */
     public final static String cleanJsonForHtml(String json) {

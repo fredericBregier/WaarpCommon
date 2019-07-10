@@ -17,6 +17,9 @@
  * Package for Role management within Waarp products
  *
  * @author Frederic Bregier
+ * <p>
+ * Package for Role management within Waarp products
+ * @author Frederic Bregier
  */
 /**
  * Package for Role management within Waarp products

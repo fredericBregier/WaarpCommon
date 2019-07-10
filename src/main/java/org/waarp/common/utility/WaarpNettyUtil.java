@@ -28,7 +28,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * Utility class for Netty usage
  *
  * @author "Frederic Bregier"
- *
  */
 public class WaarpNettyUtil {
 

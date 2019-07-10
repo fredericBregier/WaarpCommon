@@ -22,7 +22,6 @@ import org.waarp.common.exception.InvalidArgumentException;
  * Reply code references by different RFC.
  *
  * @author Frederic Bregier
- *
  */
 public enum ReplyCode {
     /**
@@ -30,9 +29,9 @@ public enum ReplyCode {
      */
     REPLY_000_SPECIAL_NOSTATUS(0),
     /**
-     * 110 Restart marker reply. In this case, the text is exact and not left to the particular
-     * implementation), it must read: MARK yyyy (mmmm Where yyyy is User-process data stream marker,
-     * and mmmm server's equivalent marker (note the spaces between markers and "=").
+     * 110 Restart marker reply. In this case, the text is exact and not left to the particular implementation), it must
+     * read: MARK yyyy (mmmm Where yyyy is User-process data stream marker, and mmmm server's equivalent marker (note
+     * the spaces between markers and "=").
      */
     REPLY_110_RESTART_MARKER_REPLY(110),
 
@@ -77,16 +76,15 @@ public enum ReplyCode {
     REPLY_213_FILE_STATUS(213),
 
     /**
-     * 214 Help message. On how to use the server or the meaning of a particular non-standard
-     * command. This reply is useful only to the human user.
+     * 214 Help message. On how to use the server or the meaning of a particular non-standard command. This reply is
+     * useful only to the human user.
      */
     REPLY_214_HELP_MESSAGE(
             214,
             "This FTP server refers to RFC 959, RFC 775, RFC 2389 and RFC 3659"),
 
     /**
-     * 215 NAME system type. Where NAME is an official system name from the list in the Assigned
-     * Numbers document.
+     * 215 NAME system type. Where NAME is an official system name from the list in the Assigned Numbers document.
      */
     REPLY_215_NAME_SYSTEM_TYPE(215),
 
@@ -106,8 +104,7 @@ public enum ReplyCode {
     REPLY_225_DATA_CONNECTION_OPEN_NO_TRANSFER_IN_PROGRESS(225),
 
     /**
-     * Closing data connection. Requested file action successful (for example, file transfer or file
-     * abort).
+     * Closing data connection. Requested file action successful (for example, file transfer or file abort).
      */
     REPLY_226_CLOSING_DATA_CONNECTION(226),
 
@@ -162,8 +159,8 @@ public enum ReplyCode {
     REPLY_350_REQUESTED_FILE_ACTION_PENDING_FURTHER_INFORMATION(350),
 
     /**
-     * 421 Service not available, closing control connection. This may be a reply to any command if
-     * the service knows it must shut down.
+     * 421 Service not available, closing control connection. This may be a reply to any command if the service knows it
+     * must shut down.
      */
     REPLY_421_SERVICE_NOT_AVAILABLE_CLOSING_CONTROL_CONNECTION(421),
 
@@ -198,8 +195,7 @@ public enum ReplyCode {
     REPLY_452_REQUESTED_ACTION_NOT_TAKEN(452),
 
     /**
-     * 500 Syntax error, command unrecognized. This may include errors such as command line too
-     * long.
+     * 500 Syntax error, command unrecognized. This may include errors such as command line too long.
      */
     REPLY_500_SYNTAX_ERROR_COMMAND_UNRECOGNIZED(500),
 
@@ -269,8 +265,7 @@ public enum ReplyCode {
     REPLY_551_REQUESTED_ACTION_ABORTED_PAGE_TYPE_UNKNOWN(551),
 
     /**
-     * 552 Requested file action aborted. Exceeded storage allocation (for current directory or
-     * dataset).
+     * 552 Requested file action aborted. Exceeded storage allocation (for current directory or dataset).
      */
     REPLY_552_REQUESTED_FILE_ACTION_ABORTED_EXCEEDED_STORAGE(552),
 
@@ -288,10 +283,9 @@ public enum ReplyCode {
      */
     public static final String CRNUL = "\r\0";
     /**
-     * CR LF<br>
-     * A User Telnet MUST be able to send any of the forms: CR LF, CR NUL, and LF. A User Telnet on
-     * an ASCII host SHOULD have a user-controllable mode to send either CR LF or CR NUL when the
-     * user presses the "end-of-line" key, and CR LF SHOULD be the default.
+     * CR LF<br> A User Telnet MUST be able to send any of the forms: CR LF, CR NUL, and LF. A User Telnet on an ASCII
+     * host SHOULD have a user-controllable mode to send either CR LF or CR NUL when the user presses the "end-of-line"
+     * key, and CR LF SHOULD be the default.
      */
     public static final String CRLF = "\r\n";
     /**
@@ -329,6 +323,7 @@ public enum ReplyCode {
      *
      * @param code
      * @param msg
+     *
      * @return the final formatted message
      */
     public static String getFinalMsg(int code, String msg) {
@@ -365,9 +360,10 @@ public enum ReplyCode {
     }
 
     /**
-     *
      * @param code
+     *
      * @return the associated ReplyCode from the given numerical code
+     *
      * @throws InvalidArgumentException
      */
     public static ReplyCode getReplyCode(int code) throws InvalidArgumentException {

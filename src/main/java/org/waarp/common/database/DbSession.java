@@ -42,7 +42,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Class to handle session with the SGBD
  *
  * @author Frederic Bregier
- *
  */
 public class DbSession {
     /**
@@ -51,8 +50,8 @@ public class DbSession {
     private static final WaarpLogger logger = WaarpLoggerFactory
             .getLogger(DbSession.class);
     /**
-     * List all DbPrepareStatement with long term usage to enable the recreation when the associated
-     * connection is reopened
+     * List all DbPrepareStatement with long term usage to enable the recreation when the associated connection is
+     * reopened
      */
     private final Set<DbPreparedStatement> listPreparedStatement = new ConcurrentSet<DbPreparedStatement>();
     /**
@@ -85,13 +84,14 @@ public class DbSession {
     private volatile boolean isDisActive = true;
 
     /**
-     * Create a session and connect the current object to the server using the DbAdmin object. The
-     * database access use auto commit.
-     *
+     * Create a session and connect the current object to the server using the DbAdmin object. The database access use
+     * auto commit.
+     * <p>
      * If the initialize is not call before, call it with the default value.
      *
      * @param admin
      * @param isReadOnly
+     *
      * @throws WaarpDatabaseSqlException
      */
     public DbSession(DbAdmin admin, boolean isReadOnly)
@@ -117,12 +117,13 @@ public class DbSession {
 
     /**
      * Create a session and connect the current object to the server using the DbAdmin object.
-     *
+     * <p>
      * If the initialize is not call before, call it with the default value.
      *
      * @param admin
      * @param isReadOnly
      * @param autoCommit
+     *
      * @throws WaarpDatabaseSqlException
      */
     public DbSession(DbAdmin admin, boolean isReadOnly, boolean autoCommit)
@@ -206,8 +207,7 @@ public class DbSession {
     }
 
     /**
-     * @param admin
-     *            the admin to set
+     * @param admin the admin to set
      */
     protected void setAdmin(DbAdmin admin) {
         this.admin = admin;
@@ -244,8 +244,7 @@ public class DbSession {
     }
 
     /**
-     * To be called when a client will stop to use this DbSession (once by client).
-     * This version is not blocking.
+     * To be called when a client will stop to use this DbSession (once by client). This version is not blocking.
      */
     public void enUseConnectionNoDisconnect() {
         int val = nbThread.decrementAndGet();
@@ -309,7 +308,6 @@ public class DbSession {
 
     /**
      * Close the connection
-     *
      */
     public void disconnect() {
         if (this.getInternalId().equals(getAdmin().getSession().getInternalId())) {
@@ -373,7 +371,6 @@ public class DbSession {
     }
 
     /**
-     *
      * @return True if the connection was successfully reconnected
      */
     public boolean checkConnectionNoException() {
@@ -482,6 +479,7 @@ public class DbSession {
      * Rollback from the savepoint or the last set if null
      *
      * @param savepoint
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -513,6 +511,7 @@ public class DbSession {
      * Make a savepoint
      *
      * @return the new savepoint
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -539,6 +538,7 @@ public class DbSession {
      * Release the savepoint
      *
      * @param savepoint
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -587,6 +587,7 @@ public class DbSession {
      * Change the autocommit feature
      *
      * @param autoCommit
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public void setAutoCommit(boolean autoCommit)
@@ -659,7 +660,6 @@ public class DbSession {
      * To disconnect in asynchronous way the DbSession
      *
      * @author "Frederic Bregier"
-     *
      */
     private static class TryDisconnectDbSession implements TimerTask {
         private final DbSession dbSession;

@@ -27,8 +27,8 @@ import java.sql.SQLException;
 
 /**
  * Empty DbModel
- * @author "Frederic Bregier"
  *
+ * @author "Frederic Bregier"
  */
 public class EmptyDbModel implements DbModel {
 

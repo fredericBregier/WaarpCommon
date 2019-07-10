@@ -43,7 +43,6 @@ import java.nio.channels.FileChannel;
  * File implementation for Filesystem Based
  *
  * @author Frederic Bregier
- *
  */
 public abstract class FilesystemBasedFileImpl extends AbstractFile {
     /**
@@ -58,8 +57,7 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
     protected final SessionInterface session;
 
     /**
-     * DirInterface associated with this file at creation. It is not necessary the directory that
-     * owns this file.
+     * DirInterface associated with this file at creation. It is not necessary the directory that owns this file.
      */
     private final FilesystemBasedDirImpl dir;
 
@@ -97,10 +95,10 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
 
     /**
      * @param session
-     * @param dir
-     *            It is not necessary the directory that owns this file.
+     * @param dir It is not necessary the directory that owns this file.
      * @param path
      * @param append
+     *
      * @throws CommandAbstractException
      */
     public FilesystemBasedFileImpl(SessionInterface session,
@@ -132,8 +130,7 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
      * Special constructor for possibly external file
      *
      * @param session
-     * @param dir
-     *            It is not necessary the directory that owns this file.
+     * @param dir It is not necessary the directory that owns this file.
      * @param path
      */
     public FilesystemBasedFileImpl(SessionInterface session,
@@ -165,7 +162,9 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
      * Get the File from this path, checking first its validity
      *
      * @param path
+     *
      * @return the FileInterface
+     *
      * @throws CommandAbstractException
      */
     protected File getFileFromPath(String path) throws CommandAbstractException {
@@ -183,6 +182,7 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
      * Get the relative path (without mount point)
      *
      * @param file
+     *
      * @return the relative path
      */
     protected String getRelativePath(File file) {
@@ -405,8 +405,7 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
     }
 
     /**
-     * Return the current position in the FileInterface. In write mode, it is the current file
-     * length.
+     * Return the current position in the FileInterface. In write mode, it is the current file length.
      *
      * @return the position
      */
@@ -417,8 +416,8 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
     /**
      * Change the position in the file.
      *
-     * @param position
-     *            the position to set
+     * @param position the position to set
+     *
      * @throws IOException
      */
     public void setPosition(long position) throws IOException {
@@ -440,14 +439,13 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
     }
 
     /**
-     * Write the current FileInterface with the given ByteBuf. The file is not limited to 2^32
-     * bytes since this write operation is in add mode.
+     * Write the current FileInterface with the given ByteBuf. The file is not limited to 2^32 bytes since this write
+     * operation is in add mode.
+     * <p>
+     * In case of error, the current already written blocks are maintained and the position is not changed.
      *
-     * In case of error, the current already written blocks are maintained and the position is not
-     * changed.
+     * @param buffer added to the file
      *
-     * @param buffer
-     *            added to the file
      * @throws FileTransferException
      */
     private void writeBlock(ByteBuf buffer) throws FileTransferException {
@@ -495,11 +493,11 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
     }
 
     /**
-     * End the Write of the current FileInterface with the given ByteBuf. The file is not
-     * limited to 2^32 bytes since this write operation is in add mode.
+     * End the Write of the current FileInterface with the given ByteBuf. The file is not limited to 2^32 bytes since
+     * this write operation is in add mode.
      *
-     * @param buffer
-     *            added to the file
+     * @param buffer added to the file
+     *
      * @throws FileTransferException
      */
     private void writeBlockEnd(ByteBuf buffer)
@@ -513,15 +511,16 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
     }
 
     /**
-     * Get the current block ByteBuf of the current FileInterface. There is therefore no
-     * limitation of the file size to 2^32 bytes.
+     * Get the current block ByteBuf of the current FileInterface. There is therefore no limitation of the file size to
+     * 2^32 bytes.
+     * <p>
+     * The returned block is limited to sizeblock. If the returned block is less than sizeblock length, it is the last
+     * block to read.
      *
-     * The returned block is limited to sizeblock. If the returned block is less than sizeblock
-     * length, it is the last block to read.
+     * @param sizeblock is the limit size for the block array
      *
-     * @param sizeblock
-     *            is the limit size for the block array
      * @return the resulting block ByteBuf (even empty)
+     *
      * @throws FileTransferException
      * @throws FileEndOfTransferException
      */
@@ -586,13 +585,12 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
     }
 
     /**
-     * Write the FileInterface to the fileChannelOut, thus bypassing the limitation of the file size
-     * to 2^32 bytes.
-     *
-     * This call closes the fileChannelOut with fileChannelOut.close() if the operation is in
-     * success.
+     * Write the FileInterface to the fileChannelOut, thus bypassing the limitation of the file size to 2^32 bytes.
+     * <p>
+     * This call closes the fileChannelOut with fileChannelOut.close() if the operation is in success.
      *
      * @param fileChannelOut
+     *
      * @return True if OK, False in error.
      */
     protected boolean get(FileChannel fileChannelOut) {
@@ -716,8 +714,8 @@ public abstract class FilesystemBasedFileImpl extends AbstractFile {
     /**
      * Returns the FileOutputStream in Out mode associated with the current file.
      *
-     * @param append
-     *            True if the FileOutputStream should be in append mode
+     * @param append True if the FileOutputStream should be in append mode
+     *
      * @return the FileOutputStream (OUT)
      */
     protected FileOutputStream getFileOutputStream(boolean append) {

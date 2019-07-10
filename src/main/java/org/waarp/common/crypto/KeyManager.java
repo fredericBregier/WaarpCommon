@@ -33,7 +33,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * This class implements a simple Key Manager from name
  *
  * @author frederic bregier
- *
  */
 public abstract class KeyManager {
     ConcurrentHashMap<String, KeyObject> keysConcurrentHashMap =
@@ -43,10 +42,10 @@ public abstract class KeyManager {
     public abstract KeyObject createKeyObject();
 
     /**
-     * Init the Manager from a list of filename Key, the key name is the basename minus the
-     * extension of the key's type
+     * Init the Manager from a list of filename Key, the key name is the basename minus the extension of the key's type
      *
      * @param keys
+     *
      * @return the list of wrong keys
      */
     public List<String> initFromList(List<String> keys) {
@@ -128,6 +127,7 @@ public abstract class KeyManager {
 
     /**
      * @param name
+     *
      * @return the key associated to the given name
      */
     public KeyObject getKey(String name) {
@@ -139,7 +139,9 @@ public abstract class KeyManager {
      *
      * @param keyName
      * @param toBeCrypted
+     *
      * @return the crypted String
+     *
      * @throws Exception
      */
     public String crypt(String keyName, String toBeCrypted) throws Exception {
@@ -155,7 +157,9 @@ public abstract class KeyManager {
      *
      * @param keyName
      * @param toBeDecrypted
+     *
      * @return the uncrypted String
+     *
      * @throws Exception
      */
     public String decrypt(String keyName, String toBeDecrypted) throws Exception {

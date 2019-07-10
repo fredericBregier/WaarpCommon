@@ -36,7 +36,6 @@ import java.util.Map;
  * JSON handler using Smile default format
  *
  * @author "Frederic Bregier"
- *
  */
 public class SmileJsonHandler extends JsonHandler {
     /**
@@ -53,7 +52,6 @@ public class SmileJsonHandler extends JsonHandler {
     }
 
     /**
-     *
      * @return an empty ObjectNode
      */
     public static ObjectNode createObjectNode() {
@@ -61,7 +59,6 @@ public class SmileJsonHandler extends JsonHandler {
     }
 
     /**
-     *
      * @return an empty ArrayNode
      */
     public static ArrayNode createArrayNode() {
@@ -69,8 +66,8 @@ public class SmileJsonHandler extends JsonHandler {
     }
 
     /**
-     *
      * @param value
+     *
      * @return the objectNode or null if an error occurs
      */
     public static ObjectNode getFromString(String value) {
@@ -84,8 +81,8 @@ public class SmileJsonHandler extends JsonHandler {
     }
 
     /**
-     *
      * @param object
+     *
      * @return the Json representation of the object
      */
     public static String writeAsString(Object object) {
@@ -97,8 +94,8 @@ public class SmileJsonHandler extends JsonHandler {
     }
 
     /**
-     *
      * @param value
+     *
      * @return the corresponding HashMap
      */
     public static Map<String, Object> getMapFromString(String value) {

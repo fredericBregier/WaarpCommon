@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
  * Example of FileFilter using regex on filename and possible Size
  *
  * @author "Frederic Bregier"
- *
  */
 public class RegexFileFilter implements FileFilter {
     public static final String REGEX_XML_EXTENSION = ".*\\.[xX][mM][lL]$";

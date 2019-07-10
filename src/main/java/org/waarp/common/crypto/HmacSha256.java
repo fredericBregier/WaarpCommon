@@ -24,8 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * This class handles methods to crypt (not decrypt) messages with HmacSha256 algorithm (very efficient:
- * 105000/s).<br>
+ * This class handles methods to crypt (not decrypt) messages with HmacSha256 algorithm (very efficient: 105000/s).<br>
  * <br>
  * Usage:<br>
  * <ul>
@@ -41,7 +40,6 @@ import java.io.IOException;
  * </ul>
  *
  * @author frederic bregier
- *
  */
 public class HmacSha256 extends KeyObject {
     public final static String EXTENSION = "hs2";

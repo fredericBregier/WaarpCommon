@@ -20,7 +20,6 @@ package org.waarp.common.exception;
  * Crypto exception
  *
  * @author Frederic Bregier
- *
  */
 public class CryptoException extends Exception {
 

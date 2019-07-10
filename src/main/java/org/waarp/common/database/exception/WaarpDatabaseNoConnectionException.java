@@ -20,7 +20,6 @@ package org.waarp.common.database.exception;
  * Database No connection error
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpDatabaseNoConnectionException extends WaarpDatabaseException {
 

@@ -19,11 +19,10 @@ package org.waarp.common.file.passthrough;
 import org.waarp.common.file.filesystembased.FilesystemBasedOptsMLSxImpl;
 
 /**
- * Class that implements Opts command for MLSx operations. (-1) means not supported, 0 supported but
- * not active, 1 supported and active
+ * Class that implements Opts command for MLSx operations. (-1) means not supported, 0 supported but not active, 1
+ * supported and active
  *
  * @author Frederic Bregier
- *
  */
 public class PassthroughBasedOptsMLSxImpl extends FilesystemBasedOptsMLSxImpl {
     /**

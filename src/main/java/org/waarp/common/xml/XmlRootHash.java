@@ -21,11 +21,9 @@ import java.util.Hashtable;
 import java.util.Set;
 
 /**
- * XmlHash Hashtable for XmlValue utility. Hash all values (except subXml and root for
- * Multiple)
+ * XmlHash Hashtable for XmlValue utility. Hash all values (except subXml and root for Multiple)
  *
  * @author Frederic Bregier
- *
  */
 public class XmlRootHash {
     private final Hashtable<String, XmlValue> hashtable;

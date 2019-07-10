@@ -20,7 +20,6 @@ package org.waarp.common.file;
  * Interface for Option support (mainly inspired for MLSx FTP command)
  *
  * @author Frederic Bregier
- *
  */
 public interface OptsMLSxInterface {
     /**
@@ -29,8 +28,7 @@ public interface OptsMLSxInterface {
     public byte getOptsCharset();
 
     /**
-     * @param optsCharset
-     *            the optsCharset to set
+     * @param optsCharset the optsCharset to set
      */
     public void setOptsCharset(byte optsCharset);
 
@@ -40,8 +38,7 @@ public interface OptsMLSxInterface {
     public byte getOptsCreate();
 
     /**
-     * @param optsCreate
-     *            the optsCreate to set
+     * @param optsCreate the optsCreate to set
      */
     public void setOptsCreate(byte optsCreate);
 
@@ -51,8 +48,7 @@ public interface OptsMLSxInterface {
     public byte getOptsLang();
 
     /**
-     * @param optsLang
-     *            the optsLang to set
+     * @param optsLang the optsLang to set
      */
     public void setOptsLang(byte optsLang);
 
@@ -62,8 +58,7 @@ public interface OptsMLSxInterface {
     public byte getOptsMediaType();
 
     /**
-     * @param optsMediaType
-     *            the optsMediaType to set
+     * @param optsMediaType the optsMediaType to set
      */
     public void setOptsMediaType(byte optsMediaType);
 
@@ -73,8 +68,7 @@ public interface OptsMLSxInterface {
     public byte getOptsModify();
 
     /**
-     * @param optsModify
-     *            the optsModify to set
+     * @param optsModify the optsModify to set
      */
     public void setOptsModify(byte optsModify);
 
@@ -84,8 +78,7 @@ public interface OptsMLSxInterface {
     public byte getOptsPerm();
 
     /**
-     * @param optsPerm
-     *            the optsPerm to set
+     * @param optsPerm the optsPerm to set
      */
     public void setOptsPerm(byte optsPerm);
 
@@ -95,8 +88,7 @@ public interface OptsMLSxInterface {
     public byte getOptsSize();
 
     /**
-     * @param optsSize
-     *            the optsSize to set
+     * @param optsSize the optsSize to set
      */
     public void setOptsSize(byte optsSize);
 
@@ -106,8 +98,7 @@ public interface OptsMLSxInterface {
     public byte getOptsType();
 
     /**
-     * @param optsType
-     *            the optsType to set
+     * @param optsType the optsType to set
      */
     public void setOptsType(byte optsType);
 
@@ -117,13 +108,11 @@ public interface OptsMLSxInterface {
     public byte getOptsUnique();
 
     /**
-     * @param optsUnique
-     *            the optsUnique to set
+     * @param optsUnique the optsUnique to set
      */
     public void setOptsUnique(byte optsUnique);
 
     /**
-     *
      * @return the String associated to the feature for MLSx
      */
     public String getFeat();

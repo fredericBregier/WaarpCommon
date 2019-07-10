@@ -24,13 +24,11 @@ import org.waarp.common.database.exception.WaarpDatabaseNoDataException;
 /**
  * Abstract database table implementation with explicit COMMIT.<br>
  * <br>
- *
- * If the connection is in autocommit, this abstract should not be used.<br>
- * If the connection is not in autocommit, one could use this implementation to implicitly commit
- * when needed automatically as should do an autocommit connection.
+ * <p>
+ * If the connection is in autocommit, this abstract should not be used.<br> If the connection is not in autocommit, one
+ * could use this implementation to implicitly commit when needed automatically as should do an autocommit connection.
  *
  * @author Frederic Bregier
- *
  */
 public abstract class AbstractDbDataWithCommit extends AbstractDbData {
     /**

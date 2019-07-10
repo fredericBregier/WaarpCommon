@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * Thread Factory that build named threads, by default daemon threads.
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpThreadFactory implements ThreadFactory {
     private String GlobalName;
@@ -40,10 +39,8 @@ public class WaarpThreadFactory implements ThreadFactory {
     }
 
     /**
-     *
      * @param globalName
-     * @param isDaemon
-     *            (Default is True, meaning system can exit if only Daemon threads left)
+     * @param isDaemon (Default is True, meaning system can exit if only Daemon threads left)
      */
     public WaarpThreadFactory(String globalName, boolean isDaemon) {
         GlobalName = globalName + "-";

@@ -25,7 +25,6 @@ public class HmacSha256Manager extends KeyManager {
     static final HmacSha256Manager manager = new HmacSha256Manager();
 
     /**
-     *
      * @return the current KeyManager
      */
     public static final KeyManager getInstance() {

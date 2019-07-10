@@ -19,11 +19,9 @@ package org.waarp.common.command.exception;
 import org.waarp.common.command.ReplyCode;
 
 /**
- * 552 Requested file action aborted. Exceeded storage allocation (for current directory or
- * dataset).
+ * 552 Requested file action aborted. Exceeded storage allocation (for current directory or dataset).
  *
  * @author Frederic Bregier
- *
  */
 public class Reply552Exception extends CommandAbstractException {
 
@@ -33,8 +31,7 @@ public class Reply552Exception extends CommandAbstractException {
     private static final long serialVersionUID = 552L;
 
     /**
-     * 552 Requested file action aborted. Exceeded storage allocation (for current directory or
-     * dataset).
+     * 552 Requested file action aborted. Exceeded storage allocation (for current directory or dataset).
      *
      * @param message
      */

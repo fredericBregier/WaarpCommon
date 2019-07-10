@@ -28,7 +28,6 @@ import java.security.KeyStore;
  * A SecureTrustManagerFactory
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpSecureTrustManagerFactory extends TrustManagerFactorySpi {
     private final WaarpX509TrustManager ggTrustManager;
@@ -40,7 +39,6 @@ public class WaarpSecureTrustManagerFactory extends TrustManagerFactorySpi {
 
     /**
      * Accept all connections
-     *
      */
     public WaarpSecureTrustManagerFactory() {
         ggTrustManager = new WaarpX509TrustManager();
@@ -52,10 +50,9 @@ public class WaarpSecureTrustManagerFactory extends TrustManagerFactorySpi {
     }
 
     /**
-     *
      * @param tmf
-     * @param clientAuthent
-     *            True if the TrustStore is used for Client Authentication
+     * @param clientAuthent True if the TrustStore is used for Client Authentication
+     *
      * @throws CryptoException
      */
     public WaarpSecureTrustManagerFactory(TrustManagerFactory tmf,
@@ -69,7 +66,6 @@ public class WaarpSecureTrustManagerFactory extends TrustManagerFactorySpi {
     }
 
     /**
-     *
      * @return True if this TrustManager really check authentication
      */
     public boolean hasTrustStore() {
@@ -77,7 +73,6 @@ public class WaarpSecureTrustManagerFactory extends TrustManagerFactorySpi {
     }
 
     /**
-     *
      * @return True if this TrustManager really check authentication
      */
     public boolean needAuthentication() {
@@ -85,7 +80,6 @@ public class WaarpSecureTrustManagerFactory extends TrustManagerFactorySpi {
     }
 
     /**
-     *
      * @return The TrustManager arrays
      */
     public TrustManager[] getTrustManagers() {

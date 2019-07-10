@@ -35,18 +35,15 @@ import java.util.List;
  * TAR support
  *
  * @author Frederic Bregier
- *
  */
 public class TarUtility {
     /**
      * Create a new Tar from a root directory
      *
-     * @param directory
-     *            the base directory
-     * @param filename
-     *            the output filename
-     * @param absolute
-     *            store absolute filepath (from directory) or only filename
+     * @param directory the base directory
+     * @param filename the output filename
+     * @param absolute store absolute filepath (from directory) or only filename
+     *
      * @return True if OK
      */
     public static boolean createTarFromDirectory(String directory, String filename, boolean absolute) {
@@ -95,6 +92,7 @@ public class TarUtility {
      * @param file
      * @param taos
      * @param absolute
+     *
      * @throws IOException
      */
     private static void recurseFiles(File root, File file, TarArchiveOutputStream taos,
@@ -124,10 +122,9 @@ public class TarUtility {
     /**
      * Create a new Tar from a list of Files (only name of files will be used)
      *
-     * @param files
-     *            list of files to add
-     * @param filename
-     *            the output filename
+     * @param files list of files to add
+     * @param filename the output filename
+     *
      * @return True if OK
      */
     public static boolean createTarFromFiles(List<File> files, String filename) {
@@ -137,10 +134,9 @@ public class TarUtility {
     /**
      * Create a new Tar from an array of Files (only name of files will be used)
      *
-     * @param files
-     *            array of files to add
-     * @param filename
-     *            the output filename
+     * @param files array of files to add
+     * @param filename the output filename
+     *
      * @return True if OK
      */
     public static boolean createTarFromFiles(File[] files, String filename) {
@@ -188,6 +184,7 @@ public class TarUtility {
      *
      * @param file
      * @param taos
+     *
      * @throws IOException
      */
     private static void addFile(File file, TarArchiveOutputStream taos) throws IOException {
@@ -206,7 +203,9 @@ public class TarUtility {
      *
      * @param tarFile
      * @param directory
+     *
      * @return the list of extracted filenames
+     *
      * @throws IOException
      */
     public static List<String> unTar(File tarFile, File directory) throws IOException {

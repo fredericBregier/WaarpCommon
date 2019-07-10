@@ -18,7 +18,6 @@ package org.waarp.common.utility;
 
 /**
  * @author "Frederic Bregier"
- *
  */
 public class Hexa {
     /**

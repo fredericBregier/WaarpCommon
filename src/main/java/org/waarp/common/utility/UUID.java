@@ -32,13 +32,12 @@ import java.util.regex.Pattern;
 /**
  * UUID Generator (also Global UUID Generator) <br>
  * <br>
- * Inspired from com.groupon locality-uuid which used combination of internal counter value - process id -
- * fragment of MAC address and Timestamp. see https://github.com/groupon/locality-uuid.java <br>
+ * Inspired from com.groupon locality-uuid which used combination of internal counter value - process id - fragment of
+ * MAC address and Timestamp. see https://github.com/groupon/locality-uuid.java <br>
  * <br>
  * But force sequence and take care of errors and improves some performance issues
  *
  * @author "Frederic Bregier"
- *
  */
 public final class UUID implements Comparable<UUID> {
     /**
@@ -96,6 +95,7 @@ public final class UUID implements Comparable<UUID> {
 
     /**
      * Constructor that generates a new UUID using the current process id, MAC address, and timestamp
+     *
      * @param id the id of the subset of UUID from which it belongs to (default being 0, else between 1 and 255)
      */
     public UUID(int id) {
@@ -151,6 +151,7 @@ public final class UUID implements Comparable<UUID> {
 
     /**
      * Create a UUID immediately compatible with a standard UUID implementation
+     *
      * @param on128bits True for 128 bits limitation (16 Bytes instead of 20 Bytes)
      */
     public UUID(boolean on128bits) {
@@ -165,6 +166,7 @@ public final class UUID implements Comparable<UUID> {
 
     /**
      * Create a UUID immediately compatible with a standard UUID implementation
+     *
      * @param mostSigBits
      * @param leastSigBits
      */
@@ -195,6 +197,7 @@ public final class UUID implements Comparable<UUID> {
 
     /**
      * Create a UUID immediately compatible with a standard UUID implementation
+     *
      * @param uuid
      */
     public UUID(java.util.UUID uuid) {
@@ -204,8 +207,8 @@ public final class UUID implements Comparable<UUID> {
     /**
      * Constructor that takes a byte array as this UUID's content
      *
-     * @param bytes
-     *            UUID content
+     * @param bytes UUID content
+     *
      * @throws RuntimeException
      */
     public UUID(final byte[] bytes) throws RuntimeException {
@@ -217,6 +220,7 @@ public final class UUID implements Comparable<UUID> {
      * Build from String key
      *
      * @param idsource
+     *
      * @throws RuntimeException
      */
     public UUID(final String idsource) throws RuntimeException {
@@ -239,11 +243,9 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     * Up to the 6 first bytes will be used. If Null or less than 6 bytes, extra bytes will
-     * be randomly generated.
+     * Up to the 6 first bytes will be used. If Null or less than 6 bytes, extra bytes will be randomly generated.
      *
-     * @param mac
-     *            the MAC address in byte format (up to the 6 first bytes will be used)
+     * @param mac the MAC address in byte format (up to the 6 first bytes will be used)
      */
     public static synchronized void setMAC(final byte[] mac) {
         if (mac == null) {
@@ -257,8 +259,8 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     *
      * @param length
+     *
      * @return a byte array with random values
      */
     public static final byte[] getRandom(final int length) {
@@ -268,7 +270,6 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     *
      * @return the mac address if possible, else random values
      */
     public static byte[] macAddress() {
@@ -476,9 +477,9 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     * Simply return a new UUID. If an argument is provided, 2 cases occur:</br>
-     * - length <= 3 = same as UUID(int)
-     * - length > 3 = same as checking the given UUID in String format
+     * Simply return a new UUID. If an argument is provided, 2 cases occur:</br> - length <= 3 = same as UUID(int) -
+     * length > 3 = same as checking the given UUID in String format
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -531,8 +532,11 @@ public final class UUID implements Comparable<UUID> {
 
     /**
      * Internal function
+     *
      * @param bytes
-     * @return
+     *
+     * @return corresponding UUID
+     *
      * @throws RuntimeException
      */
     protected UUID setBytes(final byte[] bytes) throws RuntimeException {
@@ -615,8 +619,8 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     * extract MAC address fragment from raw UUID bytes, setting missing values to 0,
-     * from the active MAC address when the UUID was generated
+     * extract MAC address fragment from raw UUID bytes, setting missing values to 0, from the active MAC address when
+     * the UUID was generated
      *
      * @return byte array of UUID fragment, or null for unrecognized format
      */
@@ -638,7 +642,6 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     *
      * @return the least significant bits (as in standard UUID implementation)
      */
     public long getLeastSignificantBits() {
@@ -655,7 +658,6 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     *
      * @return the most significant bits (as in standard UUID implementation)
      */
     public long getMostSignificantBits() {
@@ -672,7 +674,6 @@ public final class UUID implements Comparable<UUID> {
     }
 
     /**
-     *
      * @return a UUID compatible with Java.Util package implementation
      */
     public java.util.UUID getJavaUuid() {

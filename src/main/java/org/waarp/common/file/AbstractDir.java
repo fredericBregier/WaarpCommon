@@ -37,7 +37,6 @@ import java.util.List;
  * Abstract Main Implementation of Directory
  *
  * @author Frederic Bregier
- *
  */
 public abstract class AbstractDir implements DirInterface {
     /**
@@ -75,8 +74,7 @@ public abstract class AbstractDir implements DirInterface {
      */
     protected SessionInterface session;
     /**
-     * Opts command for MLSx. (-1) means not supported, 0 supported but not active, 1 supported and
-     * active
+     * Opts command for MLSx. (-1) means not supported, 0 supported but not active, 1 supported and active
      */
     protected OptsMLSxInterface optsMLSx;
 
@@ -84,6 +82,7 @@ public abstract class AbstractDir implements DirInterface {
      * Normalize Path to Internal unique representation
      *
      * @param path
+     *
      * @return the normalized path
      */
     public static String normalizePath(String path) {
@@ -92,10 +91,11 @@ public abstract class AbstractDir implements DirInterface {
 
     /**
      * Convert the URI representation of a file path to a simple path.
-     *
+     * <p>
      * If the path is not an URI, this method does nothing.
      *
      * @param path
+     *
      * @return the normalized path
      */
     public static String pathFromURI(String path) {
@@ -122,8 +122,8 @@ public abstract class AbstractDir implements DirInterface {
     }
 
     /**
-     *
      * @param file
+     *
      * @return The corresponding Root file
      */
     protected File getCorrespondingRoot(File file) {
@@ -142,7 +142,6 @@ public abstract class AbstractDir implements DirInterface {
     }
 
     /**
-     *
      * @return the SessionInterface
      */
     public SessionInterface getSession() {
@@ -173,8 +172,8 @@ public abstract class AbstractDir implements DirInterface {
     }
 
     /**
-     *
      * @param path
+     *
      * @return True if the given Path is an absolute one under Windows System or should be an absolute one on Unix
      */
     public boolean isAbsolute(String path) {
@@ -193,7 +192,9 @@ public abstract class AbstractDir implements DirInterface {
      * Consolidate Path as relative or absolute path to an absolute path
      *
      * @param path
+     *
      * @return the consolidated path
+     *
      * @throws CommandAbstractException
      */
     protected String consolidatePath(String path)
@@ -216,6 +217,7 @@ public abstract class AbstractDir implements DirInterface {
      * Construct the CanonicalPath without taking into account symbolic link
      *
      * @param dir
+     *
      * @return the canonicalPath
      */
     protected String getCanonicalPath(File dir) {
@@ -269,8 +271,10 @@ public abstract class AbstractDir implements DirInterface {
      * Same as validatePath but from a FileInterface
      *
      * @param dir
-     * @return the construct and validated path (could be different than the one given as argument,
-     *         example: '..' are removed)
+     *
+     * @return the construct and validated path (could be different than the one given as argument, example: '..' are
+     * removed)
+     *
      * @throws CommandAbstractException
      */
     protected String validatePath(File dir) throws CommandAbstractException {
@@ -309,7 +313,9 @@ public abstract class AbstractDir implements DirInterface {
      * Validate a file according to the current Directory
      *
      * @param dir
+     *
      * @return True if validated
+     *
      * @throws CommandAbstractException
      */
     protected boolean isPathInCurrentDir(File dir) {
@@ -328,11 +334,12 @@ public abstract class AbstractDir implements DirInterface {
     /**
      * Finds all files matching a wildcard expression (based on '?', '~' or '*').
      *
-     * @param pathWithWildcard
-     *            The wildcard expression with a business path.
-     * @return List of String as relative paths matching the wildcard expression. Those files are
-     *         tested as valid from business point of view. If Wildcard support is not active, if
-     *         the path contains any wildcards, it will throw an error.
+     * @param pathWithWildcard The wildcard expression with a business path.
+     *
+     * @return List of String as relative paths matching the wildcard expression. Those files are tested as valid from
+     * business point of view. If Wildcard support is not active, if the path contains any wildcards, it will throw an
+     * error.
+     *
      * @throws CommandAbstractException
      */
     protected abstract List<String> wildcardFiles(String pathWithWildcard)

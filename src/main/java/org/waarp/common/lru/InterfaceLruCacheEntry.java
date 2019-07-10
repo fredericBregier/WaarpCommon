@@ -21,7 +21,6 @@ package org.waarp.common.lru;
  *
  * @author Frederic Bregier
  * @author Damian Momot
- *
  */
 public interface InterfaceLruCacheEntry<V> {
     /**
@@ -32,8 +31,8 @@ public interface InterfaceLruCacheEntry<V> {
     public V getValue();
 
     /**
-     *
      * @param timeRef
+     *
      * @return True if this entry is still valid
      */
     public boolean isStillValid(long timeRef);

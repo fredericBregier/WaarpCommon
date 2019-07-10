@@ -24,14 +24,14 @@ import java.util.EnumSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This is the base class for the basic support of Finite State Machine in GoldenGate. One need to
- * implement an Enum class to use with it. <br>
+ * This is the base class for the basic support of Finite State Machine in GoldenGate. One need to implement an Enum
+ * class to use with it. <br>
  * <br>
  * Note: the type EnumSet< ? > is in fact of type EnumSet< EnumState >
  *
- * @author Frederic Bregier
  * @param <EnumState>
  *
+ * @author Frederic Bregier
  */
 public class MachineState<EnumState> {
     /**
@@ -46,10 +46,8 @@ public class MachineState<EnumState> {
     /**
      * Initialize with an initialState
      *
-     * @param initialState
-     *            initial MachineState
-     * @param map
-     *            the association of state and set of acceptable following states
+     * @param initialState initial MachineState
+     * @param map the association of state and set of acceptable following states
      */
     public MachineState(EnumState initialState, ConcurrentHashMap<EnumState, EnumSet<?>> map) {
         statemap = map;
@@ -59,8 +57,7 @@ public class MachineState<EnumState> {
     /**
      * Initialize with an initialState but no association (Machine State is empty)
      *
-     * @param initialState
-     *            initial MachineState
+     * @param initialState initial MachineState
      */
     public MachineState(EnumState initialState) {
         statemap = new ConcurrentHashMap<EnumState, EnumSet<?>>();
@@ -68,12 +65,12 @@ public class MachineState<EnumState> {
     }
 
     /**
-     * Add a new association from one state to a set of acceptable following states (can replace an
-     * existing association)
+     * Add a new association from one state to a set of acceptable following states (can replace an existing
+     * association)
      *
      * @param state
-     * @param set
-     *            the new association
+     * @param set the new association
+     *
      * @return the previous association if any
      */
     public EnumSet<?> addNewAssociation(EnumState state, EnumSet<?> set) {
@@ -81,10 +78,11 @@ public class MachineState<EnumState> {
     }
 
     /**
-     * Add a new association from one state to a set of acceptable following states (can replace an
-     * existing association)
+     * Add a new association from one state to a set of acceptable following states (can replace an existing
+     * association)
      *
      * @param elt
+     *
      * @return the previous association if any
      */
     public EnumSet<?> addNewAssociation(Transition<EnumState> elt) {
@@ -94,8 +92,8 @@ public class MachineState<EnumState> {
     /**
      * Remove an association from one state to any acceptable following states
      *
-     * @param state
-     *            the state to remove any acceptable following states
+     * @param state the state to remove any acceptable following states
+     *
      * @return the previous association if any
      */
     public EnumSet<?> removeAssociation(EnumState state) {
@@ -115,9 +113,10 @@ public class MachineState<EnumState> {
      * Sets the current application state.
      *
      * @param desiredState
+     *
      * @return the requested state, if it was reachable
-     * @throws IllegalFiniteStateException
-     *             if the state is not allowed
+     *
+     * @throws IllegalFiniteStateException if the state is not allowed
      */
     public EnumState setCurrent(EnumState desiredState) throws IllegalFiniteStateException {
         if (!isReachable(desiredState)) {
@@ -132,6 +131,7 @@ public class MachineState<EnumState> {
      * Sets the current application state, but no exception if not compatible.
      *
      * @param desiredState
+     *
      * @return the requested state, even if it was not reachable
      */
     public EnumState setDryCurrent(EnumState desiredState) {
@@ -141,8 +141,8 @@ public class MachineState<EnumState> {
     /**
      * Determine if the given state is allowed to be next.
      *
-     * @param desiredState
-     *            desired MachineState
+     * @param desiredState desired MachineState
+     *
      * @return True if the desiredState is valid from currentState
      */
     private boolean isReachable(EnumState desiredState) {
@@ -160,6 +160,7 @@ public class MachineState<EnumState> {
      * Finalizes the new requested state
      *
      * @param desiredState
+     *
      * @return the requested state
      */
     private EnumState setAsFinal(EnumState desiredState) {

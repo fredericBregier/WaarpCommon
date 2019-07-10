@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 
 /**
  * @author "Frederic Bregier"
- *
  */
 public class HmacShaTest {
 

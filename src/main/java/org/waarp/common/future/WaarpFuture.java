@@ -21,11 +21,10 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.*;
 
 /**
- * Ftp Future operation<br>
- * Completely inspired from the excellent ChannelFuture of Netty, but without any channel inside.
+ * Ftp Future operation<br> Completely inspired from the excellent ChannelFuture of Netty, but without any channel
+ * inside.
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpFuture {
     private static final Throwable CANCELLED = new Throwable();
@@ -40,7 +39,6 @@ public class WaarpFuture {
 
     /**
      * Creates a new instance.
-     *
      */
     public WaarpFuture() {
         cancellable = false;
@@ -49,16 +47,15 @@ public class WaarpFuture {
     /**
      * Creates a new instance.
      *
-     * @param cancellable
-     *            {@code true} if and only if this future can be canceled
+     * @param cancellable {@code true} if and only if this future can be canceled
      */
     public WaarpFuture(boolean cancellable) {
         this.cancellable = cancellable;
     }
 
     /**
-     * Returns {@code true} if and only if this future is complete, regardless of whether the
-     * operation was successful, failed, or canceled.
+     * Returns {@code true} if and only if this future is complete, regardless of whether the operation was successful,
+     * failed, or canceled.
      *
      * @return True if the future is complete
      */
@@ -87,8 +84,7 @@ public class WaarpFuture {
     /**
      * Returns the cause of the failed operation if the operation has failed.
      *
-     * @return the cause of the failure. {@code null} if succeeded or this future is not completed
-     *         yet.
+     * @return the cause of the failure. {@code null} if succeeded or this future is not completed yet.
      */
     public synchronized Throwable getCause() {
         if (cause != CANCELLED) {
@@ -135,8 +131,7 @@ public class WaarpFuture {
      *
      * @return The WaarpFuture
      *
-     * @throws InterruptedException
-     *             if the current thread was interrupted
+     * @throws InterruptedException if the current thread was interrupted
      */
     public WaarpFuture await() throws InterruptedException {
         if (Thread.interrupted()) {
@@ -164,8 +159,7 @@ public class WaarpFuture {
      *
      * @return {@code true} if and only if the future was completed within the specified time limit
      *
-     * @throws InterruptedException
-     *             if the current thread was interrupted
+     * @throws InterruptedException if the current thread was interrupted
      */
     public boolean await(long timeout, TimeUnit unit)
             throws InterruptedException {
@@ -179,16 +173,15 @@ public class WaarpFuture {
      *
      * @return {@code true} if and only if the future was completed within the specified time limit
      *
-     * @throws InterruptedException
-     *             if the current thread was interrupted
+     * @throws InterruptedException if the current thread was interrupted
      */
     public boolean await(long timeoutMillis) throws InterruptedException {
         return await0(MILLISECONDS.toNanos(timeoutMillis), true);
     }
 
     /**
-     * Waits for this future to be completed without interruption. This method catches an {@link InterruptedException} and
-     * discards it silently.
+     * Waits for this future to be completed without interruption. This method catches an {@link InterruptedException}
+     * and discards it silently.
      *
      * @return The WaarpFuture
      */
@@ -215,8 +208,8 @@ public class WaarpFuture {
     }
 
     /**
-     * Waits for this future to be completed within the specified time limit without interruption.
-     * This method catches an {@link InterruptedException} and discards it silently.
+     * Waits for this future to be completed within the specified time limit without interruption. This method catches
+     * an {@link InterruptedException} and discards it silently.
      *
      * @param timeout
      * @param unit
@@ -232,8 +225,8 @@ public class WaarpFuture {
     }
 
     /**
-     * Waits for this future to be completed within the specified time limit without interruption.
-     * This method catches an {@link InterruptedException} and discards it silently.
+     * Waits for this future to be completed within the specified time limit without interruption. This method catches
+     * an {@link InterruptedException} and discards it silently.
      *
      * @param timeoutMillis
      *
@@ -301,8 +294,8 @@ public class WaarpFuture {
     /**
      * Marks this future as a success and notifies all listeners.
      *
-     * @return {@code true} if and only if successfully marked this future as a success. Otherwise {@code false} because this
-     *         future is already marked as either a success or a failure.
+     * @return {@code true} if and only if successfully marked this future as a success. Otherwise {@code false} because
+     * this future is already marked as either a success or a failure.
      */
     public boolean setSuccess() {
         synchronized (this) {
@@ -323,8 +316,9 @@ public class WaarpFuture {
      * Marks this future as a failure and notifies all listeners.
      *
      * @param cause
-     * @return {@code true} if and only if successfully marked this future as a failure. Otherwise {@code false} because this
-     *         future is already marked as either a success or a failure.
+     *
+     * @return {@code true} if and only if successfully marked this future as a failure. Otherwise {@code false} because
+     * this future is already marked as either a success or a failure.
      */
     public boolean setFailure(Throwable cause) {
         synchronized (this) {
@@ -343,11 +337,10 @@ public class WaarpFuture {
     }
 
     /**
-     * Cancels the operation associated with this future and notifies all listeners if canceled
-     * successfully.
+     * Cancels the operation associated with this future and notifies all listeners if canceled successfully.
      *
-     * @return {@code true} if and only if the operation has been canceled. {@code false} if the
-     *         operation can't be canceled or is already completed.
+     * @return {@code true} if and only if the operation has been canceled. {@code false} if the operation can't be
+     * canceled or is already completed.
      */
     public boolean cancel() {
         if (!cancellable) {

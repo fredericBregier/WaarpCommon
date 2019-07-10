@@ -20,7 +20,6 @@ package org.waarp.common.exception;
  * Exception for Finite State Machine support
  *
  * @author Frederic Bregier
- *
  */
 public class IllegalFiniteStateException extends Exception {
     /**

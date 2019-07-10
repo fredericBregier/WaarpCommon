@@ -28,7 +28,6 @@ import java.util.Set;
  * Factory to store the Database Model object
  *
  * @author Frederic Bregier
- *
  */
 public class DbModelFactory {
 
@@ -49,6 +48,7 @@ public class DbModelFactory {
      * @param dbuser
      * @param dbpasswd
      * @param write
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     @SuppressWarnings("unused")

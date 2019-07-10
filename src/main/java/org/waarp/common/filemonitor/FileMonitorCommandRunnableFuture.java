@@ -24,7 +24,6 @@ import java.util.Date;
  * Command run when a new file item is validated
  *
  * @author "Frederic Bregier"
- *
  */
 public abstract class FileMonitorCommandRunnableFuture implements Runnable {
     private FileItem fileItem;
@@ -32,6 +31,7 @@ public abstract class FileMonitorCommandRunnableFuture implements Runnable {
     private FileMonitor monitor;
 
     /**
+     *
      */
     public FileMonitorCommandRunnableFuture() {
     }
@@ -52,9 +52,7 @@ public abstract class FileMonitorCommandRunnableFuture implements Runnable {
     }
 
     /**
-     *
-     * @param fileItem
-     *            fileItem on which the command will be executed.
+     * @param fileItem fileItem on which the command will be executed.
      */
     public abstract void run(FileItem fileItem);
 
@@ -62,8 +60,7 @@ public abstract class FileMonitorCommandRunnableFuture implements Runnable {
      * To be called at the end of the primary action (only for commandValidFile).
      *
      * @param status
-     * @param specialId
-     *            the specialId associated with the task
+     * @param specialId the specialId associated with the task
      */
     protected void finalize(boolean status, long specialId) {
         if (getMonitor() != null) {

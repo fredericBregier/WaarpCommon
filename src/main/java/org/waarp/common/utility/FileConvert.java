@@ -18,8 +18,8 @@ package org.waarp.common.utility;
 
 /**
  * Description: Converts Unix files to Dos and vice versa
- * @author "Frederic Bregier"
  *
+ * @author "Frederic Bregier"
  */
 
 import org.waarp.common.logging.WaarpLogger;

@@ -20,13 +20,11 @@ import org.waarp.common.command.exception.CommandAbstractException;
 import org.waarp.common.exception.NoRestartException;
 
 /**
- * Restart object that implements the REST command.<br>
- * Note that if necessary, according to the implementation of {@link DirInterface} and {@link FileInterface}, one could want to
- * implement a way to store or retrieve Marker from/to the
- * client specification.
+ * Restart object that implements the REST command.<br> Note that if necessary, according to the implementation of
+ * {@link DirInterface} and {@link FileInterface}, one could want to implement a way to store or retrieve Marker from/to
+ * the client specification.
  *
  * @author Frederic Bregier
- *
  */
 public abstract class Restart {
     /**
@@ -57,8 +55,7 @@ public abstract class Restart {
     }
 
     /**
-     * @param isSet
-     *            the isSet to set
+     * @param isSet the isSet to set
      */
     public void setSet(boolean isSet) {
         this.isSet = isSet;
@@ -75,17 +72,18 @@ public abstract class Restart {
      * Restart from a Marker for the next FileInterface
      *
      * @param marker
+     *
      * @return True if the Marker is OK
-     * @exception CommandAbstractException
+     *
+     * @throws CommandAbstractException
      */
     public abstract boolean restartMarker(String marker)
             throws CommandAbstractException;
 
     /**
-     *
      * @return the position from a previous REST command
-     * @throws NoRestartException
-     *             if no REST command was issued before
+     *
+     * @throws NoRestartException if no REST command was issued before
      */
     public abstract long getPosition() throws NoRestartException;
 
@@ -93,8 +91,8 @@ public abstract class Restart {
     // values
 
     /**
-     *
      * @param nextBlock
+     *
      * @return the max between the available size and the nextblock size
      */
     public abstract int getMaxSize(int nextBlock);

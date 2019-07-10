@@ -31,14 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Directory implementation for Passthrough Based. It is just an empty shell since in pass through
- * mode, no directories or files really exist.
- *
- * If one wants to implement special actions, he/she just has to extend this class and override the
- * default empty implementation.
+ * Directory implementation for Passthrough Based. It is just an empty shell since in pass through mode, no directories
+ * or files really exist.
+ * <p>
+ * If one wants to implement special actions, he/she just has to extend this class and override the default empty
+ * implementation.
  *
  * @author Frederic Bregier
- *
  */
 public abstract class PassthroughBasedDirImpl extends AbstractDir {
     /**
@@ -76,11 +75,12 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
     /**
      * Finds all files matching a wildcard expression (based on '?', '~' or '*').
      *
-     * @param pathWithWildcard
-     *            The wildcard expression with a business path.
-     * @return List of String as relative paths matching the wildcard expression. Those files are
-     *         tested as valid from business point of view. If Wildcard support is not active, if
-     *         the path contains any wildcards, it will throw an error.
+     * @param pathWithWildcard The wildcard expression with a business path.
+     *
+     * @return List of String as relative paths matching the wildcard expression. Those files are tested as valid from
+     * business point of view. If Wildcard support is not active, if the path contains any wildcards, it will throw an
+     * error.
+     *
      * @throws CommandAbstractException
      */
     protected List<String> wildcardFiles(String pathWithWildcard)
@@ -117,7 +117,9 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
      * Get the File from this path, checking first its validity
      *
      * @param path
+     *
      * @return the FileInterface
+     *
      * @throws CommandAbstractException
      */
     protected File getFileFromPath(String path) throws CommandAbstractException {
@@ -134,7 +136,9 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
      * Get the true file from the path
      *
      * @param path
+     *
      * @return the true File from the path
+     *
      * @throws CommandAbstractException
      */
     protected File getTrueFile(String path) throws CommandAbstractException {
@@ -155,6 +159,7 @@ public abstract class PassthroughBasedDirImpl extends AbstractDir {
      * Get the relative path (without mount point)
      *
      * @param file
+     *
      * @return the relative path
      */
     protected String getRelativePath(File file) {

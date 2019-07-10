@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 501 Syntax error in parameters or arguments.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply501Exception extends CommandAbstractException {
 

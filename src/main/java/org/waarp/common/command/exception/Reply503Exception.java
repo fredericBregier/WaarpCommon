@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 503 Bad sequence of commands.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply503Exception extends CommandAbstractException {
 

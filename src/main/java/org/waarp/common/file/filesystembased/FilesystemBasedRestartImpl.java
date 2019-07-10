@@ -24,7 +24,6 @@ import org.waarp.common.file.SessionInterface;
  * Restart implementation for Filesystem Based
  *
  * @author Frederic Bregier
- *
  */
 public abstract class FilesystemBasedRestartImpl extends Restart {
     /**

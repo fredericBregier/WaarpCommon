@@ -22,7 +22,6 @@ import org.waarp.common.file.filesystembased.FilesystemBasedFileParameterImpl;
  * FileParameter implementation for Passthrough Based
  *
  * @author Frederic Bregier
- *
  */
 public class PassthroughBasedFileParameterImpl extends FilesystemBasedFileParameterImpl {
 }

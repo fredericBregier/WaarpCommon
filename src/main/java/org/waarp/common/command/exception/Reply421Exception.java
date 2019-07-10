@@ -19,11 +19,10 @@ package org.waarp.common.command.exception;
 import org.waarp.common.command.ReplyCode;
 
 /**
- * 421 Service not available, closing control connection. This may be a reply to any command if the
- * service knows it must shut down.
+ * 421 Service not available, closing control connection. This may be a reply to any command if the service knows it
+ * must shut down.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply421Exception extends CommandAbstractException {
 
@@ -33,8 +32,8 @@ public class Reply421Exception extends CommandAbstractException {
     private static final long serialVersionUID = 421L;
 
     /**
-     * 421 Service not available, closing control connection. This may be a reply to any command if
-     * the service knows it must shut down.
+     * 421 Service not available, closing control connection. This may be a reply to any command if the service knows it
+     * must shut down.
      *
      * @param message
      */

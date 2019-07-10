@@ -29,12 +29,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Launch the Engine from a variety of sources, either through a main() or invoked through
- * Apache Daemon.
+ * Launch the Engine from a variety of sources, either through a main() or invoked through Apache Daemon.
  *
- * @author Frederic Bregier
- *         Inspired from Apache Daemon Wiki
- *
+ * @author Frederic Bregier Inspired from Apache Daemon Wiki
  */
 public abstract class ServiceLauncher implements Daemon {
     /**
@@ -87,8 +84,7 @@ public abstract class ServiceLauncher implements Daemon {
     /**
      * The Java entry point.
      *
-     * @param args
-     *            Command line arguments, all ignored.
+     * @param args Command line arguments, all ignored.
      */
     public static void _main(String[] args) {
         initStatic();
@@ -111,17 +107,15 @@ public abstract class ServiceLauncher implements Daemon {
     /**
      * Windows mode<br>
      * <br>
-     * Static methods called by prunsrv to start/stop
-     * the Windows service. Pass the argument "start"
-     * to start the service, and pass "stop" to
-     * stop the service.
+     * Static methods called by prunsrv to start/stop the Windows service. Pass the argument "start" to start the
+     * service, and pass "stop" to stop the service.
      *
      * <pre>
      * prunsrv.exe //IS/MyService --Classpath=C:\...\xxx.jar --Description=&quot;My Java Service&quot; --Jvm=auto --StartMode=jvm --StartClass=org.waarp.xxx.service.ServiceLauncher --StartMethod=windowsService --StartParams=start --StopMode=jvm --StopClass=org.waarp.xxx.service.ServiceLauncher --StopMethod=windowsService --StopParams=stop
      * </pre>
      *
-     * @param args
-     *            Arguments from prunsrv command line
+     * @param args Arguments from prunsrv command line
+     *
      * @throws Exception
      **/
     public static void _windowsService(String args[]) throws Exception {
@@ -140,15 +134,14 @@ public abstract class ServiceLauncher implements Daemon {
     /**
      * Windows mode<br>
      * <br>
-     * Static methods called by prunsrv to start
-     * the Windows service.
+     * Static methods called by prunsrv to start the Windows service.
      *
      * <pre>
      * prunsrv.exe //IS/MyService --Classpath=C:\...\xxx.jar --Description=&quot;My Java Service&quot; --Jvm=auto --StartMode=jvm --StartClass=org.waarp.xxx.service.ServiceLauncher --StartMethod=windowsStart --StopMode=jvm --StopClass=org.waarp.xxx.service.ServiceLauncher --StopMethod=windowsStop
      * </pre>
      *
-     * @param args
-     *            Arguments are ignored
+     * @param args Arguments are ignored
+     *
      * @throws Exception
      **/
     public static void _windowsStart(String args[]) throws Exception {
@@ -159,15 +152,13 @@ public abstract class ServiceLauncher implements Daemon {
     /**
      * Windows mode<br>
      * <br>
-     * Static methods called by prunsrv to stop
-     * the Windows service.
+     * Static methods called by prunsrv to stop the Windows service.
      *
      * <pre>
      * prunsrv.exe //IS/MyService --Classpath=C:\...\xxx.jar --Description=&quot;My Java Service&quot; --Jvm=auto --StartMode=jvm --StartClass=org.waarp.xxx.service.ServiceLauncher --StartMethod=windowsStart --StopMode=jvm --StopClass=org.waarp.xxx.service.ServiceLauncher --StopMethod=windowsStop
      * </pre>
      *
-     * @param args
-     *            Arguments are ignored
+     * @param args Arguments are ignored
      **/
     public static void _windowsStop(String args[]) {
         initStatic();
@@ -176,7 +167,6 @@ public abstract class ServiceLauncher implements Daemon {
     }
 
     /**
-     *
      * @return a new EngineAbstract
      */
     protected abstract EngineAbstract getNewEngineAbstract();

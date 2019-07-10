@@ -59,12 +59,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * This package would like to propose a JSE 6 compatible way to scan a directory
- * for new, deleted and changed files, in order to allow some functions like
- * pooling a directory before actions.
+ * This package would like to propose a JSE 6 compatible way to scan a directory for new, deleted and changed files, in
+ * order to allow some functions like pooling a directory before actions.
  *
  * @author "Frederic Bregier"
- *
  */
 public class FileMonitor {
     protected static final DigestAlgo defaultDigestAlgo = DigestAlgo.MD5;
@@ -115,26 +113,17 @@ public class FileMonitor {
     protected Date nextDay;
 
     /**
-     * @param name
-     *            name of this daemon
-     * @param statusFile
-     *            the file where the current status is saved (current files)
-     * @param stopFile
-     *            the file when created (.exists()) will stop the daemon
-     * @param directory
-     *            the directory where files will be monitored
-     * @param digest
-     *            the digest to use (default if null is MD5)
-     * @param elapseTime
-     *            the time to wait in ms for between 2 checks (default is 1000ms, minimum is 100ms)
-     * @param filter
-     *            the filter to be applied on selected files (default is isFile())
-     * @param commandValidFile
-     *            the commandValidFile to run (may be null, which means poll() commandValidFile has to be used)
-     * @param commandRemovedFile
-     *            the commandRemovedFile to run (may be null)
-     * @param commandCheckIteration
-     *            the commandCheckIteration to run (may be null), runs after each check (elapseTime)
+     * @param name name of this daemon
+     * @param statusFile the file where the current status is saved (current files)
+     * @param stopFile the file when created (.exists()) will stop the daemon
+     * @param directory the directory where files will be monitored
+     * @param digest the digest to use (default if null is MD5)
+     * @param elapseTime the time to wait in ms for between 2 checks (default is 1000ms, minimum is 100ms)
+     * @param filter the filter to be applied on selected files (default is isFile())
+     * @param commandValidFile the commandValidFile to run (may be null, which means poll() commandValidFile has to be
+     * used)
+     * @param commandRemovedFile the commandRemovedFile to run (may be null)
+     * @param commandCheckIteration the commandCheckIteration to run (may be null), runs after each check (elapseTime)
      */
     public FileMonitor(String name, File statusFile, File stopFile,
                        File directory, DigestAlgo digest, long elapseTime,
@@ -225,19 +214,15 @@ public class FileMonitor {
     }
 
     /**
-     * @param commandCheckIteration
-     *            the commandCheckIteration to run (may be null), runs after each check (elapseTime)
+     * @param commandCheckIteration the commandCheckIteration to run (may be null), runs after each check (elapseTime)
      */
     public void setCommandCheckIteration(FileMonitorCommandRunnableFuture commandCheckIteration) {
         this.commandCheckIteration = commandCheckIteration;
     }
 
     /**
-     *
-     * @param factory
-     *            the factory to used instead of simple instance (enables parallelism)
-     * @param fixedPool
-     *            if > 0, set the number of parallel threads allowed
+     * @param factory the factory to used instead of simple instance (enables parallelism)
+     * @param fixedPool if > 0, set the number of parallel threads allowed
      */
     public void setCommandValidFileFactory(FileMonitorCommandFactory factory, int fixedPool) {
         this.commandValidFileFactory = factory;
@@ -252,11 +237,9 @@ public class FileMonitor {
     }
 
     /**
-     * if set greater than 1000 ms, will be parallel,
-     * else will be sequential after each check and ignoring this timer
+     * if set greater than 1000 ms, will be parallel, else will be sequential after each check and ignoring this timer
      *
-     * @param elapseWaarpTime
-     *            the elapseWaarpTime to set
+     * @param elapseWaarpTime the elapseWaarpTime to set
      */
     public void setElapseWaarpTime(long elapseWaarpTime) {
         if (elapseWaarpTime >= defaultDelay) {
@@ -341,7 +324,6 @@ public class FileMonitor {
     }
 
     /**
-     *
      * @return True if the FileMonitor is correctly initialized
      */
     public boolean initialized() {
@@ -362,7 +344,6 @@ public class FileMonitor {
     }
 
     /**
-     *
      * @return the number of fileItems in the current history (active, in error or past)
      */
     public long getCurrentHistoryNb() {
@@ -373,7 +354,6 @@ public class FileMonitor {
     }
 
     /**
-     *
      * Reset such that next status will be full (not partial)
      */
     public void setNextAsFullStatus() {
@@ -381,7 +361,6 @@ public class FileMonitor {
     }
 
     /**
-     *
      * @return the status (updated only) in JSON format
      */
     public String getStatus() {
@@ -428,16 +407,14 @@ public class FileMonitor {
     }
 
     /**
-     * @param elapseTime
-     *            the elapseTime to set
+     * @param elapseTime the elapseTime to set
      */
     public void setElapseTime(long elapseTime) {
         this.elapseTime = elapseTime;
     }
 
     /**
-     * @param filter
-     *            the filter to set
+     * @param filter the filter to set
      */
     public void setFilter(FileFilter filter) {
         this.filter = filter;
@@ -495,7 +472,6 @@ public class FileMonitor {
     }
 
     /**
-     *
      * @return the head of the File queue but does not remove it
      */
     public File peek() {
@@ -507,7 +483,6 @@ public class FileMonitor {
     }
 
     /**
-     *
      * @return the head of the File queue and removes it
      */
     public File poll() {
@@ -618,6 +593,7 @@ public class FileMonitor {
     /**
      * @param fileItemsChanged
      * @param directory
+     *
      * @return True if one file at least has changed
      */
     protected boolean checkOneDir(boolean fileItemsChanged, File directory) {
@@ -710,7 +686,6 @@ public class FileMonitor {
      * Timer task
      *
      * @author "Frederic Bregier"
-     *
      */
     protected static class FileMonitorTimerTask implements TimerTask {
         protected final FileMonitor fileMonitor;
@@ -757,7 +732,6 @@ public class FileMonitor {
      * Used by Waarp Business information
      *
      * @author "Frederic Bregier"
-     *
      */
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
     public static class FileMonitorInformation {
@@ -804,7 +778,6 @@ public class FileMonitor {
      * One element in the directory
      *
      * @author "Frederic Bregier"
-     *
      */
     public static class FileItem implements Cloneable {
         public File file;
@@ -837,8 +810,8 @@ public class FileMonitor {
         }
 
         /**
-         *
          * @param item
+         *
          * @return True if the fileItem is strictly the same (and not only the file as in equals)
          */
         public boolean isStrictlySame(FileItem item) {
@@ -864,7 +837,6 @@ public class FileMonitor {
      * Class to run Waarp Business information in fixed delay rather than after each check
      *
      * @author "Frederic Bregier"
-     *
      */
     protected class FileMonitorTimerInformationTask implements TimerTask {
         protected final FileMonitorCommandRunnableFuture informationMonitorCommand;

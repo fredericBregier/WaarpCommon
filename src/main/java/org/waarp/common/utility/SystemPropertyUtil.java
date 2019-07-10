@@ -80,7 +80,6 @@ public final class SystemPropertyUtil {
     }
 
     /**
-     *
      * @return True if Encoding is Correct
      */
     public static boolean isFileEncodingCorrect() {
@@ -98,8 +97,8 @@ public final class SystemPropertyUtil {
     }
 
     /**
-     * Returns the value of the Java system property with the specified {@code key}, while falling back to {@code null} if the
-     * property access fails.
+     * Returns the value of the Java system property with the specified {@code key}, while falling back to {@code null}
+     * if the property access fails.
      *
      * @return the property value or {@code null}
      */
@@ -108,12 +107,11 @@ public final class SystemPropertyUtil {
     }
 
     /**
-     * Returns the value of the Java system property with the specified {@code key}, while falling back to the specified default
-     * value if
-     * the property access fails.
+     * Returns the value of the Java system property with the specified {@code key}, while falling back to the specified
+     * default value if the property access fails.
      *
-     * @return the property value. {@code def} if there's no such property or if an access to the
-     *         specified property is not allowed.
+     * @return the property value. {@code def} if there's no such property or if an access to the specified property is
+     * not allowed.
      */
     public final static String get(String key, String def) {
         if (key == null) {
@@ -129,12 +127,11 @@ public final class SystemPropertyUtil {
     }
 
     /**
-     * Returns the value of the Java system property with the specified {@code key}, while falling back to the specified default
-     * value if
-     * the property access fails.
+     * Returns the value of the Java system property with the specified {@code key}, while falling back to the specified
+     * default value if the property access fails.
      *
-     * @return the property value. {@code def} if there's no such property or if an access to the
-     *         specified property is not allowed.
+     * @return the property value. {@code def} if there's no such property or if an access to the specified property is
+     * not allowed.
      */
     public static boolean getBoolean(String key, boolean def) {
         if (key == null) {
@@ -167,12 +164,11 @@ public final class SystemPropertyUtil {
     }
 
     /**
-     * Returns the value of the Java system property with the specified {@code key}, while falling back to the specified default
-     * value if
-     * the property access fails.
+     * Returns the value of the Java system property with the specified {@code key}, while falling back to the specified
+     * default value if the property access fails.
      *
-     * @return the property value. {@code def} if there's no such property or if an access to the
-     *         specified property is not allowed.
+     * @return the property value. {@code def} if there's no such property or if an access to the specified property is
+     * not allowed.
      */
     public static int getInt(String key, int def) {
         if (key == null) {
@@ -201,12 +197,11 @@ public final class SystemPropertyUtil {
     }
 
     /**
-     * Returns the value of the Java system property with the specified {@code key}, while falling back to the specified default
-     * value if
-     * the property access fails.
+     * Returns the value of the Java system property with the specified {@code key}, while falling back to the specified
+     * default value if the property access fails.
      *
-     * @return the property value. {@code def} if there's no such property or if an access to the
-     *         specified property is not allowed.
+     * @return the property value. {@code def} if there's no such property or if an access to the specified property is
+     * not allowed.
      */
     public static long getLong(String key, long def) {
         if (key == null) {

@@ -24,13 +24,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * UUID Generator (also Global UUID Generator) but limited to 1 Long (64 bits) <br>
  * <br>
- * Inspired from com.groupon locality-uuid which used combination of internal counter value - process id -
- * and Timestamp. see https://github.com/groupon/locality-uuid.java <br>
+ * Inspired from com.groupon locality-uuid which used combination of internal counter value - process id - and
+ * Timestamp. see https://github.com/groupon/locality-uuid.java <br>
  * <br>
  * But force sequence and take care of errors and improves some performance issues
  *
  * @author "Frederic Bregier"
- *
  */
 public final class LongUuid {
 
@@ -88,8 +87,7 @@ public final class LongUuid {
     /**
      * Constructor that takes a byte array as this UUID's content
      *
-     * @param bytes
-     *            UUID content
+     * @param bytes UUID content
      */
     public LongUuid(final byte[] bytes) {
         if (bytes.length != UUIDSIZE) {
@@ -122,8 +120,8 @@ public final class LongUuid {
     }
 
     /**
-     *
      * @param length
+     *
      * @return a byte array with random values
      */
     public static final byte[] getRandom(final int length) {
@@ -298,7 +296,6 @@ public final class LongUuid {
     }
 
     /**
-     *
      * @return the equivalent UUID as long
      */
     public long getLong() {

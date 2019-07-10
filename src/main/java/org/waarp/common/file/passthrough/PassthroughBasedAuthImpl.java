@@ -23,7 +23,6 @@ import org.waarp.common.file.filesystembased.FilesystemBasedAuthImpl;
  * Authentication implementation for Passthrough Based
  *
  * @author Frederic Bregier
- *
  */
 public abstract class PassthroughBasedAuthImpl extends FilesystemBasedAuthImpl {
     /**

@@ -38,7 +38,6 @@ import java.util.NoSuchElementException;
  * Utilities for SSL support
  *
  * @author "Frederic Bregier"
- *
  */
 public class WaarpSslUtility {
     /**
@@ -80,12 +79,10 @@ public class WaarpSslUtility {
     /**
      * Add a SslHandler in a pipeline when the channel is already active
      *
-     * @param future
-     *            might be null, condition to start to add the handler to the pipeline
+     * @param future might be null, condition to start to add the handler to the pipeline
      * @param pipeline
      * @param sslHandler
-     * @param listener
-     *            action once the handshake is done
+     * @param listener action once the handshake is done
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void addSslHandler(ChannelFuture future, final ChannelPipeline pipeline,
@@ -108,9 +105,11 @@ public class WaarpSslUtility {
     }
 
     /**
-     * Wait for the handshake on the given channel (better to use addSslHandler when handler is added after channel is active)
+     * Wait for the handshake on the given channel (better to use addSslHandler when handler is added after channel is
+     * active)
      *
      * @param channel
+     *
      * @return True if the Handshake is done correctly
      */
     public static boolean waitForHandshake(Channel channel) {
@@ -140,8 +139,8 @@ public class WaarpSslUtility {
     /**
      * Waiting for the channel to be opened and ready (Client side) (blocking call)
      *
-     * @param future
-     *            a future on connect only
+     * @param future a future on connect only
+     *
      * @return the channel if correctly associated, else return null
      */
     public static Channel waitforChannelReady(ChannelFuture future) {
@@ -190,11 +189,9 @@ public class WaarpSslUtility {
     /**
      * Remove the SslHandler (if any) cleanly
      *
-     * @param future
-     *            if not null, wait for this future to be done to removed the sslhandler
+     * @param future if not null, wait for this future to be done to removed the sslhandler
      * @param channel
-     * @param close
-     *            True to close the channel, else to only remove it
+     * @param close True to close the channel, else to only remove it
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void removingSslHandler(ChannelFuture future, final Channel channel, final boolean close) {
@@ -266,7 +263,6 @@ public class WaarpSslUtility {
      * Thread used to ensure we are not in IO thread when waiting
      *
      * @author "Frederic Bregier"
-     *
      */
     private static class SSLTHREAD extends Thread {
         private final Channel channel;

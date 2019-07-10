@@ -35,7 +35,6 @@ import java.sql.Types;
  * PostGreSQL Database Model implementation
  *
  * @author Frederic Bregier
- *
  */
 public abstract class DbModelPostgresql extends DbModelAbstract {
     /**

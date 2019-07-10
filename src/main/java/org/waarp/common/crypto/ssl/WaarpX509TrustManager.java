@@ -28,12 +28,11 @@ import java.security.cert.X509Certificate;
  * Waarp X509 Trust Manager implementation
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpX509TrustManager implements X509TrustManager {
     /**
-     * First using default X509TrustManager returned by the global TrustManager. Then delegate
-     * decisions to it, and fall back to the logic in this class if the default doesn't trust it.
+     * First using default X509TrustManager returned by the global TrustManager. Then delegate decisions to it, and fall
+     * back to the logic in this class if the default doesn't trust it.
      */
     private X509TrustManager defaultX509TrustManager = null;
 
@@ -48,6 +47,7 @@ public class WaarpX509TrustManager implements X509TrustManager {
      * Create a "default" X509TrustManager
      *
      * @param tmf
+     *
      * @throws CryptoException
      */
     public WaarpX509TrustManager(TrustManagerFactory tmf) throws CryptoException {

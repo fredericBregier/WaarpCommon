@@ -18,6 +18,10 @@
  * order to allow some functions like pooling a directory before actions.
  *
  * @author "Frederic Bregier"
+ * <p>
+ * This package would like to propose a JSE 6 compatible way to scan a directory for new, deleted and changed files, in
+ * order to allow some functions like pooling a directory before actions.
+ * @author "Frederic Bregier"
  */
 /**
  * This package would like to propose a JSE 6 compatible way to scan a directory

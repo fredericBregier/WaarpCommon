@@ -61,6 +61,7 @@ public class DbPreparedStatement {
      * Create a DbPreparedStatement from DbSession object
      *
      * @param ls
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbPreparedStatement(DbSession ls)
@@ -85,6 +86,7 @@ public class DbPreparedStatement {
      *
      * @param ls
      * @param request
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -135,8 +137,8 @@ public class DbPreparedStatement {
      *
      * @param ls
      * @param request
-     * @param nbFetch
-     *            the number of pre fetch rows
+     * @param nbFetch the number of pre fetch rows
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -188,6 +190,7 @@ public class DbPreparedStatement {
      * Create a preparedStatement from request
      *
      * @param requestarg
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -234,8 +237,8 @@ public class DbPreparedStatement {
     }
 
     /**
-     * In case of closing database connection, it is possible to reopen a long term
-     * preparedStatement as it was at creation.
+     * In case of closing database connection, it is possible to reopen a long term preparedStatement as it was at
+     * creation.
      *
      * @throws WaarpDatabaseSqlException
      * @throws WaarpDatabaseNoConnectionException
@@ -251,7 +254,6 @@ public class DbPreparedStatement {
      *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
-     *
      */
     public void executeQuery() throws WaarpDatabaseNoConnectionException,
                                       WaarpDatabaseSqlException {
@@ -287,6 +289,7 @@ public class DbPreparedStatement {
      * Execute the Update/Insert/Delete preparedStatement
      *
      * @return the number of row
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -323,7 +326,6 @@ public class DbPreparedStatement {
 
     /**
      * Close the resultSet if any
-     *
      */
     public void close() {
         if (rs != null) {
@@ -337,7 +339,6 @@ public class DbPreparedStatement {
 
     /**
      * Really close the preparedStatement and the resultSet if any
-     *
      */
     public void realClose() {
         close();
@@ -359,6 +360,7 @@ public class DbPreparedStatement {
      * Move the cursor to the next result
      *
      * @return True if there is a next result, else False
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -387,8 +389,8 @@ public class DbPreparedStatement {
     }
 
     /**
-     *
      * @return The resultSet (can be used in conjunction of getNext())
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public ResultSet getResultSet() throws WaarpDatabaseNoConnectionException {
@@ -400,8 +402,8 @@ public class DbPreparedStatement {
     }
 
     /**
-     *
      * @return The preparedStatement (should be used in conjunction of createPreparedStatement)
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public PreparedStatement getPreparedStatement()

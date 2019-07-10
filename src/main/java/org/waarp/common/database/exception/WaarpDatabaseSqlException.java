@@ -20,7 +20,6 @@ package org.waarp.common.database.exception;
  * Database Sql Error
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpDatabaseSqlException extends WaarpDatabaseException {
 

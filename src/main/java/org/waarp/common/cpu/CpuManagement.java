@@ -21,15 +21,12 @@ import java.lang.management.OperatingSystemMXBean;
 
 /**
  * @author bregier
- *
  */
 class CpuManagement implements CpuManagementInterface {
     OperatingSystemMXBean osBean;
 
     /**
-     *
-     * @throws UnsupportedOperationException
-     *             if System Load Average is not supported
+     * @throws UnsupportedOperationException if System Load Average is not supported
      */
     public CpuManagement() throws UnsupportedOperationException {
         osBean = ManagementFactory.getOperatingSystemMXBean();
@@ -41,7 +38,6 @@ class CpuManagement implements CpuManagementInterface {
     }
 
     /**
-     *
      * @return the load average
      */
     public double getLoadAverage() {

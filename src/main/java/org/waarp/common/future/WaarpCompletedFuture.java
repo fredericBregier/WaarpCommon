@@ -22,10 +22,10 @@ import java.util.concurrent.TimeUnit;
  * Future completed
  *
  * @author Frederic Bregier
- *
  */
 public abstract class WaarpCompletedFuture extends WaarpFuture {
     /**
+     *
      */
     protected WaarpCompletedFuture() {
         super(false);

@@ -29,7 +29,6 @@ import java.io.UnsupportedEncodingException;
  * logger factory using SLF4J from LOGBACK
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpSlf4JLoggerFactory extends WaarpLoggerFactory {
     static final String ROOT = Logger.ROOT_LOGGER_NAME;
@@ -37,7 +36,6 @@ public class WaarpSlf4JLoggerFactory extends WaarpLoggerFactory {
     // Old versions: "root"; // LoggerContext.ROOT_NAME; //
 
     /**
-     *
      * @param level
      */
     public WaarpSlf4JLoggerFactory(final WaarpLogLevel level) {

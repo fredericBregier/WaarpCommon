@@ -21,7 +21,6 @@ package org.waarp.common.lru;
  *
  * @author Frederic Bregier
  * @author Damian Momot
- *
  */
 public class SoftReferenceSynchronizedLruCache<K, V> extends
                                                      SynchronizedLruCache<K, V> {

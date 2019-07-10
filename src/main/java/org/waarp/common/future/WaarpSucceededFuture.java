@@ -20,7 +20,6 @@ package org.waarp.common.future;
  * Future in success
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpSucceededFuture extends WaarpCompletedFuture {
 

@@ -38,7 +38,6 @@ import java.util.concurrent.TimeUnit;
  * Class for access to Database
  *
  * @author Frederic Bregier
- *
  */
 @Deprecated
 public class DbAdmin {
@@ -93,19 +92,19 @@ public class DbAdmin {
     private DbSession session = null;
 
     /**
-     * Use a default server for basic connection. Later on, specific connection to database for the
-     * scheme that provides access to the table R66DbIndex for one specific Legacy could be done.
-     *
-     * A this time, only one driver is possible! If a new driver is needed, then we need to create a
-     * new DbSession object. Be aware that DbSession.initialize should be call only once for each
-     * driver, whatever the number of DbSession objects that could be created (=> need a hashtable
-     * for specific driver when created). Also, don't know if two drivers at the same time (two
-     * different DbSession) is allowed by JDBC.
+     * Use a default server for basic connection. Later on, specific connection to database for the scheme that provides
+     * access to the table R66DbIndex for one specific Legacy could be done.
+     * <p>
+     * A this time, only one driver is possible! If a new driver is needed, then we need to create a new DbSession
+     * object. Be aware that DbSession.initialize should be call only once for each driver, whatever the number of
+     * DbSession objects that could be created (=> need a hashtable for specific driver when created). Also, don't know
+     * if two drivers at the same time (two different DbSession) is allowed by JDBC.
      *
      * @param model
      * @param server
      * @param user
      * @param passwd
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbAdmin(DbModel model, String server, String user, String passwd)
@@ -128,20 +127,20 @@ public class DbAdmin {
     }
 
     /**
-     * Use a default server for basic connection. Later on, specific connection to database for the
-     * scheme that provides access to the table R66DbIndex for one specific Legacy could be done.
-     *
-     * A this time, only one driver is possible! If a new driver is needed, then we need to create a
-     * new DbSession object. Be aware that DbSession.initialize should be call only once for each
-     * driver, whatever the number of DbSession objects that could be created (=> need a hashtable
-     * for specific driver when created). Also, don't know if two drivers at the same time (two
-     * different DbSession) is allowed by JDBC.
+     * Use a default server for basic connection. Later on, specific connection to database for the scheme that provides
+     * access to the table R66DbIndex for one specific Legacy could be done.
+     * <p>
+     * A this time, only one driver is possible! If a new driver is needed, then we need to create a new DbSession
+     * object. Be aware that DbSession.initialize should be call only once for each driver, whatever the number of
+     * DbSession objects that could be created (=> need a hashtable for specific driver when created). Also, don't know
+     * if two drivers at the same time (two different DbSession) is allowed by JDBC.
      *
      * @param model
      * @param server
      * @param user
      * @param passwd
      * @param write
+     *
      * @throws WaarpDatabaseSqlException
      * @throws WaarpDatabaseNoConnectionException
      */
@@ -241,15 +240,13 @@ public class DbAdmin {
     /**
      * Remove a Connection from the list
      *
-     * @param id
-     *            Id of the connection
+     * @param id Id of the connection
      */
     public static void removeConnection(UUID id) {
         listConnection.remove(id);
     }
 
     /**
-     *
      * @return the number of connection (so number of network channels)
      */
     public static int getNbConnection() {
@@ -342,9 +339,8 @@ public class DbAdmin {
     }
 
     /**
-     * Close the underlying session. Can be call even for connection given from the constructor
-     * DbAdmin(Connection, boolean).
-     *
+     * Close the underlying session. Can be call even for connection given from the constructor DbAdmin(Connection,
+     * boolean).
      */
     public void close() {
         if (getSession() != null) {
@@ -360,7 +356,6 @@ public class DbAdmin {
      *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
-     *
      */
     public void commit() throws WaarpDatabaseSqlException,
                                 WaarpDatabaseNoConnectionException {
@@ -410,7 +405,6 @@ public class DbAdmin {
     }
 
     /**
-     *
      * @return True if this driver allows Thread Shared Connexion (concurrency usage)
      */
     public boolean isCompatibleWithThreadSharedConnexion() {

@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * Abstract class for exception in commands
  *
  * @author Frederic Bregier
- *
  */
 @SuppressWarnings("serial")
 public abstract class CommandAbstractException extends Exception {

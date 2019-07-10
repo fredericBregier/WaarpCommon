@@ -40,7 +40,6 @@ import java.util.Timer;
  * Oracle Database Model implementation
  *
  * @author Frederic Bregier
- *
  */
 public abstract class DbModelOracle extends DbModelAbstract {
     /**
@@ -62,6 +61,7 @@ public abstract class DbModelOracle extends DbModelAbstract {
      * @param dbpasswd
      * @param timer
      * @param delay
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbModelOracle(String dbserver, String dbuser, String dbpasswd, Timer timer, long delay)
@@ -90,6 +90,7 @@ public abstract class DbModelOracle extends DbModelAbstract {
      * @param dbserver
      * @param dbuser
      * @param dbpasswd
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbModelOracle(String dbserver, String dbuser, String dbpasswd)

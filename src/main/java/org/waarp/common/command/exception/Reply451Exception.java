@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 451 Requested action aborted: local error in processing.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply451Exception extends CommandAbstractException {
 

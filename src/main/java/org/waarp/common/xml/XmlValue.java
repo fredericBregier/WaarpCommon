@@ -31,7 +31,6 @@ import java.util.List;
  * XmlValue base element
  *
  * @author Frederic Bregier
- *
  */
 public class XmlValue {
 
@@ -149,7 +148,9 @@ public class XmlValue {
      *
      * @param type
      * @param value
+     *
      * @return the clone Object
+     *
      * @throws InvalidObjectException
      */
     public static Object getCloneValue(XmlType type, Object value) throws InvalidObjectException {
@@ -191,8 +192,7 @@ public class XmlValue {
     }
 
     /**
-     * Convert String value to the specified type. Throws InvalidArgumentException if type is
-     * unrecognized.
+     * Convert String value to the specified type. Throws InvalidArgumentException if type is unrecognized.
      *
      * @throws InvalidArgumentException
      */
@@ -348,7 +348,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return True if this Value is a subXml
      */
     public boolean isSubXml() {
@@ -356,7 +355,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the associated SubXML with the XmlValue (might be null if singleton or Multiple)
      */
     public XmlValue[] getSubXml() {
@@ -364,7 +362,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return True if the Value are list of values
      */
     public boolean isMultiple() {
@@ -372,7 +369,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the associated list with the XmlValues (might be null if singleton or SubXml)
      */
     public List<?> getList() {
@@ -383,6 +379,7 @@ public class XmlValue {
      * Add a value into the Multiple values from the String (not compatible with subXml)
      *
      * @param value
+     *
      * @throws InvalidObjectException
      * @throws InvalidArgumentException
      */
@@ -447,6 +444,7 @@ public class XmlValue {
      * Add a value into the Multiple values from the Object
      *
      * @param value
+     *
      * @throws InvalidObjectException
      */
     @SuppressWarnings("unchecked")
@@ -516,10 +514,10 @@ public class XmlValue {
     }
 
     /**
-     * @param value
-     *            the value to set
+     * @param value the value to set
+     *
      * @throws InvalidObjectException
-     * @exception NumberFormatException
+     * @throws NumberFormatException
      */
     @SuppressWarnings("unchecked")
     public void setValue(Object value) throws InvalidObjectException {
@@ -598,6 +596,7 @@ public class XmlValue {
 
     /**
      * @return a clone of the value as Object (might be null if multiple)
+     *
      * @throws InvalidObjectException
      */
     public Object getCloneValue() throws InvalidObjectException {
@@ -608,7 +607,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a string
      */
     public String getString() {
@@ -620,7 +618,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as an integer
      */
     public int getInteger() {
@@ -632,7 +629,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a boolean
      */
     public boolean getBoolean() {
@@ -644,7 +640,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a long
      */
     public long getLong() {
@@ -656,7 +651,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a float
      */
     public float getFloat() {
@@ -668,7 +662,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a float
      */
     public char getCharacter() {
@@ -680,7 +673,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a float
      */
     public byte getByte() {
@@ -692,7 +684,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a float
      */
     public double getDouble() {
@@ -704,7 +695,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a float
      */
     public short getShort() {
@@ -716,7 +706,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a float
      */
     public Date getDate() {
@@ -728,7 +717,6 @@ public class XmlValue {
     }
 
     /**
-     *
      * @return the value as a float
      */
     public Timestamp getTimestamp() {
@@ -743,6 +731,7 @@ public class XmlValue {
      * Set a value from String
      *
      * @param value
+     *
      * @throws InvalidArgumentException
      */
     public void setFromString(String value) throws InvalidArgumentException {
@@ -750,8 +739,8 @@ public class XmlValue {
     }
 
     /**
-     * Test if the Value is empty. If it is a SubXml or isMultiple, check if subnodes are present
-     * but not if those nodes are empty.
+     * Test if the Value is empty. If it is a SubXml or isMultiple, check if subnodes are present but not if those nodes
+     * are empty.
      *
      * @return True if the Value is Empty
      */

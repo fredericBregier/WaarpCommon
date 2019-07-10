@@ -17,8 +17,8 @@
 package org.waarp.common.crypto;
 
 /**
- * This class handles methods to crypt and decrypt messages with Blowfish (efficient: 4000/s both at
- * 56 and 128 keysize).<br>
+ * This class handles methods to crypt and decrypt messages with Blowfish (efficient: 4000/s both at 56 and 128
+ * keysize).<br>
  * <br>
  * Usage:<br>
  * <ul>
@@ -34,7 +34,6 @@ package org.waarp.common.crypto;
  * <li>To decrypt one string from Base64 format to the original String: String myStringDecrypt =
  * key.decryptStringInString(myStringCrypte);</li>
  * </ul>
- *
  *
  * @author frederic bregier
  */

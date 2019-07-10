@@ -24,7 +24,6 @@ import org.waarp.common.file.SessionInterface;
  * Interface for Command
  *
  * @author Frederic Bregier
- *
  */
 public interface CommandInterface {
     /**
@@ -39,27 +38,25 @@ public interface CommandInterface {
                         @SuppressWarnings("rawtypes") Enum code);
 
     /**
-     * Execute the command. This execution must set the replyCode in the session to a correct value
-     * before returning.
+     * Execute the command. This execution must set the replyCode in the session to a correct value before returning.
      *
-     * @exception CommandAbstractException
-     *                in case of an FTP Error occurs
+     * @throws CommandAbstractException in case of an FTP Error occurs
      */
     abstract public void exec() throws CommandAbstractException;
 
     /**
      * This function is intend to allow to force USER->PASS->ACCT->CDW for instance
      *
-     * @param extraNextCommand
-     *            the extraNextCommand to set
+     * @param extraNextCommand the extraNextCommand to set
      */
     public void setExtraNextCommand(@SuppressWarnings("rawtypes") Enum extraNextCommand);
 
     /**
-     * This function is called when a new command is received to check if this new command is
-     * positive according to the previous command and status.
+     * This function is called when a new command is received to check if this new command is positive according to the
+     * previous command and status.
      *
      * @param newCommand
+     *
      * @return True if this new command is OK, else False
      */
     public abstract boolean isNextCommandValid(CommandInterface newCommand);
@@ -70,8 +67,7 @@ public interface CommandInterface {
     public Object getObject();
 
     /**
-     * @param object
-     *            the object to set
+     * @param object the object to set
      */
     public void setObject(Object object);
 
@@ -81,7 +77,6 @@ public interface CommandInterface {
     public String getArg();
 
     /**
-     *
      * @return the list of arguments
      */
     public String[] getArgs();
@@ -90,9 +85,10 @@ public interface CommandInterface {
      * Get an integer value from argument
      *
      * @param argx
+     *
      * @return the integer
-     * @throws InvalidArgumentException
-     *             if the argument is not an integer
+     *
+     * @throws InvalidArgumentException if the argument is not an integer
      */
     public int getValue(String argx) throws InvalidArgumentException;
 
@@ -109,7 +105,6 @@ public interface CommandInterface {
     public boolean hasArg();
 
     /**
-     *
      * @return the current SessionInterface
      */
     public SessionInterface getSession();
@@ -117,14 +112,12 @@ public interface CommandInterface {
     // some helpful functions
 
     /**
-     * Set the previous command as the new current command (used after a incorrect sequence of
-     * commands or unknown command). Also clear the Restart object.
-     *
+     * Set the previous command as the new current command (used after a incorrect sequence of commands or unknown
+     * command). Also clear the Restart object.
      */
     public void invalidCurrentCommand();
 
     /**
-     *
      * @return The GgCommandCode associated with this command
      */
     public Enum<?> getCode();

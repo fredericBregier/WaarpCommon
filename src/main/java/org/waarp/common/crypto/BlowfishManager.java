@@ -25,7 +25,6 @@ public class BlowfishManager extends KeyManager {
     static final BlowfishManager manager = new BlowfishManager();
 
     /**
-     *
      * @return the current KeyManager
      */
     public static final KeyManager getInstance() {

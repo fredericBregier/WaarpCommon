@@ -23,7 +23,6 @@ import org.waarp.common.file.filesystembased.FilesystemBasedRestartImpl;
  * Restart implementation for Passthrough Based
  *
  * @author Frederic Bregier
- *
  */
 public abstract class PassthroughBasedRestartImpl extends FilesystemBasedRestartImpl {
     /**

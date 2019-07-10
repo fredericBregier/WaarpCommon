@@ -22,7 +22,6 @@ import io.netty.channel.Channel;
  * Future that hold a channel as result
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpChannelFuture extends WaarpFuture {
     /**
@@ -52,8 +51,7 @@ public class WaarpChannelFuture extends WaarpFuture {
     }
 
     /**
-     * @param channel
-     *            the channel to set
+     * @param channel the channel to set
      */
     public void setChannel(Channel channel) {
         this.channel = channel;

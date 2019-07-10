@@ -24,7 +24,6 @@ import java.util.Map;
  *
  * @author Frederic Bregier
  * @author Damian Momot
- *
  */
 class CapacityLruLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
     /**
@@ -40,8 +39,8 @@ class CapacityLruLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      * @param capacity
      * @param initialCapacity
      * @param loadFactor
-     * @throws IllegalArgumentException
-     *             if capacity is not positive
+     *
+     * @throws IllegalArgumentException if capacity is not positive
      */
     protected CapacityLruLinkedHashMap(int capacity, int initialCapacity,
                                        float loadFactor) {

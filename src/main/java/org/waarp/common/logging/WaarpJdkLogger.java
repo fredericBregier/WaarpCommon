@@ -51,8 +51,7 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Fill in caller data if possible.
      *
-     * @param record
-     *            The record to update
+     * @param record The record to update
      */
     private static void fillCallerData(final String callerFQCN, final LogRecord record) {
         final StackTraceElement[] steArray = new Throwable().getStackTrace();
@@ -97,8 +96,7 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Log a message object at level FINEST.
      *
-     * @param msg
-     *            - the message object to be logged
+     * @param msg - the message object to be logged
      */
     @Override
     public void trace(final String msg) {
@@ -108,17 +106,14 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at level FINEST according to the specified format and
-     * argument.
+     * Log a message at level FINEST according to the specified format and argument.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for level FINEST.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param arg
-     *            the argument
+     * @param format the format string
+     * @param arg the argument
      */
     @Override
     public void trace(final String format, final Object arg) {
@@ -129,19 +124,15 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at level FINEST according to the specified format and
-     * arguments.
+     * Log a message at level FINEST according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the FINEST level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argA
-     *            the first argument
-     * @param argB
-     *            the second argument
+     * @param format the format string
+     * @param argA the first argument
+     * @param argB the second argument
      */
     @Override
     public void trace(final String format, final Object argA, final Object argB) {
@@ -152,17 +143,14 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at level FINEST according to the specified format and
-     * arguments.
+     * Log a message at level FINEST according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the FINEST level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argArray
-     *            an array of arguments
+     * @param format the format string
+     * @param argArray an array of arguments
      */
     @Override
     public void trace(final String format, final Object... argArray) {
@@ -175,10 +163,8 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Log an exception (throwable) at level FINEST with an accompanying message.
      *
-     * @param msg
-     *            the message accompanying the exception
-     * @param t
-     *            the exception (throwable) to log
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
      */
     @Override
     public void trace(final String msg, final Throwable t) {
@@ -200,8 +186,7 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Log a message object at level FINE.
      *
-     * @param msg
-     *            - the message object to be logged
+     * @param msg - the message object to be logged
      */
     @Override
     public void debug(final String msg) {
@@ -217,10 +202,8 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
      * This form avoids superfluous object creation when the logger is disabled for level FINE.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param arg
-     *            the argument
+     * @param format the format string
+     * @param arg the argument
      */
     @Override
     public void debug(final String format, final Object arg) {
@@ -231,19 +214,15 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at level FINE according to the specified format and
-     * arguments.
+     * Log a message at level FINE according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the FINE level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argA
-     *            the first argument
-     * @param argB
-     *            the second argument
+     * @param format the format string
+     * @param argA the first argument
+     * @param argB the second argument
      */
     @Override
     public void debug(final String format, final Object argA, final Object argB) {
@@ -254,17 +233,14 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at level FINE according to the specified format and
-     * arguments.
+     * Log a message at level FINE according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the FINE level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argArray
-     *            an array of arguments
+     * @param format the format string
+     * @param argArray an array of arguments
      */
     @Override
     public void debug(final String format, final Object... argArray) {
@@ -277,10 +253,8 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Log an exception (throwable) at level FINE with an accompanying message.
      *
-     * @param msg
-     *            the message accompanying the exception
-     * @param t
-     *            the exception (throwable) to log
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
      */
     @Override
     public void debug(final String msg, final Throwable t) {
@@ -302,8 +276,7 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Log a message object at the INFO level.
      *
-     * @param msg
-     *            - the message object to be logged
+     * @param msg - the message object to be logged
      */
     @Override
     public void info(final String msg) {
@@ -319,10 +292,8 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
      * This form avoids superfluous object creation when the logger is disabled for the INFO level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param arg
-     *            the argument
+     * @param format the format string
+     * @param arg the argument
      */
     @Override
     public void info(final String format, final Object arg) {
@@ -333,19 +304,15 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at the INFO level according to the specified format and
-     * arguments.
+     * Log a message at the INFO level according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the INFO level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argA
-     *            the first argument
-     * @param argB
-     *            the second argument
+     * @param format the format string
+     * @param argA the first argument
+     * @param argB the second argument
      */
     @Override
     public void info(final String format, final Object argA, final Object argB) {
@@ -356,17 +323,14 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at level INFO according to the specified format and
-     * arguments.
+     * Log a message at level INFO according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the INFO level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argArray
-     *            an array of arguments
+     * @param format the format string
+     * @param argArray an array of arguments
      */
     @Override
     public void info(final String format, final Object... argArray) {
@@ -377,13 +341,10 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log an exception (throwable) at the INFO level with an accompanying
-     * message.
+     * Log an exception (throwable) at the INFO level with an accompanying message.
      *
-     * @param msg
-     *            the message accompanying the exception
-     * @param t
-     *            the exception (throwable) to log
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
      */
     @Override
     public void info(final String msg, final Throwable t) {
@@ -395,8 +356,7 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Is this logger instance enabled for the WARNING level?
      *
-     * @return True if this Logger is enabled for the WARNING level, false
-     *         otherwise.
+     * @return True if this Logger is enabled for the WARNING level, false otherwise.
      */
     @Override
     public boolean isWarnEnabled() {
@@ -406,8 +366,7 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Log a message object at the WARNING level.
      *
-     * @param msg
-     *            - the message object to be logged
+     * @param msg - the message object to be logged
      */
     @Override
     public void warn(final String msg) {
@@ -417,17 +376,14 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at the WARNING level according to the specified format and
-     * argument.
+     * Log a message at the WARNING level according to the specified format and argument.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the WARNING level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param arg
-     *            the argument
+     * @param format the format string
+     * @param arg the argument
      */
     @Override
     public void warn(final String format, final Object arg) {
@@ -438,19 +394,15 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at the WARNING level according to the specified format and
-     * arguments.
+     * Log a message at the WARNING level according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the WARNING level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argA
-     *            the first argument
-     * @param argB
-     *            the second argument
+     * @param format the format string
+     * @param argA the first argument
+     * @param argB the second argument
      */
     @Override
     public void warn(final String format, final Object argA, final Object argB) {
@@ -461,17 +413,14 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at level WARNING according to the specified format and
-     * arguments.
+     * Log a message at level WARNING according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the WARNING level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argArray
-     *            an array of arguments
+     * @param format the format string
+     * @param argArray an array of arguments
      */
     @Override
     public void warn(final String format, final Object... argArray) {
@@ -482,13 +431,10 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log an exception (throwable) at the WARNING level with an accompanying
-     * message.
+     * Log an exception (throwable) at the WARNING level with an accompanying message.
      *
-     * @param msg
-     *            the message accompanying the exception
-     * @param t
-     *            the exception (throwable) to log
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
      */
     @Override
     public void warn(final String msg, final Throwable t) {
@@ -510,8 +456,7 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     /**
      * Log a message object at the SEVERE level.
      *
-     * @param msg
-     *            - the message object to be logged
+     * @param msg - the message object to be logged
      */
     @Override
     public void error(final String msg) {
@@ -521,17 +466,14 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at the SEVERE level according to the specified format and
-     * argument.
+     * Log a message at the SEVERE level according to the specified format and argument.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the SEVERE level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param arg
-     *            the argument
+     * @param format the format string
+     * @param arg the argument
      */
     @Override
     public void error(final String format, final Object arg) {
@@ -542,19 +484,15 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at the SEVERE level according to the specified format and
-     * arguments.
+     * Log a message at the SEVERE level according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the SEVERE level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param argA
-     *            the first argument
-     * @param argB
-     *            the second argument
+     * @param format the format string
+     * @param argA the first argument
+     * @param argB the second argument
      */
     @Override
     public void error(final String format, final Object argA, final Object argB) {
@@ -565,17 +503,14 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log a message at level SEVERE according to the specified format and
-     * arguments.
+     * Log a message at level SEVERE according to the specified format and arguments.
      *
      * <p>
      * This form avoids superfluous object creation when the logger is disabled for the SEVERE level.
      * </p>
      *
-     * @param format
-     *            the format string
-     * @param arguments
-     *            an array of arguments
+     * @param format the format string
+     * @param arguments an array of arguments
      */
     @Override
     public void error(final String format, final Object... arguments) {
@@ -586,13 +521,10 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log an exception (throwable) at the SEVERE level with an accompanying
-     * message.
+     * Log an exception (throwable) at the SEVERE level with an accompanying message.
      *
-     * @param msg
-     *            the message accompanying the exception
-     * @param t
-     *            the exception (throwable) to log
+     * @param msg the message accompanying the exception
+     * @param t the exception (throwable) to log
      */
     @Override
     public void error(final String msg, final Throwable t) {
@@ -602,10 +534,9 @@ public class WaarpJdkLogger extends AbstractWaarpLogger {
     }
 
     /**
-     * Log the message at the specified level with the specified throwable if any.
-     * This method creates a LogRecord and fills in caller date before calling
-     * this instance's JDK14 logger.
-     *
+     * Log the message at the specified level with the specified throwable if any. This method creates a LogRecord and
+     * fills in caller date before calling this instance's JDK14 logger.
+     * <p>
      * See bug report #13 for more details.
      */
     private void log(final String callerFQCN, final Level level, final String msg, final Throwable t) {

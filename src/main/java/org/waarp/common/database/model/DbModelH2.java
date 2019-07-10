@@ -38,7 +38,6 @@ import java.sql.Types;
  * H2 Database Model implementation
  *
  * @author Frederic Bregier
- *
  */
 public abstract class DbModelH2 extends DbModelAbstract {
     /**
@@ -57,6 +56,7 @@ public abstract class DbModelH2 extends DbModelAbstract {
      * @param dbserver
      * @param dbuser
      * @param dbpasswd
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbModelH2(String dbserver, String dbuser, String dbpasswd)

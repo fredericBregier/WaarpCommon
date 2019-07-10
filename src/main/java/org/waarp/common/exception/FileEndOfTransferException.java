@@ -20,7 +20,6 @@ package org.waarp.common.exception;
  * File End Of Transfer exception: the end of the transfer is reached from file point of view
  *
  * @author Frederic Bregier
- *
  */
 public class FileEndOfTransferException extends Exception {
 

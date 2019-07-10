@@ -30,7 +30,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Example of Table object
  *
  * @author Frederic Bregier
- *
  */
 public class DbDataModel extends AbstractDbData {
     public static final int[] dbTypes = {
@@ -86,16 +85,11 @@ public class DbDataModel extends AbstractDbData {
     /**
      * @param dbSession
      * @param hostid
-     * @param rg
-     *            Read Global Limit
-     * @param wg
-     *            Write Global Limit
-     * @param rs
-     *            Read Session Limit
-     * @param ws
-     *            Write Session Limit
-     * @param del
-     *            Delay Limit
+     * @param rg Read Global Limit
+     * @param wg Write Global Limit
+     * @param rs Read Session Limit
+     * @param ws Write Session Limit
+     * @param del Delay Limit
      */
     public DbDataModel(DbSession dbSession, String hostid, long rg, long wg, long rs,
                        long ws, long del) {
@@ -113,6 +107,7 @@ public class DbDataModel extends AbstractDbData {
     /**
      * @param dbSession
      * @param hostid
+     *
      * @throws WaarpDatabaseException
      */
     public DbDataModel(DbSession dbSession, String hostid) throws WaarpDatabaseException {
@@ -133,7 +128,9 @@ public class DbDataModel extends AbstractDbData {
      * For instance from Commander when getting updated information
      *
      * @param preparedStatement
+     *
      * @return the next updated Configuration
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -147,8 +144,8 @@ public class DbDataModel extends AbstractDbData {
     }
 
     /**
-     *
      * @return the DbPreparedStatement for getting Updated Object
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */

@@ -20,7 +20,6 @@ package org.waarp.common.future;
  * Future in failure
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpFailedFuture extends WaarpCompletedFuture {
 
@@ -29,8 +28,7 @@ public class WaarpFailedFuture extends WaarpCompletedFuture {
     /**
      * Creates a new instance.
      *
-     * @param cause
-     *            the cause of failure
+     * @param cause the cause of failure
      */
     public WaarpFailedFuture(Throwable cause) {
         super();

@@ -17,6 +17,9 @@
  * JSON support package
  *
  * @author "Frederic Bregier"
+ * <p>
+ * JSON support package
+ * @author "Frederic Bregier"
  */
 /**
  * JSON support package

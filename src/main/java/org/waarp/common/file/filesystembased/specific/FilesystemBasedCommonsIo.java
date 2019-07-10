@@ -23,17 +23,16 @@ import java.io.FileFilter;
 import java.io.IOException;
 
 /**
- * This class enables to not set a dependencies on Apache Commons IO if wanted, but loosing
- * freespace and wildcard support.
+ * This class enables to not set a dependencies on Apache Commons IO if wanted, but loosing freespace and wildcard
+ * support.
  *
  * @author Frederic Bregier
- *
  */
 public class FilesystemBasedCommonsIo {
 
     /**
-     *
      * @param pathname
+     *
      * @return the free space of the given pathname
      */
     public static long freeSpace(String pathname) {
@@ -45,8 +44,8 @@ public class FilesystemBasedCommonsIo {
     }
 
     /**
-     *
      * @param dir
+     *
      * @return The associated FileFilter
      */
     public static FileFilter getWildcardFileFilter(String dir) {

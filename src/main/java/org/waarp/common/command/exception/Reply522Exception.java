@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 522 Extended Port Failure - unknown network protocol.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply522Exception extends CommandAbstractException {
 

@@ -39,13 +39,11 @@ import java.sql.Types;
 /**
  * Abstract database table implementation without explicit COMMIT.<br>
  * <br>
- *
- * If the connection is in autocommit, this is the right abstract to extend.<br>
- * If the connection is not in autocommit, one could use this implementation to explicitly commit
- * when needed.
+ * <p>
+ * If the connection is in autocommit, this is the right abstract to extend.<br> If the connection is not in autocommit,
+ * one could use this implementation to explicitly commit when needed.
  *
  * @author Frederic Bregier
- *
  */
 public abstract class AbstractDbData {
     public static final String JSON_MODEL = "@model";
@@ -66,6 +64,7 @@ public abstract class AbstractDbData {
     protected DbValue[] allFields;
 
     protected boolean isSaved = false;
+
     /**
      * Abstract constructor to set the DbSession to use
      *
@@ -90,8 +89,8 @@ public abstract class AbstractDbData {
      *
      * @param ps
      * @param value
-     * @param rank
-     *            >= 1
+     * @param rank >= 1
+     *
      * @throws WaarpDatabaseSqlException
      */
     static public void setTrueValue(PreparedStatement ps, DbValue value, int rank)
@@ -215,6 +214,7 @@ public abstract class AbstractDbData {
      *
      * @param rs
      * @param value
+     *
      * @throws WaarpDatabaseSqlException
      */
     static public void getTrueValue(ResultSet rs, DbValue value)
@@ -275,13 +275,12 @@ public abstract class AbstractDbData {
     }
 
     /**
-     * To setup primaryKey, otherFields, allFields. Note this initObject is called within
-     * constructor of AbstractDbData. Be careful that no data is actually initialized at this stage.
+     * To setup primaryKey, otherFields, allFields. Note this initObject is called within constructor of AbstractDbData.
+     * Be careful that no data is actually initialized at this stage.
      */
     protected abstract void initObject();
 
     /**
-     *
      * @return The Where condition on Primary Key
      */
     protected abstract String getWherePrimaryKey();
@@ -303,6 +302,7 @@ public abstract class AbstractDbData {
      * Test the existence of the current object
      *
      * @return True if the object exists
+     *
      * @throws WaarpDatabaseException
      */
     public boolean exist() throws WaarpDatabaseException {
@@ -469,6 +469,7 @@ public abstract class AbstractDbData {
      *
      * @param preparedStatement
      * @param value
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -483,6 +484,7 @@ public abstract class AbstractDbData {
      *
      * @param preparedStatement
      * @param values
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -501,6 +503,7 @@ public abstract class AbstractDbData {
      *
      * @param preparedStatement
      * @param value
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -515,6 +518,7 @@ public abstract class AbstractDbData {
      *
      * @param preparedStatement
      * @param values
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -531,6 +535,7 @@ public abstract class AbstractDbData {
      * Get Values from PreparedStatement
      *
      * @param preparedStatement
+     *
      * @return True if OK, else False
      */
     public boolean get(DbPreparedStatement preparedStatement) {
@@ -547,7 +552,6 @@ public abstract class AbstractDbData {
     }
 
     /**
-     *
      * @return the runner as Json
      */
     public String asJson() {
@@ -612,8 +616,8 @@ public abstract class AbstractDbData {
      * Set the values from the Json node to the current object (no database access)
      *
      * @param node
-     * @param ignorePrimaryKey
-     *            True will ignore primaryKey from Json
+     * @param ignorePrimaryKey True will ignore primaryKey from Json
+     *
      * @throws WaarpDatabaseSqlException
      */
     public void setFromJson(ObjectNode node, boolean ignorePrimaryKey) throws WaarpDatabaseSqlException {
@@ -675,7 +679,6 @@ public abstract class AbstractDbData {
      * UpdatedInfo status
      *
      * @author Frederic Bregier
-     *
      */
     public enum UpdatedInfo {
         /**

@@ -28,7 +28,6 @@ import java.security.Security;
  * SSL ContextFactory for Netty.
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpSslContextFactory {
     protected static final int DEFAULT_SESSIONCACHE_TIMEOUTSEC = 60;
@@ -86,11 +85,8 @@ public class WaarpSslContextFactory {
     }
 
     /**
-     *
-     * @param cacheSize
-     *            default being 1024
-     * @param timeOutInSeconds
-     *            default being 60s
+     * @param cacheSize default being 1024
+     * @param timeOutInSeconds default being 60s
      */
     public void setSessionCacheTime(int cacheSize, int timeOutInSeconds) {
         if (SERVER_CONTEXT != null) {
@@ -103,9 +99,9 @@ public class WaarpSslContextFactory {
     }
 
     /**
-     *
      * @param ggSecureKeyStore
      * @param serverMode
+     *
      * @return the SSLContext
      */
     private SSLContext initSslContextFactory(WaarpSecureKeyStore ggSecureKeyStore,
@@ -189,13 +185,11 @@ public class WaarpSslContextFactory {
     }
 
     /**
-     * To be called before adding as first entry in the Initializer as<br>
-     * pipeline.addLast("ssl", sslhandler);<br>
+     * To be called before adding as first entry in the Initializer as<br> pipeline.addLast("ssl", sslhandler);<br>
      *
-     * @param serverMode
-     *            True if in Server Mode, else False in Client mode
-     * @param needClientAuth
-     *            True if the client needs to be authenticated (only if serverMode is True)
+     * @param serverMode True if in Server Mode, else False in Client mode
+     * @param needClientAuth True if the client needs to be authenticated (only if serverMode is True)
+     *
      * @return the sslhandler
      */
     public WaarpSslHandler initInitializer(boolean serverMode,
@@ -216,17 +210,13 @@ public class WaarpSslContextFactory {
     }
 
     /**
-     * To be called before adding as first entry in the Initializer as<br>
-     * pipeline.addLast("ssl", sslhandler);<br>
+     * To be called before adding as first entry in the Initializer as<br> pipeline.addLast("ssl", sslhandler);<br>
      *
-     * @param serverMode
-     *            True if in Server Mode, else False in Client mode
-     * @param needClientAuth
-     *            True if the client needs to be authenticated (only if serverMode is True)
-     * @param host
-     *            Host for which a resume is allowed
-     * @param port
-     *            port associated with the host for which a resume is allowed
+     * @param serverMode True if in Server Mode, else False in Client mode
+     * @param needClientAuth True if the client needs to be authenticated (only if serverMode is True)
+     * @param host Host for which a resume is allowed
+     * @param port port associated with the host for which a resume is allowed
+     *
      * @return the sslhandler
      */
     public WaarpSslHandler initInitializer(boolean serverMode,
@@ -247,7 +237,6 @@ public class WaarpSslContextFactory {
     }
 
     /**
-     *
      * @return True if the associated KeyStore has a TrustStore
      */
     public boolean needClientAuthentication() {

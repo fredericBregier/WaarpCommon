@@ -17,8 +17,7 @@
 package org.waarp.common.crypto;
 
 /**
- * This class handles methods to crypt and decrypt messages with AES algorithm (very efficient:
- * 60000/s).<br>
+ * This class handles methods to crypt and decrypt messages with AES algorithm (very efficient: 60000/s).<br>
  * <br>
  * Usage:<br>
  * <ul>
@@ -36,7 +35,6 @@ package org.waarp.common.crypto;
  * </ul>
  *
  * @author frederic bregier
- *
  */
 public class Aes extends KeyObject {
     public final static String EXTENSION = "aes";

@@ -27,7 +27,6 @@ import java.io.IOException;
  * Interface for File support
  *
  * @author Frederic Bregier
- *
  */
 public interface FileInterface {
     /**
@@ -45,7 +44,6 @@ public interface FileInterface {
     public void checkIdentify() throws Reply530Exception;
 
     /**
-     *
      * @return the FtpSession
      */
     public SessionInterface getSession();
@@ -53,7 +51,6 @@ public interface FileInterface {
     // **************** Directory part **************************
 
     /**
-     *
      * @return the FtpDir associated at creation with this file
      */
     public DirInterface getDir();
@@ -62,6 +59,7 @@ public interface FileInterface {
      * Is the current FileInterface a directory and exists
      *
      * @return True if it is a directory and it exists
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean isDirectory() throws CommandAbstractException;
@@ -70,6 +68,7 @@ public interface FileInterface {
      * Is the current FileInterface a file and exists
      *
      * @return True if it is a file and it exists
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean isFile() throws CommandAbstractException;
@@ -77,8 +76,8 @@ public interface FileInterface {
     // **************** Unique FileInterface part **************************
 
     /**
-     *
      * @return the path of the current FileInterface (without mount point if any)
+     *
      * @throws CommandAbstractException
      */
     public abstract String getFile() throws CommandAbstractException;
@@ -87,46 +86,49 @@ public interface FileInterface {
      * Close the current FileInterface
      *
      * @return True if correctly closed
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean closeFile() throws CommandAbstractException;
 
     /**
-     *
      * @return the length of the current FileInterface
+     *
      * @throws CommandAbstractException
      */
     public abstract long length() throws CommandAbstractException;
 
     /**
      * @return True if the current FileInterface is in Writing process
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean isInWriting() throws CommandAbstractException;
 
     /**
-     *
      * @return True if the current FileInterface is in Reading process
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean isInReading() throws CommandAbstractException;
 
     /**
      * @return True if the current FileInterface is ready for reading
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean canRead() throws CommandAbstractException;
 
     /**
-     *
      * @return True if the current FileInterface is ready for writing
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean canWrite() throws CommandAbstractException;
 
     /**
-     *
      * @return True if the current FileInterface exists
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean exists() throws CommandAbstractException;
@@ -135,24 +137,27 @@ public interface FileInterface {
      * Try to abort the current transfer if any
      *
      * @return True if everything is ok
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean abortFile() throws CommandAbstractException;
 
     /**
-     * Ask to store the current FileInterface. This command returns quickly since it does not store
-     * really. It prepares the object.
+     * Ask to store the current FileInterface. This command returns quickly since it does not store really. It prepares
+     * the object.
      *
      * @return True if everything is ready
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean store() throws CommandAbstractException;
 
     /**
-     * Ask to retrieve the current FileInterface. This command returns quickly since it does not
-     * retrieve really. It prepares the object.
+     * Ask to retrieve the current FileInterface. This command returns quickly since it does not retrieve really. It
+     * prepares the object.
      *
      * @return True if everything is ready
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean retrieve() throws CommandAbstractException;
@@ -160,21 +165,24 @@ public interface FileInterface {
     /**
      * Rename the current FileInterface into a new filename from argument
      *
-     * @param path
-     *            the new filename (path could be relative or absolute - without mount point)
+     * @param path the new filename (path could be relative or absolute - without mount point)
+     *
      * @return True if the operation is done successfully
+     *
      * @throws CommandAbstractException
      */
     public abstract boolean renameTo(String path)
             throws CommandAbstractException;
 
     /**
-     * Restart from a Marker for the current FileInterface if any. This function is to be called at
-     * the beginning of every transfer so in store and retrieve method.
+     * Restart from a Marker for the current FileInterface if any. This function is to be called at the beginning of
+     * every transfer so in store and retrieve method.
      *
      * @param restart
+     *
      * @return True if the Marker is OK
-     * @exception CommandAbstractException
+     *
+     * @throws CommandAbstractException
      */
     public abstract boolean restartMarker(Restart restart)
             throws CommandAbstractException;
@@ -183,7 +191,8 @@ public interface FileInterface {
      * Create a restart from context for the current FileInterface
      *
      * @return the dataBlock to send to the client
-     * @exception CommandAbstractException
+     *
+     * @throws CommandAbstractException
      */
     public abstract DataBlock getMarker() throws CommandAbstractException;
 
@@ -191,15 +200,16 @@ public interface FileInterface {
      * Delete the current FileInterface.
      *
      * @return True if OK, else False if not (or if the file never exists).
-     * @exception CommandAbstractException
+     *
+     * @throws CommandAbstractException
      */
     public abstract boolean delete() throws CommandAbstractException;
 
     /**
      * Change the position in the file.
      *
-     * @param position
-     *            the position to set
+     * @param position the position to set
+     *
      * @throws IOException
      */
     public abstract void setPosition(long position) throws IOException;
@@ -208,6 +218,7 @@ public interface FileInterface {
      * Function called by the DataNetworkHandler when it receives one DataBlock (Store like command)
      *
      * @param dataBlock
+     *
      * @throws FileTransferException
      * @throws FileEndOfTransferException
      */
@@ -218,6 +229,7 @@ public interface FileInterface {
      * Read a new block for FileInterface
      *
      * @return dataBlock
+     *
      * @throws FileEndOfTransferException
      * @throws FileTransferException
      */

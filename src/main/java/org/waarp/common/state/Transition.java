@@ -24,7 +24,6 @@ import java.util.EnumSet;
  * Note: the type EnumSet< ? > is in fact of type EnumSet< EnumState >
  *
  * @author Frederic Bregier
- *
  */
 public class Transition<EnumState> {
 

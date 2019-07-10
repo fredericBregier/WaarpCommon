@@ -19,9 +19,7 @@ package org.waarp.common.role;
 /**
  * Role to be used in Waarp projects
  *
- *
  * @author Frederic Bregier
- *
  */
 public class RoleDefault {
     private byte role;

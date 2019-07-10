@@ -35,7 +35,6 @@ import java.util.ConcurrentModificationException;
  * This Abstract class regroups common methods for all implementation classes.
  *
  * @author Frederic Bregier
- *
  */
 public abstract class DbModelAbstract implements DbModel {
     /**
@@ -48,6 +47,7 @@ public abstract class DbModelAbstract implements DbModel {
      * Recreate the disActive session
      *
      * @param dbSession
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     private void recreateSession(DbSession dbSession)
@@ -259,7 +259,6 @@ public abstract class DbModelAbstract implements DbModel {
     }
 
     /**
-     *
      * @return the associated String to validate the connection (as "select 1 from dual")
      */
     protected abstract String validConnectionString();

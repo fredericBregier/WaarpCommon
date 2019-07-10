@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
  * Abstract class for Constraint Limit Handler for Waarp project
  *
  * @author Frederic Bregier
- *
  */
 public abstract class WaarpConstraintLimitHandler implements Runnable {
     public static final long LOWBANDWIDTH_DEFAULT = 1048576;
@@ -64,6 +63,7 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     private AbstractTrafficShapingHandler handler;
     private ScheduledThreadPoolExecutor executor = null;
     private int nbSinceLastDecrease = 0;
+
     /**
      * Empty constructor
      */
@@ -77,29 +77,18 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     /**
      * This constructor enables only throttling bandwidth with cpu usage
      *
-     *
-     * @param WAITFORNETOP2
-     *            1000 ms as wait for a network operation
-     * @param TIMEOUTCON2
-     *            10000 ms as timeout limit
-     * @param useJdkCpuLimit
-     *            True to use JDK Cpu native or False for JavaSysMon
-     * @param lowcpuLimit
-     *            for proactive cpu limitation (throttling bandwidth) (0<= x < 1 & highcpulimit)
-     * @param highcpuLimit
-     *            for proactive cpu limitation (throttling bandwidth) (0<= x <= 1) 0 meaning no
-     *            throttle activated
-     * @param percentageDecrease
-     *            for proactive cpu limitation, throttling bandwidth reduction (0 < x < 1) as 0.25
-     *            for 25% of reduction
-     * @param handler
-     *            the GlobalTrafficShapingHandler associated (null to have no proactive cpu
-     *            limitation)
-     * @param delay
-     *            the delay between 2 tests for proactive cpu limitation
-     * @param limitLowBandwidth
-     *            the minimal bandwidth (read or write) to apply when decreasing bandwidth (low
-     *            limit = 4096)
+     * @param WAITFORNETOP2 1000 ms as wait for a network operation
+     * @param TIMEOUTCON2 10000 ms as timeout limit
+     * @param useJdkCpuLimit True to use JDK Cpu native or False for JavaSysMon
+     * @param lowcpuLimit for proactive cpu limitation (throttling bandwidth) (0<= x < 1 & highcpulimit)
+     * @param highcpuLimit for proactive cpu limitation (throttling bandwidth) (0<= x <= 1) 0 meaning no throttle
+     * activated
+     * @param percentageDecrease for proactive cpu limitation, throttling bandwidth reduction (0 < x < 1) as 0.25 for
+     * 25% of reduction
+     * @param handler the GlobalTrafficShapingHandler associated (null to have no proactive cpu limitation)
+     * @param delay the delay between 2 tests for proactive cpu limitation
+     * @param limitLowBandwidth the minimal bandwidth (read or write) to apply when decreasing bandwidth (low limit =
+     * 4096)
      */
     public WaarpConstraintLimitHandler(long WAITFORNETOP2, long TIMEOUTCON2,
                                        boolean useJdkCpuLimit,
@@ -114,14 +103,10 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     /**
      * This constructor enables only Connection check ability
      *
-     * @param useCpuLimit
-     *            True to enable cpuLimit on connection check
-     * @param useJdKCpuLimit
-     *            True to use JDK Cpu native or False for JavaSysMon
-     * @param cpulimit
-     *            high cpu limit (0<= x < 1) to refuse new connections
-     * @param channellimit
-     *            number of connection limit (0<= x)
+     * @param useCpuLimit True to enable cpuLimit on connection check
+     * @param useJdKCpuLimit True to use JDK Cpu native or False for JavaSysMon
+     * @param cpulimit high cpu limit (0<= x < 1) to refuse new connections
+     * @param channellimit number of connection limit (0<= x)
      */
     public WaarpConstraintLimitHandler(long WAITFORNETOP2, long TIMEOUTCON2, boolean useCpuLimit,
                                        boolean useJdKCpuLimit, double cpulimit, int channellimit) {
@@ -130,37 +115,23 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     * This constructor enables both Connection check ability and throttling bandwidth with cpu
-     * usage
+     * This constructor enables both Connection check ability and throttling bandwidth with cpu usage
      *
-     * @param WAITFORNETOP2
-     *            1000 ms as wait for a network operation
-     * @param TIMEOUTCON2
-     *            10000 ms as timeout limit
-     * @param useCpuLimit
-     *            True to enable cpuLimit on connection check
-     * @param useJdKCpuLimit
-     *            True to use JDK Cpu native or False for JavaSysMon
-     * @param cpulimit
-     *            high cpu limit (0<= x < 1) to refuse new connections
-     * @param channellimit
-     *            number of connection limit (0<= x)
-     * @param lowcpuLimit
-     *            for proactive cpu limitation (throttling bandwidth) (0<= x < 1 & highcpulimit)
-     * @param highcpuLimit
-     *            for proactive cpu limitation (throttling bandwidth) (0<= x <= 1) 0 meaning no
-     *            throttle activated
-     * @param percentageDecrease
-     *            for proactive cpu limitation, throttling bandwidth reduction (0 < x < 1) as 0.25
-     *            for 25% of reduction
-     * @param handler
-     *            the GlobalTrafficShapingHandler associated (null to have no proactive cpu
-     *            limitation)
-     * @param delay
-     *            the delay between 2 tests for proactive cpu limitation
-     * @param limitLowBandwidth
-     *            the minimal bandwidth (read or write) to apply when decreasing bandwidth (low
-     *            limit = 4096)
+     * @param WAITFORNETOP2 1000 ms as wait for a network operation
+     * @param TIMEOUTCON2 10000 ms as timeout limit
+     * @param useCpuLimit True to enable cpuLimit on connection check
+     * @param useJdKCpuLimit True to use JDK Cpu native or False for JavaSysMon
+     * @param cpulimit high cpu limit (0<= x < 1) to refuse new connections
+     * @param channellimit number of connection limit (0<= x)
+     * @param lowcpuLimit for proactive cpu limitation (throttling bandwidth) (0<= x < 1 & highcpulimit)
+     * @param highcpuLimit for proactive cpu limitation (throttling bandwidth) (0<= x <= 1) 0 meaning no throttle
+     * activated
+     * @param percentageDecrease for proactive cpu limitation, throttling bandwidth reduction (0 < x < 1) as 0.25 for
+     * 25% of reduction
+     * @param handler the GlobalTrafficShapingHandler associated (null to have no proactive cpu limitation)
+     * @param delay the delay between 2 tests for proactive cpu limitation
+     * @param limitLowBandwidth the minimal bandwidth (read or write) to apply when decreasing bandwidth (low limit =
+     * 4096)
      */
     public WaarpConstraintLimitHandler(long WAITFORNETOP2, long TIMEOUTCON2,
                                        boolean useCpuLimit,
@@ -252,7 +223,6 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     *
      * @return True if one of the limit is exceeded. Always False if not a server mode
      */
     public boolean checkConstraints() {
@@ -290,17 +260,16 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     *
      * @return the current number of active Local Channel
      */
     protected abstract int getNumberLocalChannel();
 
     /**
-     * Same as checkConstraints except that the thread will sleep some time proportionally to the
-     * current Load (if CPU related)
+     * Same as checkConstraints except that the thread will sleep some time proportionally to the current Load (if CPU
+     * related)
      *
-     * @param step
-     *            the current step in retry
+     * @param step the current step in retry
+     *
      * @return True if one of the limit is exceeded. Always False if not a server mode
      */
     public boolean checkConstraintsSleep(int step) {
@@ -343,7 +312,6 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     *
      * @return a time below TIMEOUTCON with a random
      */
     public long getSleepTime() {
@@ -358,8 +326,7 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     * @param cpuLimit
-     *            the cpuLimit to set
+     * @param cpuLimit the cpuLimit to set
      */
     public void setCpuLimit(double cpuLimit) {
         this.cpuLimit = cpuLimit;
@@ -373,24 +340,21 @@ public abstract class WaarpConstraintLimitHandler implements Runnable {
     }
 
     /**
-     * @param channelLimit
-     *            the channelLimit to set
+     * @param channelLimit the channelLimit to set
      */
     public void setChannelLimit(int channelLimit) {
         this.channelLimit = channelLimit;
     }
 
     /**
-     * Get the current setting on Read Limit (supposed to be not the value in the handler but in the
-     * configuration)
+     * Get the current setting on Read Limit (supposed to be not the value in the handler but in the configuration)
      *
      * @return the current setting on Read Limit
      */
     protected abstract long getReadLimit();
 
     /**
-     * Get the current setting on Write Limit (supposed to be not the value in the handler but in
-     * the configuration)
+     * Get the current setting on Write Limit (supposed to be not the value in the handler but in the configuration)
      *
      * @return the current setting on Write Limit
      */

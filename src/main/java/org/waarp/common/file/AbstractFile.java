@@ -25,7 +25,6 @@ import java.io.IOException;
 
 /**
  * @author "Frederic Bregier"
- *
  */
 public abstract class AbstractFile implements FileInterface {
     /**

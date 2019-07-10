@@ -19,11 +19,10 @@ package org.waarp.common.file.filesystembased;
 import org.waarp.common.file.OptsMLSxInterface;
 
 /**
- * Class that implements Opts command for MLSx operations. (-1) means not supported, 0 supported but
- * not active, 1 supported and active
+ * Class that implements Opts command for MLSx operations. (-1) means not supported, 0 supported but not active, 1
+ * supported and active
  *
  * @author Frederic Bregier
- *
  */
 public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     /**
@@ -112,8 +111,7 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsCharset
-     *            the optsCharset to set
+     * @param optsCharset the optsCharset to set
      */
     public void setOptsCharset(byte optsCharset) {
         this.optsCharset = optsCharset;
@@ -127,8 +125,7 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsCreate
-     *            the optsCreate to set
+     * @param optsCreate the optsCreate to set
      */
     public void setOptsCreate(byte optsCreate) {
         this.optsCreate = optsCreate;
@@ -142,8 +139,7 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsLang
-     *            the optsLang to set
+     * @param optsLang the optsLang to set
      */
     public void setOptsLang(byte optsLang) {
         this.optsLang = optsLang;
@@ -157,8 +153,7 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsMediaType
-     *            the optsMediaType to set
+     * @param optsMediaType the optsMediaType to set
      */
     public void setOptsMediaType(byte optsMediaType) {
         this.optsMediaType = optsMediaType;
@@ -172,8 +167,7 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsModify
-     *            the optsModify to set
+     * @param optsModify the optsModify to set
      */
     public void setOptsModify(byte optsModify) {
         this.optsModify = optsModify;
@@ -187,8 +181,7 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsPerm
-     *            the optsPerm to set
+     * @param optsPerm the optsPerm to set
      */
     public void setOptsPerm(byte optsPerm) {
         this.optsPerm = optsPerm;
@@ -202,8 +195,7 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsSize
-     *            the optsSize to set
+     * @param optsSize the optsSize to set
      */
     public void setOptsSize(byte optsSize) {
         this.optsSize = optsSize;
@@ -217,8 +209,7 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsType
-     *            the optsType to set
+     * @param optsType the optsType to set
      */
     public void setOptsType(byte optsType) {
         this.optsType = optsType;
@@ -232,15 +223,13 @@ public class FilesystemBasedOptsMLSxImpl implements OptsMLSxInterface {
     }
 
     /**
-     * @param optsUnique
-     *            the optsUnique to set
+     * @param optsUnique the optsUnique to set
      */
     public void setOptsUnique(byte optsUnique) {
         this.optsUnique = optsUnique;
     }
 
     /**
-     *
      * @return the String associated to the feature for MLSx
      */
     public String getFeat() {

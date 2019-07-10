@@ -22,11 +22,9 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Utility that detects various properties specific to the current runtime environment, such as Java
- * version.
+ * Utility that detects various properties specific to the current runtime environment, such as Java version.
  *
  * @author "Frederic Bregier"
- *
  */
 public class DetectionUtils {
     private static final int JAVA_VERSION = javaVersion0();
@@ -50,7 +48,6 @@ public class DetectionUtils {
     }
 
     /**
-     *
      * @return the default number of threads (core * 2)
      */
     public static int numberThreads() {
@@ -59,7 +56,6 @@ public class DetectionUtils {
 
     /**
      * Return <code>true</code> if the JVM is running on Windows
-     *
      */
     public static boolean isWindows() {
         return IS_WINDOWS;
@@ -67,7 +63,6 @@ public class DetectionUtils {
 
     /**
      * Return <code>true</code> if the JVM is running on IBM UNIX JVM
-     *
      */
     public static boolean isUnixIBM() {
         return IS_UNIX_IBM;

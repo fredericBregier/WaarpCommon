@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 450 Requested file action not taken. File unavailable (e.g., file busy).
  *
  * @author Frederic Bregier
- *
  */
 public class Reply450Exception extends CommandAbstractException {
 

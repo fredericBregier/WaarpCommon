@@ -23,7 +23,6 @@ import java.util.concurrent.Callable;
  *
  * @author Frederic Bregier
  * @author Damian Momot
- *
  */
 public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> {
     private long ttl;
@@ -32,8 +31,8 @@ public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> 
      * Constructs BaseLruCache
      *
      * @param ttl
-     * @throws IllegalArgumentException
-     *             if ttl is not positive
+     *
+     * @throws IllegalArgumentException if ttl is not positive
      */
     protected AbstractLruCache(long ttl) {
         if (ttl <= 0) {
@@ -52,11 +51,12 @@ public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> 
 
     /**
      * Creates new LruCacheEntry<V>.
-     *
+     * <p>
      * It can be used to change implementation of LruCacheEntry
      *
      * @param value
      * @param ttl
+     *
      * @return LruCacheEntry<V>
      */
     protected InterfaceLruCacheEntry<V> createEntry(V value, long ttl) {
@@ -98,6 +98,7 @@ public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> 
      * Returns LruCacheEntry mapped by key or null if it does not exist
      *
      * @param key
+     *
      * @return LruCacheEntry<V>
      */
     abstract protected InterfaceLruCacheEntry<V> getEntry(K key);
@@ -110,10 +111,11 @@ public abstract class AbstractLruCache<K, V> implements InterfaceLruCache<K, V> 
     }
 
     /**
-     * Tries to retrieve value by it's key. Automatically removes entry if it's not valid
-     * (LruCacheEntry.getValue() returns null)
+     * Tries to retrieve value by it's key. Automatically removes entry if it's not valid (LruCacheEntry.getValue()
+     * returns null)
      *
      * @param key
+     *
      * @return Value
      */
     protected V getValue(K key) {

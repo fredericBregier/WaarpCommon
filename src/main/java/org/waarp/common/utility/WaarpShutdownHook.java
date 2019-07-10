@@ -30,7 +30,6 @@ import java.util.TimerTask;
 
 /**
  * @author "Frederic Bregier"
- *
  */
 public abstract class WaarpShutdownHook extends Thread {
     /**
@@ -39,8 +38,7 @@ public abstract class WaarpShutdownHook extends Thread {
     private static final WaarpLogger logger = WaarpLoggerFactory
             .getLogger(WaarpShutdownHook.class);
     /**
-     * Sun property pointing the main class and its arguments.
-     * Might not be defined on non Hotspot VM implementations.
+     * Sun property pointing the main class and its arguments. Might not be defined on non Hotspot VM implementations.
      */
     private static final String SUN_JAVA_COMMAND = "sun.java.command";
     /**
@@ -115,7 +113,6 @@ public abstract class WaarpShutdownHook extends Thread {
     }
 
     /**
-     *
      * @return True if the Shutdown process will start soon
      */
     public static boolean isShutdownStarting() {
@@ -217,9 +214,8 @@ public abstract class WaarpShutdownHook extends Thread {
     }
 
     /**
-     * Restart the application using the preset applArgs and computing the jvmArgs.
-     * execute the command in a shutdown hook, to be sure that all the
-     * resources have been disposed before restarting the application
+     * Restart the application using the preset applArgs and computing the jvmArgs. execute the command in a shutdown
+     * hook, to be sure that all the resources have been disposed before restarting the application
      *
      * @throws IOException
      */
@@ -265,7 +261,6 @@ public abstract class WaarpShutdownHook extends Thread {
     }
 
     /**
-     *
      * @return True if the shutdown should be followed by a restart
      */
     public static boolean isRestart() {
@@ -390,7 +385,6 @@ public abstract class WaarpShutdownHook extends Thread {
      * Class for argument of creation of WaarpShutdownHook
      *
      * @author "Frederic Bregier"
-     *
      */
     public static class ShutdownConfiguration {
         public long timeout = 30000; // 30s per default

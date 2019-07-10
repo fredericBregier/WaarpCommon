@@ -20,7 +20,6 @@ package org.waarp.common.xml;
  * XmlDecl to declare types, path and name for values from/to XML file/document
  *
  * @author Frederic Bregier
- *
  */
 public class XmlDecl {
     private final String name;
@@ -105,7 +104,6 @@ public class XmlDecl {
     }
 
     /**
-     *
      * @return True if this Decl is a subXml
      */
     public boolean isSubXml() {
@@ -140,6 +138,7 @@ public class XmlDecl {
      * Check if two XmlDecl are compatible
      *
      * @param xmlDecl
+     *
      * @return True if compatible
      */
     public boolean isCompatible(XmlDecl xmlDecl) {

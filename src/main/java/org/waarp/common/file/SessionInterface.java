@@ -20,7 +20,6 @@ package org.waarp.common.file;
  * Interface for SessionInterface
  *
  * @author Frederic Bregier
- *
  */
 public interface SessionInterface {
     /**
@@ -35,30 +34,25 @@ public interface SessionInterface {
 
     /**
      * Clean the session
-     *
      */
     public void clear();
 
     /**
-     *
      * @return the BlockSize to use in FileInterface operations
      */
     public int getBlockSize();
 
     /**
-     *
      * @return the configuration
      */
     public FileParameterInterface getFileParameter();
 
     /**
-     *
      * @return the Restart
      */
     public Restart getRestart();
 
     /**
-     *
      * @return the extension to give to Unique File (STOU)
      */
     public String getUniqueExtension();

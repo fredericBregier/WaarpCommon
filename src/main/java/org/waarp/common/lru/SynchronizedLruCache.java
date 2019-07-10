@@ -20,9 +20,9 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Threadsafe synchronized implementation of LruCache based on LinkedHashMap. Threadsafety is
- * provided by method synchronization.
- *
+ * Threadsafe synchronized implementation of LruCache based on LinkedHashMap. Threadsafety is provided by method
+ * synchronization.
+ * <p>
  * This cache implementation should be used with low number of threads.
  *
  * @author Frederic Bregier
@@ -38,12 +38,9 @@ public class SynchronizedLruCache<K, V> extends AbstractLruCache<K, V> {
     /**
      * Creates new SynchronizedLruCache
      *
-     * @param capacity
-     *            max cache capacity
-     * @param ttl
-     *            time to live in milliseconds
-     * @param initialCapacity
-     *            initial cache capacity
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
+     * @param initialCapacity initial cache capacity
      * @param loadFactor
      */
     public SynchronizedLruCache(int capacity, long ttl, int initialCapacity,
@@ -56,12 +53,9 @@ public class SynchronizedLruCache<K, V> extends AbstractLruCache<K, V> {
     /**
      * Creates new SynchronizedLruCache with DEFAULT_LOAD_FACTOR
      *
-     * @param capacity
-     *            max cache capacity
-     * @param ttl
-     *            time to live in milliseconds
-     * @param initialCapacity
-     *            initial cache capacity
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
+     * @param initialCapacity initial cache capacity
      */
     public SynchronizedLruCache(int capacity, long ttl, int initialCapacity) {
         this(capacity, ttl, initialCapacity, DEFAULT_LOAD_FACTOR);
@@ -70,10 +64,8 @@ public class SynchronizedLruCache<K, V> extends AbstractLruCache<K, V> {
     /**
      * Creates new SynchronizedLruCache with DEFAULT_LOAD_FACTOR and DEFAULT_INITIAL_CAPACITY
      *
-     * @param capacity
-     *            max cache capacity
-     * @param ttl
-     *            time to live in milliseconds
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
      */
     public SynchronizedLruCache(int capacity, long ttl) {
         this(capacity, ttl, DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);

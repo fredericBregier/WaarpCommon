@@ -23,7 +23,6 @@ import java.util.concurrent.Callable;
  *
  * @author Frederic Bregier
  * @author Damian Momot
- *
  */
 public interface InterfaceLruCache<K, V> {
     /**
@@ -42,6 +41,7 @@ public interface InterfaceLruCache<K, V> {
      * Checks whether cache contains valid entry for key
      *
      * @param key
+     *
      * @return true if cache contains key and entry is valid
      */
     public boolean contains(K key);
@@ -50,35 +50,37 @@ public interface InterfaceLruCache<K, V> {
      * Returns value cached with key.
      *
      * @param key
+     *
      * @return value or null if key doesn't exist or entry is not valid
      */
     public V get(K key);
 
     /**
-     * Tries to get element from cache. If get fails callback is used to create element and returned
-     * value is stored in cache.
-     *
+     * Tries to get element from cache. If get fails callback is used to create element and returned value is stored in
+     * cache.
+     * <p>
      * Default TTL is used
      *
      * @param key
      * @param callback
+     *
      * @return Value
-     * @throws Exception
-     *             if callback throws exception
+     *
+     * @throws Exception if callback throws exception
      */
     public V get(K key, Callable<V> callback) throws Exception;
 
     /**
-     * Tries to get element from cache. If get fails callback is used to create element and returned
-     * value is stored in cache
+     * Tries to get element from cache. If get fails callback is used to create element and returned value is stored in
+     * cache
      *
      * @param key
      * @param callback
-     * @param ttl
-     *            time to live in milliseconds
+     * @param ttl time to live in milliseconds
+     *
      * @return Value
-     * @throws Exception
-     *             if callback throws exception
+     *
+     * @throws Exception if callback throws exception
      */
     public V get(K key, Callable<V> callback, long ttl) throws Exception;
 
@@ -112,7 +114,7 @@ public interface InterfaceLruCache<K, V> {
 
     /**
      * Checks whether cache is empty.
-     *
+     * <p>
      * If any entry exists (including invalid one) this method will return true
      *
      * @return true if no entries are stored in cache
@@ -132,8 +134,7 @@ public interface InterfaceLruCache<K, V> {
      *
      * @param key
      * @param value
-     * @param ttl
-     *            time to live in milliseconds
+     * @param ttl time to live in milliseconds
      */
     public void put(K key, V value, long ttl);
 
@@ -141,6 +142,7 @@ public interface InterfaceLruCache<K, V> {
      * Removes entry from cache (if exists)
      *
      * @param key
+     *
      * @return the value if it still exists
      */
     public V remove(K key);

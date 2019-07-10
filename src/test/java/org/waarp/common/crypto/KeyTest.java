@@ -24,7 +24,6 @@ import static org.junit.Assert.*;
 
 /**
  * @author "Frederic Bregier"
- *
  */
 public class KeyTest {
 
@@ -34,6 +33,7 @@ public class KeyTest {
      * @param plaintext
      * @param size
      * @param algo
+     *
      * @throws Exception
      */
     private static void test(String plaintext, int size, String algo)

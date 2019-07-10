@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 504 Command not implemented for that parameter.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply504Exception extends CommandAbstractException {
 

@@ -20,7 +20,6 @@ package org.waarp.common.exception;
  * File Transfer exception (error during transfer from file point of view)
  *
  * @author Frederic Bregier
- *
  */
 public class FileTransferException extends Exception {
 

@@ -52,7 +52,6 @@ import java.util.zip.CheckedInputStream;
  * Directory implementation for Filesystem Based
  *
  * @author Frederic Bregier
- *
  */
 public abstract class FilesystemBasedDirImpl extends AbstractDir {
     /**
@@ -88,7 +87,6 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
 
     /**
      * Init according to internals of JDK
-     *
      */
     private static void initJdkDependent() {
         if (DetectionUtils.javaVersion() >= 6) {
@@ -114,11 +112,12 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
     /**
      * Finds all files matching a wildcard expression (based on '?', '~' or '*').
      *
-     * @param pathWithWildcard
-     *            The wildcard expression with a business path.
-     * @return List of String as relative paths matching the wildcard expression. Those files are
-     *         tested as valid from business point of view. If Wildcard support is not active, if
-     *         the path contains any wildcards, it will throw an error.
+     * @param pathWithWildcard The wildcard expression with a business path.
+     *
+     * @return List of String as relative paths matching the wildcard expression. Those files are tested as valid from
+     * business point of view. If Wildcard support is not active, if the path contains any wildcards, it will throw an
+     * error.
+     *
      * @throws CommandAbstractException
      */
     protected List<String> wildcardFiles(String pathWithWildcard)
@@ -205,7 +204,9 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
      * Get the FileInterface from this path, checking first its validity
      *
      * @param path
+     *
      * @return the FileInterface
+     *
      * @throws CommandAbstractException
      */
     protected File getFileFromPath(String path) throws CommandAbstractException {
@@ -222,7 +223,9 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
      * Get the true file from the path
      *
      * @param path
+     *
      * @return the true File from the path
+     *
      * @throws CommandAbstractException
      */
     protected File getTrueFile(String path) throws CommandAbstractException {
@@ -246,6 +249,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
      * Get the relative path (without mount point)
      *
      * @param file
+     *
      * @return the relative path
      */
     protected String getRelativePath(File file) {
@@ -347,6 +351,7 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
      * Return the Modification time for the File
      *
      * @param file
+     *
      * @return the Modification time as a String YYYYMMDDHHMMSS.sss
      */
     protected String getModificationTime(File file) {
@@ -522,8 +527,8 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
     }
 
     /**
-     *
      * @param file
+     *
      * @return the ls format information
      */
     protected String lsInfo(File file) {
@@ -577,8 +582,8 @@ public abstract class FilesystemBasedDirImpl extends AbstractDir {
     }
 
     /**
-     *
      * @param file
+     *
      * @return the MLSx information: ' Fact=facts;...; filename'
      */
     protected String mlsxInfo(File file) {

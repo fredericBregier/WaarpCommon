@@ -20,7 +20,6 @@ package org.waarp.common.database;
  * Constants value for database
  *
  * @author Frederic Bregier
- *
  */
 public class DbConstant {
     /**

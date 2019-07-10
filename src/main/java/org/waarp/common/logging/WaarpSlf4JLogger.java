@@ -22,7 +22,6 @@ import ch.qos.logback.classic.Logger;
  * logger using SLF4J from LOGBACK
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpSlf4JLogger extends AbstractWaarpLogger {
     private static final long serialVersionUID = -7588688826950608830L;
@@ -32,7 +31,6 @@ public class WaarpSlf4JLogger extends AbstractWaarpLogger {
     private final Logger logger;
 
     /**
-     *
      * @param logger
      */
     public WaarpSlf4JLogger(final Logger logger) {

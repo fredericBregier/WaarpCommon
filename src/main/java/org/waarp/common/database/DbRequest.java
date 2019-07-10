@@ -30,7 +30,6 @@ import java.sql.Statement;
  * Class to handle request
  *
  * @author Frederic Bregier
- *
  */
 public class DbRequest {
     /**
@@ -55,6 +54,7 @@ public class DbRequest {
      * Create a new request from the DbSession
      *
      * @param ls
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbRequest(DbSession ls) throws WaarpDatabaseNoConnectionException {
@@ -68,6 +68,7 @@ public class DbRequest {
      * Test if value is null and create the string for insert/update
      *
      * @param value
+     *
      * @return the string as result
      */
     public static String getIsNull(String value) {
@@ -78,6 +79,7 @@ public class DbRequest {
      * Create a statement with some particular options
      *
      * @return the new Statement
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -107,10 +109,11 @@ public class DbRequest {
     }
 
     /**
-     * Execute a SELECT statement and set of Result. The statement must not be an
-     * update/insert/delete. The previous statement and resultSet are closed.
+     * Execute a SELECT statement and set of Result. The statement must not be an update/insert/delete. The previous
+     * statement and resultSet are closed.
      *
      * @param select
+     *
      * @throws WaarpDatabaseSqlException
      * @throws WaarpDatabaseNoConnectionException
      */
@@ -137,13 +140,12 @@ public class DbRequest {
     }
 
     /**
-     * Execute a SELECT statement and set of Result. The statement must not be an
-     * update/insert/delete. The previous statement and resultSet are closed.
-     * The timeout is applied if > 0.
+     * Execute a SELECT statement and set of Result. The statement must not be an update/insert/delete. The previous
+     * statement and resultSet are closed. The timeout is applied if > 0.
      *
      * @param select
-     * @param timeout
-     *            in seconds
+     * @param timeout in seconds
+     *
      * @throws WaarpDatabaseSqlException
      * @throws WaarpDatabaseNoConnectionException
      */
@@ -177,11 +179,13 @@ public class DbRequest {
     }
 
     /**
-     * Execute a UPDATE/INSERT/DELETE statement and returns the number of row. The previous
-     * statement and resultSet are closed.
+     * Execute a UPDATE/INSERT/DELETE statement and returns the number of row. The previous statement and resultSet are
+     * closed.
      *
      * @param query
+     *
      * @return the number of row in the query
+     *
      * @throws WaarpDatabaseSqlException
      * @throws WaarpDatabaseNoConnectionException
      */
@@ -233,6 +237,7 @@ public class DbRequest {
      * Get the last ID autoincrement from the last request
      *
      * @return the long Id or DbConstant.ILLEGALVALUE (Long.MIN_VALUE) if an error occurs.
+     *
      * @throws WaarpDatabaseNoDataException
      */
     public long getLastId() throws WaarpDatabaseNoDataException {
@@ -257,6 +262,7 @@ public class DbRequest {
      * Move the cursor to the next result
      *
      * @return True if there is a next result, else False
+     *
      * @throws WaarpDatabaseNoConnectionException
      * @throws WaarpDatabaseSqlException
      */
@@ -284,8 +290,8 @@ public class DbRequest {
     }
 
     /**
-     *
      * @return The resultSet (can be used in conjunction of getNext())
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public ResultSet getResultSet() throws WaarpDatabaseNoConnectionException {

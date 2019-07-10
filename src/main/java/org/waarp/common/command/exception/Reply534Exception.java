@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 534 Request denied for policy reasons.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply534Exception extends CommandAbstractException {
 

@@ -20,7 +20,6 @@ package org.waarp.common.file;
  * Interface for FileParameter
  *
  * @author Frederic Bregier
- *
  */
 public interface FileParameterInterface {
 

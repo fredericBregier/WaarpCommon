@@ -40,7 +40,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * MariaDB Database Model implementation
  *
  * @author Frederic Bregier
- *
  */
 public abstract class DbModelMariadb extends DbModelAbstract {
     /**
@@ -62,6 +61,7 @@ public abstract class DbModelMariadb extends DbModelAbstract {
      * @param dbpasswd
      * @param timer
      * @param delay
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbModelMariadb(String dbserver, String dbuser, String dbpasswd, Timer timer, long delay)
@@ -98,6 +98,7 @@ public abstract class DbModelMariadb extends DbModelAbstract {
      * @param dbserver
      * @param dbuser
      * @param dbpasswd
+     *
      * @throws WaarpDatabaseNoConnectionException
      */
     public DbModelMariadb(String dbserver, String dbuser, String dbpasswd)

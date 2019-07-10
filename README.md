@@ -34,7 +34,7 @@ Support
 -------
 
 Support is available through community and also through commercial support
-with the company named [Waarp](http://www.waarp.it/)
+with the company named [Waarp](http://www.waarp.fr/)
 
 ![Waarp Company](http://waarp.github.com/Waarp/res/waarp/waarp.gif "Waarp")
 

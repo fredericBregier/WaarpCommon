@@ -24,7 +24,6 @@ import java.util.EnumSet;
  * Example of EnumState enum class
  *
  * @author Frederic Bregier
- *
  */
 public enum ExampleEnumState {
     RUNNING, PAUSED, CONFIGURING, RESET, ENDED;

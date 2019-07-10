@@ -52,7 +52,6 @@ import java.security.Key;
  * </ul>
  *
  * @author frederic bregier
- *
  */
 public abstract class KeyObject {
     /**
@@ -73,25 +72,21 @@ public abstract class KeyObject {
     }
 
     /**
-     *
      * @return the algorithm used (Java name)
      */
     public abstract String getAlgorithm();
 
     /**
-     *
      * @return the instance used (Java name)
      */
     public abstract String getInstance();
 
     /**
-     *
      * @return the size for the algorithm key
      */
     public abstract int getKeySize();
 
     /**
-     *
      * @return the filename extension to use for this kind of key
      */
     public abstract String getFileExtension();
@@ -123,6 +118,7 @@ public abstract class KeyObject {
      * Create a Key from a File
      *
      * @param file
+     *
      * @throws CryptoException
      * @throws IOException
      */
@@ -145,7 +141,6 @@ public abstract class KeyObject {
     }
 
     /**
-     *
      * @return True if this key is ready to be used
      */
     public boolean keyReady() {
@@ -153,8 +148,8 @@ public abstract class KeyObject {
     }
 
     /**
-     * Returns the key as an array of bytes in order to be stored somewhere else and retrieved using
-     * the setSecretKey(byte[] keyData) method.
+     * Returns the key as an array of bytes in order to be stored somewhere else and retrieved using the
+     * setSecretKey(byte[] keyData) method.
      *
      * @return the key as an array of bytes (or null if not ready)
      */
@@ -170,6 +165,7 @@ public abstract class KeyObject {
      * Save a Key to a File
      *
      * @param file
+     *
      * @throws CryptoException
      * @throws IOException
      */
@@ -207,8 +203,7 @@ public abstract class KeyObject {
     /**
      * Returns a cipher for encryption associated with the key
      *
-     * @return the cipher for encryption or null if it fails in case Encryption method or key is
-     *         incorrect
+     * @return the cipher for encryption or null if it fails in case Encryption method or key is incorrect
      */
     public Cipher toCrypt() {
         Cipher cipher;
@@ -226,7 +221,9 @@ public abstract class KeyObject {
      * Crypt one array of bytes and returns the crypted array of bytes
      *
      * @param plaintext
+     *
      * @return the crypted array of bytes
+     *
      * @throws Exception
      */
     public byte[] crypt(byte[] plaintext) throws Exception {
@@ -247,7 +244,9 @@ public abstract class KeyObject {
      * Crypt one array of bytes and returns the crypted String as HEX format
      *
      * @param plaintext
+     *
      * @return the crypted String as HEX format
+     *
      * @throws Exception
      */
     public String cryptToHex(byte[] plaintext) throws Exception {
@@ -259,7 +258,9 @@ public abstract class KeyObject {
      * Crypt one String and returns the crypted array of bytes
      *
      * @param plaintext
+     *
      * @return the crypted array of bytes
+     *
      * @throws Exception
      */
     public byte[] crypt(String plaintext) throws Exception {
@@ -270,7 +271,9 @@ public abstract class KeyObject {
      * Crypt one String and returns the crypted String as HEX format
      *
      * @param plaintext
+     *
      * @return the crypted String as HEX format
+     *
      * @throws Exception
      */
     public String cryptToHex(String plaintext) throws Exception {
@@ -280,8 +283,7 @@ public abstract class KeyObject {
     /**
      * Returns a cipher for decryption associated with the key
      *
-     * @return the cipher for decryption or null if it fails in case Encryption method or key is
-     *         incorrect
+     * @return the cipher for decryption or null if it fails in case Encryption method or key is incorrect
      */
     public Cipher toDecrypt() {
         Cipher cipher;
@@ -299,7 +301,9 @@ public abstract class KeyObject {
      * Decrypt an array of bytes and returns the uncrypted array of bytes
      *
      * @param ciphertext
+     *
      * @return the uncrypted array of bytes
+     *
      * @throws Exception
      */
     public byte[] decrypt(byte[] ciphertext) throws Exception {
@@ -320,7 +324,9 @@ public abstract class KeyObject {
      * Decrypt an array of bytes and returns the uncrypted String
      *
      * @param ciphertext
+     *
      * @return the uncrypted array of bytes
+     *
      * @throws Exception
      */
     public String decryptInString(byte[] ciphertext) throws Exception {
@@ -328,11 +334,12 @@ public abstract class KeyObject {
     }
 
     /**
-     * Decrypt a String as HEX format representing a crypted array of bytes and returns the
-     * uncrypted array of bytes
+     * Decrypt a String as HEX format representing a crypted array of bytes and returns the uncrypted array of bytes
      *
      * @param ciphertext
+     *
      * @return the uncrypted array of bytes
+     *
      * @throws Exception
      */
     public byte[] decryptHexInBytes(String ciphertext) throws Exception {
@@ -341,11 +348,13 @@ public abstract class KeyObject {
     }
 
     /**
-     * Decrypt an array of bytes as HEX format representing a crypted array of bytes and returns the
-     * uncrypted array of bytes
+     * Decrypt an array of bytes as HEX format representing a crypted array of bytes and returns the uncrypted array of
+     * bytes
      *
      * @param ciphertext
+     *
      * @return the uncrypted array of bytes
+     *
      * @throws Exception
      */
     public byte[] decryptHexInBytes(byte[] ciphertext) throws Exception {
@@ -354,11 +363,12 @@ public abstract class KeyObject {
     }
 
     /**
-     * Decrypt a String as HEX format representing a crypted array of bytes and returns the
-     * uncrypted String
+     * Decrypt a String as HEX format representing a crypted array of bytes and returns the uncrypted String
      *
      * @param ciphertext
+     *
      * @return the uncrypted String
+     *
      * @throws Exception
      */
     public String decryptHexInString(String ciphertext) throws Exception {
@@ -369,7 +379,9 @@ public abstract class KeyObject {
      * Decode from a file containing a HEX crypted string
      *
      * @param file
+     *
      * @return the decoded uncrypted content of the file
+     *
      * @throws Exception
      */
     public byte[] decryptHexFile(File file) throws Exception {
@@ -402,8 +414,8 @@ public abstract class KeyObject {
     }
 
     /**
-     *
      * @param encoded
+     *
      * @return the array of bytes from encoded String (HEX)
      */
     public byte[] decodeHex(String encoded) {
@@ -411,8 +423,8 @@ public abstract class KeyObject {
     }
 
     /**
-     *
      * @param bytes
+     *
      * @return The encoded array of bytes in HEX
      */
     public String encodeHex(byte[] bytes) {

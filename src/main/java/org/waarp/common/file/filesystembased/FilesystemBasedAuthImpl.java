@@ -28,7 +28,6 @@ import org.waarp.common.file.SessionInterface;
  * Authentication implementation for Filesystem Based
  *
  * @author Frederic Bregier
- *
  */
 public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     /**
@@ -68,29 +67,28 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     }
 
     /**
-     * Set the user according to any implementation and could set the rootFromAuth. If NOOP is
-     * returned, isIdentifed must be TRUE.
+     * Set the user according to any implementation and could set the rootFromAuth. If NOOP is returned, isIdentifed
+     * must be TRUE.
      *
      * @param user
-     * @return (NOOP, 230) if the user is OK, else return the following command that must follow
-     *         (usually PASS) and the associated reply
-     * @throws Reply421Exception
-     *             if there is a problem during the authentication
-     * @throws Reply530Exception
-     *             if there is a problem during the authentication
+     *
+     * @return (NOOP, 230) if the user is OK, else return the following command that must follow (usually PASS) and the
+     * associated reply
+     *
+     * @throws Reply421Exception if there is a problem during the authentication
+     * @throws Reply530Exception if there is a problem during the authentication
      */
     protected abstract NextCommandReply setBusinessUser(String user)
             throws Reply421Exception, Reply530Exception;
 
     /**
-     * @param user
-     *            the user to set
-     * @return (NOOP, 230) if the user is OK, else return the following command that must follow
-     *         (usually PASS) and the associated reply
-     * @throws Reply421Exception
-     *             if there is a problem during the authentication
-     * @throws Reply530Exception
-     *             if there is a problem during the authentication
+     * @param user the user to set
+     *
+     * @return (NOOP, 230) if the user is OK, else return the following command that must follow (usually PASS) and the
+     * associated reply
+     *
+     * @throws Reply421Exception if there is a problem during the authentication
+     * @throws Reply530Exception if there is a problem during the authentication
      */
     public NextCommandReply setUser(String user) throws Reply421Exception,
                                                         Reply530Exception {
@@ -111,29 +109,28 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     }
 
     /**
-     * Set the password according to any implementation and could set the rootFromAuth. If NOOP is
-     * returned, isIdentifed must be TRUE.
+     * Set the password according to any implementation and could set the rootFromAuth. If NOOP is returned, isIdentifed
+     * must be TRUE.
      *
      * @param password
-     * @return (NOOP, 230) if the Password is OK, else return the following command that must follow
-     *         (usually ACCT) and the associated reply
-     * @throws Reply421Exception
-     *             if there is a problem during the authentication
-     * @throws Reply530Exception
-     *             if there is a problem during the authentication
+     *
+     * @return (NOOP, 230) if the Password is OK, else return the following command that must follow (usually ACCT) and
+     * the associated reply
+     *
+     * @throws Reply421Exception if there is a problem during the authentication
+     * @throws Reply530Exception if there is a problem during the authentication
      */
     protected abstract NextCommandReply setBusinessPassword(String password)
             throws Reply421Exception, Reply530Exception;
 
     /**
-     * @param password
-     *            the password to set
-     * @return (NOOP, 230) if the Password is OK, else return the following command that must follow
-     *         (usually ACCT) and the associated reply
-     * @throws Reply421Exception
-     *             if there is a problem during the authentication
-     * @throws Reply530Exception
-     *             if there is a problem during the authentication
+     * @param password the password to set
+     *
+     * @return (NOOP, 230) if the Password is OK, else return the following command that must follow (usually ACCT) and
+     * the associated reply
+     *
+     * @throws Reply421Exception if there is a problem during the authentication
+     * @throws Reply530Exception if there is a problem during the authentication
      */
     public NextCommandReply setPassword(String password)
             throws Reply421Exception, Reply530Exception {
@@ -156,11 +153,10 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     }
 
     /**
-     * Is the current Authentication OK for full identification. It must be true after a correct
-     * sequence of identification: At most, it is true when setAccount is OK. It could be positive
-     * before (user name only, user+password only).<br>
-     * In the current implementation, as USER+PASS+ACCT are needed, it will be true only after a
-     * correct ACCT.
+     * Is the current Authentication OK for full identification. It must be true after a correct sequence of
+     * identification: At most, it is true when setAccount is OK. It could be positive before (user name only,
+     * user+password only).<br> In the current implementation, as USER+PASS+ACCT are needed, it will be true only after
+     * a correct ACCT.
      *
      * @return True if the user has a positive login, else False
      */
@@ -169,22 +165,19 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     }
 
     /**
+     * @return the root relative path from authentication if any or null if the default is used (default is /user or
+     * /user/account)
      *
-     * @return the root relative path from authentication if any or null if the default is used
-     *         (default is /user or /user/account)
-     * @exception Reply421Exception
-     *                if the business root is not available
+     * @throws Reply421Exception if the business root is not available
      */
     protected abstract String setBusinessRootFromAuth()
             throws Reply421Exception;
 
     /**
-     * Set the root relative Path from current status of Authentication (should be the highest level
-     * for the current authentication). If setBusinessRootFromAuth returns null, by default set
-     * /user or /user/account.
+     * Set the root relative Path from current status of Authentication (should be the highest level for the current
+     * authentication). If setBusinessRootFromAuth returns null, by default set /user or /user/account.
      *
-     * @exception Reply421Exception
-     *                if the business root is not available
+     * @throws Reply421Exception if the business root is not available
      */
     private void setRootFromAuth() throws Reply421Exception {
         rootFromAuth = setBusinessRootFromAuth();
@@ -199,13 +192,11 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
 
     /**
      * Business implementation of clean
-     *
      */
     protected abstract void businessClean();
 
     /**
      * Clean object
-     *
      */
     public void clear() {
         businessClean();
@@ -218,8 +209,8 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     /**
      * Return the full path as a String (with mount point).
      *
-     * @param path
-     *            relative path including business one (may be null or empty)
+     * @param path relative path including business one (may be null or empty)
+     *
      * @return the full path as a String
      */
     public String getAbsolutePath(String path) {
@@ -233,8 +224,8 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
     /**
      * Return the relative path from a file (without mount point)
      *
-     * @param file
-     *            (full path with mount point)
+     * @param file (full path with mount point)
+     *
      * @return the relative path from a file
      */
     public String getRelativePath(String file) {

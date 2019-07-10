@@ -29,14 +29,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
  * Can implements AES, ARCFOUR, Blowfish, DES, DESede, RC2, RC4<br>
  * <br>
  * The time ratio are: RC4,ARCFOUR=1; AES,RC2=1,5; DES=2; Blowfish,DESede=4<br>
  * <b>AES is the best compromise in term of security and efficiency.</b>
  *
  * @author frederic bregier
- *
  */
 public class DynamicKeyManager extends KeyManager {
     /**
@@ -49,7 +47,6 @@ public class DynamicKeyManager extends KeyManager {
     private static final String INFEXTENSION = ".inf";
 
     /**
-     *
      * @return the current KeyManager
      */
     public static final KeyManager getInstance() {
@@ -159,6 +156,7 @@ public class DynamicKeyManager extends KeyManager {
      * Specific functions to ease the process of reading the "inf" file
      *
      * @param inputStream
+     *
      * @return the String that should be read
      */
     private String readString(FileInputStream inputStream) {

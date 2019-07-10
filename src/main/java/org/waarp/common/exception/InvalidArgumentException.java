@@ -20,7 +20,6 @@ package org.waarp.common.exception;
  * Argument invalid exception
  *
  * @author Frederic Bregier
- *
  */
 public class InvalidArgumentException extends Exception {
 

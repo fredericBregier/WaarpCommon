@@ -19,16 +19,14 @@ package org.waarp.common.file.filesystembased.specific;
 import java.io.File;
 
 /**
- * JDK5 version of specific functions for Filesystem.<br>
- * Note: this class depends on Apache commons Io.
+ * JDK5 version of specific functions for Filesystem.<br> Note: this class depends on Apache commons Io.
  *
  * @author Frederic Bregier
- *
  */
 public class FilesystemBasedDirJdk5 extends FilesystemBasedDirJdkAbstract {
     /**
-     *
      * @param file
+     *
      * @return True if the file is executable
      */
     @Override
@@ -37,8 +35,8 @@ public class FilesystemBasedDirJdk5 extends FilesystemBasedDirJdkAbstract {
     }
 
     /**
-     *
      * @param directory
+     *
      * @return the free space of the given Directory
      */
     @Override

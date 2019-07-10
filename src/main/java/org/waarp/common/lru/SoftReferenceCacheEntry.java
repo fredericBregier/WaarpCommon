@@ -34,10 +34,9 @@ class SoftReferenceCacheEntry<V> implements InterfaceLruCacheEntry<V> {
      * Creates LruCacheEntry with desired ttl
      *
      * @param value
-     * @param ttl
-     *            time to live in milliseconds
-     * @throws IllegalArgumentException
-     *             if ttl is not positive
+     * @param ttl time to live in milliseconds
+     *
+     * @throws IllegalArgumentException if ttl is not positive
      */
     SoftReferenceCacheEntry(V value, long ttl) {
         if (ttl <= 0) {
@@ -50,7 +49,7 @@ class SoftReferenceCacheEntry<V> implements InterfaceLruCacheEntry<V> {
 
     /**
      * Returns value if entry is valid, null otherwise.
-     *
+     * <p>
      * Entry is invalid if SoftReference is cleared or entry has expired
      *
      * @return value if entry is valid

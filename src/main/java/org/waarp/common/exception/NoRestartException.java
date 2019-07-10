@@ -20,7 +20,6 @@ package org.waarp.common.exception;
  * No restart exception
  *
  * @author Frederic Bregier
- *
  */
 public class NoRestartException extends Exception {
 

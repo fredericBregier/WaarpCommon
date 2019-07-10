@@ -20,11 +20,9 @@ package org.waarp.common.cpu;
  * Interface to get LoadAverage
  *
  * @author bregier
- *
  */
 public interface CpuManagementInterface {
     /**
-     *
      * @return the load average
      */
     public double getLoadAverage();

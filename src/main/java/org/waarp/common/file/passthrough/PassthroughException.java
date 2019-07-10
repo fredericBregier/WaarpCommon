@@ -20,7 +20,6 @@ package org.waarp.common.file.passthrough;
  * Passthrough exception
  *
  * @author Frederic Bregier
- *
  */
 public class PassthroughException extends Exception {
 

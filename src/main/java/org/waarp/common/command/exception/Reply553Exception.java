@@ -22,7 +22,6 @@ import org.waarp.common.command.ReplyCode;
  * 553 Requested action not taken. File name not allowed.
  *
  * @author Frederic Bregier
- *
  */
 public class Reply553Exception extends CommandAbstractException {
 

@@ -17,6 +17,9 @@
  * Transcode packet that will help to transcode file from one charset to another
  *
  * @author Frederic Bregier
+ * <p>
+ * Transcode packet that will help to transcode file from one charset to another
+ * @author Frederic Bregier
  */
 /**
  * Transcode packet that will help to transcode file from one charset to another

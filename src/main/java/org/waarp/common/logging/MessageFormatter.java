@@ -36,8 +36,7 @@ import java.util.Map;
 // Joern Huxhorn: pointed out double[] omission, suggested deep array copy
 
 /**
- * Formats messages according to very simple substitution rules. Substitutions
- * can be made 1, 2 or more arguments.
+ * Formats messages according to very simple substitution rules. Substitutions can be made 1, 2 or more arguments.
  * <p/>
  * <p/>
  * For example,
@@ -52,8 +51,8 @@ import java.util.Map;
  * The {} pair is called the <em>formatting anchor</em>. It serves to designate the location where arguments need to be
  * substituted within the message pattern.
  * <p/>
- * In case your message contains the '{' or the '}' character, you do not have to do anything special unless the '}' character
- * immediately follows '{'. For example,
+ * In case your message contains the '{' or the '}' character, you do not have to do anything special unless the '}'
+ * character immediately follows '{'. For example,
  * <p/>
  *
  * <pre>
@@ -63,9 +62,9 @@ import java.util.Map;
  * will return the string "Set {1,2,3} is not equal to 1,2.".
  * <p/>
  * <p/>
- * If for whatever reason you need to place the string "{}" in the message without its <em>formatting anchor</em> meaning, then
- * you need to escape the '{' character with '\', that is the backslash character. Only the '{' character should be escaped. There
- * is no need to escape the '}' character. For example,
+ * If for whatever reason you need to place the string "{}" in the message without its <em>formatting anchor</em>
+ * meaning, then you need to escape the '{' character with '\', that is the backslash character. Only the '{' character
+ * should be escaped. There is no need to escape the '}' character. For example,
  * <p/>
  *
  * <pre>
@@ -85,13 +84,14 @@ import java.util.Map;
  * will return the string "File name is C:\file.zip".
  * <p/>
  * <p/>
- * The formatting conventions are different than those of {@link MessageFormat} which ships with the Java platform. This is
- * justified by the fact that SLF4J's implementation is 10 times faster than that of {@link MessageFormat}. This local performance
- * difference is both measurable and significant in the larger context of the complete logging processing chain.
+ * The formatting conventions are different than those of {@link MessageFormat} which ships with the Java platform. This
+ * is justified by the fact that SLF4J's implementation is 10 times faster than that of {@link MessageFormat}. This
+ * local performance difference is both measurable and significant in the larger context of the complete logging
+ * processing chain.
  * <p/>
  * <p/>
- * See also {@link #format(String, Object)}, {@link #format(String, Object, Object)} and {@link #arrayFormat(String, Object[])}
- * methods for more details.
+ * See also {@link #format(String, Object)}, {@link #format(String, Object, Object)} and {@link #arrayFormat(String,
+ * Object[])} methods for more details.
  */
 final class MessageFormatter {
     static final char DELIM_START = '{';
@@ -104,8 +104,7 @@ final class MessageFormatter {
     }
 
     /**
-     * Performs single argument substitution for the 'messagePattern' passed as
-     * parameter.
+     * Performs single argument substitution for the 'messagePattern' passed as parameter.
      * <p/>
      * For example,
      * <p/>
@@ -117,10 +116,9 @@ final class MessageFormatter {
      * will return the string "Hi there.".
      * <p/>
      *
-     * @param messagePattern
-     *            The message pattern which will be parsed and formatted
-     * @param arg
-     *            The argument to be substituted in place of the formatting anchor
+     * @param messagePattern The message pattern which will be parsed and formatted
+     * @param arg The argument to be substituted in place of the formatting anchor
+     *
      * @return The formatted message
      */
     static FormattingTuple format(final String messagePattern, final Object arg) {
@@ -128,8 +126,7 @@ final class MessageFormatter {
     }
 
     /**
-     * Performs a two argument substitution for the 'messagePattern' passed as
-     * parameter.
+     * Performs a two argument substitution for the 'messagePattern' passed as parameter.
      * <p/>
      * For example,
      * <p/>
@@ -140,14 +137,10 @@ final class MessageFormatter {
      * <p/>
      * will return the string "Hi Alice. My name is Bob.".
      *
-     * @param messagePattern
-     *            The message pattern which will be parsed and formatted
-     * @param argA
-     *            The argument to be substituted in place of the first formatting
-     *            anchor
-     * @param argB
-     *            The argument to be substituted in place of the second formatting
-     *            anchor
+     * @param messagePattern The message pattern which will be parsed and formatted
+     * @param argA The argument to be substituted in place of the first formatting anchor
+     * @param argB The argument to be substituted in place of the second formatting anchor
+     *
      * @return The formatted message
      */
     static FormattingTuple format(final String messagePattern, final Object argA, final Object argB) {
@@ -167,15 +160,12 @@ final class MessageFormatter {
     }
 
     /**
-     * Same principle as the {@link #format(String, Object)} and {@link #format(String, Object, Object)} methods except that any
-     * number of
-     * arguments can be passed in an array.
+     * Same principle as the {@link #format(String, Object)} and {@link #format(String, Object, Object)} methods except
+     * that any number of arguments can be passed in an array.
      *
-     * @param messagePattern
-     *            The message pattern which will be parsed and formatted
-     * @param argArray
-     *            An array of arguments to be substituted in place of formatting
-     *            anchors
+     * @param messagePattern The message pattern which will be parsed and formatted
+     * @param argArray An array of arguments to be substituted in place of formatting anchors
+     *
      * @return The formatted message
      */
     static FormattingTuple arrayFormat(final String messagePattern, final Object[] argArray) {

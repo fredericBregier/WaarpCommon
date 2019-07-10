@@ -37,7 +37,6 @@ import java.util.Map;
  * Abstract Json Handler
  *
  * @author "Frederic Bregier"
- *
  */
 public class JsonHandler {
 
@@ -54,7 +53,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @return an empty ObjectNode
      */
     public static ObjectNode createObjectNode() {
@@ -62,7 +60,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @return an empty ArrayNode
      */
     public static ArrayNode createArrayNode() {
@@ -70,12 +67,12 @@ public class JsonHandler {
     }
 
     /**
-     * Parses a string representation of a JSON object and returns 
-     * an ObjectNode.
-     * JSON Processing exceptions are kept.
+     * Parses a string representation of a JSON object and returns an ObjectNode. JSON Processing exceptions are kept.
      *
      * @param value
+     *
      * @return the objectNode or null if an error occurs
+     *
      * @throws JsonProcessingException
      */
     public static ObjectNode getFromStringExc(String value) throws JsonProcessingException {
@@ -89,10 +86,10 @@ public class JsonHandler {
     }
 
     /**
-     * Parses a string representation of a JSON object and returns 
-     * an ObjectNode, swallowing any processing exception.
+     * Parses a string representation of a JSON object and returns an ObjectNode, swallowing any processing exception.
      *
      * @param value
+     *
      * @return the objectNode or null if an error occurs
      */
     public static ObjectNode getFromString(String value) {
@@ -106,9 +103,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param file
+     *
      * @return the jsonNode (ObjectNode or ArrayNode)
+     *
      * @throws InvalidParseOperationException
      */
     public static final ObjectNode getFromFile(final File file) {
@@ -122,10 +120,11 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param value
      * @param clasz
+     *
      * @return the object of type clasz
+     *
      * @throws InvalidParseOperationException
      */
     public static final <T> T getFromString(final String value, final Class<T> clasz) {
@@ -137,10 +136,11 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param file
      * @param clasz
+     *
      * @return the corresponding object
+     *
      * @throws InvalidParseOperationException
      */
     public static final Object getFromFile(File file, Class<?> clasz) {
@@ -152,8 +152,8 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param object
+     *
      * @return the Json representation of the object
      */
     public static String writeAsString(Object object) {
@@ -165,10 +165,11 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param object
      * @param file
+     *
      * @return True if correctly written
+     *
      * @throws InvalidParseOperationException
      */
     public static final boolean writeAsFile(final Object object, File file) {
@@ -181,8 +182,8 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param object
+     *
      * @return the Json representation of the object in Pretty Print format
      */
     public static String prettyPrint(Object object) {
@@ -194,9 +195,9 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
+     *
      * @return the String if the field exists, else null
      */
     public final static String getString(ObjectNode node, String field) {
@@ -204,9 +205,9 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
+     *
      * @return the String if the field exists, else null
      */
     public final static String getString(ObjectNode node, Enum<?> field) {
@@ -214,10 +215,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the String if the field exists, else defValue
      */
     public final static String getValue(ObjectNode node, String field, String defValue) {
@@ -233,10 +234,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Boolean if the field exists, else defValue
      */
     public final static Boolean getValue(ObjectNode node, String field, boolean defValue) {
@@ -244,10 +245,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Double if the field exists, else defValue
      */
     public final static Double getValue(ObjectNode node, String field, double defValue) {
@@ -255,10 +256,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Long if the field exists, else defValue
      */
     public final static Long getValue(ObjectNode node, String field, long defValue) {
@@ -266,10 +267,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Integer if the field exists, else defValue
      */
     public final static Integer getValue(ObjectNode node, String field, int defValue) {
@@ -277,10 +278,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the byte array if the field exists, else defValue
      */
     public final static byte[] getValue(ObjectNode node, String field, byte[] defValue) {
@@ -296,7 +297,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -306,7 +306,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -316,7 +315,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -326,7 +324,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -336,7 +333,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -349,7 +345,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -362,9 +357,9 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
+     *
      * @return True if all fields exist
      */
     public final static boolean exist(ObjectNode node, String... field) {
@@ -377,10 +372,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the String if the field exists, else defValue
      */
     public final static String getValue(ObjectNode node, Enum<?> field, String defValue) {
@@ -388,10 +383,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Boolean if the field exists, else defValue
      */
     public final static Boolean getValue(ObjectNode node, Enum<?> field, boolean defValue) {
@@ -399,10 +394,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Double if the field exists, else defValue
      */
     public final static Double getValue(ObjectNode node, Enum<?> field, double defValue) {
@@ -410,10 +405,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Long if the field exists, else defValue
      */
     public final static Long getValue(ObjectNode node, Enum<?> field, long defValue) {
@@ -421,10 +416,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the Integer if the field exists, else defValue
      */
     public final static Integer getValue(ObjectNode node, Enum<?> field, int defValue) {
@@ -432,10 +427,10 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param defValue
+     *
      * @return the byte array if the field exists, else defValue
      */
     public final static byte[] getValue(ObjectNode node, Enum<?> field, byte[] defValue) {
@@ -443,7 +438,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -453,7 +447,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -463,7 +456,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -473,7 +465,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -483,7 +474,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -496,7 +486,6 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
      * @param value
@@ -509,9 +498,9 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param node
      * @param field
+     *
      * @return True if all fields exist
      */
     public final static boolean exist(ObjectNode node, Enum<?>... field) {
@@ -524,8 +513,8 @@ public class JsonHandler {
     }
 
     /**
-     *
      * @param value
+     *
      * @return the corresponding HashMap
      */
     public static Map<String, Object> getMapFromString(String value) {

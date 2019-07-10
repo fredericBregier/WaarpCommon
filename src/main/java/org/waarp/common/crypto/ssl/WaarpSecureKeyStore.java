@@ -39,7 +39,6 @@ import java.security.cert.CertificateFactory;
  * SecureKeyStore for SLL
  *
  * @author Frederic Bregier
- *
  */
 public class WaarpSecureKeyStore {
     /**
@@ -63,6 +62,7 @@ public class WaarpSecureKeyStore {
      *
      * @param _keyStorePasswd
      * @param _keyPassword
+     *
      * @throws CryptoException
      */
     public WaarpSecureKeyStore(String _keyStorePasswd, String _keyPassword) throws CryptoException {
@@ -100,6 +100,7 @@ public class WaarpSecureKeyStore {
      * @param keyStoreFilename
      * @param _keyStorePasswd
      * @param _keyPassword
+     *
      * @throws CryptoException
      */
     public WaarpSecureKeyStore(
@@ -114,11 +115,10 @@ public class WaarpSecureKeyStore {
      * @param keyStoreFilename
      * @param _keyStorePasswd
      * @param _keyPassword
-     * @param trustStoreFilename
-     *            if Null, no TrustKeyStore will be created
+     * @param trustStoreFilename if Null, no TrustKeyStore will be created
      * @param _trustStorePasswd
-     * @param needClientAuthent
-     *            True if the TrustStore is also used for Client Authentication
+     * @param needClientAuthent True if the TrustStore is also used for Client Authentication
+     *
      * @throws CryptoException
      */
     public WaarpSecureKeyStore(
@@ -139,7 +139,9 @@ public class WaarpSecureKeyStore {
      * Load a certificate from a filename
      *
      * @param filename
+     *
      * @return the X509 Certificate from filename
+     *
      * @throws CertificateException
      * @throws FileNotFoundException
      */
@@ -163,6 +165,7 @@ public class WaarpSecureKeyStore {
      * @param _keyStoreFilename
      * @param _keyStorePasswd
      * @param _keyPassword
+     *
      * @throws CryptoException
      */
     public void initKeyStore(String _keyStoreFilename, String _keyStorePasswd, String _keyPassword)
@@ -236,6 +239,7 @@ public class WaarpSecureKeyStore {
      * Delete a Key from the KeyStore based on its alias
      *
      * @param alias
+     *
      * @return True if entry is deleted
      */
     public boolean deleteKeyFromKeyStore(String alias) {
@@ -254,6 +258,7 @@ public class WaarpSecureKeyStore {
      * @param alias
      * @param key
      * @param chain
+     *
      * @return True if entry is added
      */
     public boolean setKeytoKeyStore(String alias, Key key, Certificate[] chain) {
@@ -270,6 +275,7 @@ public class WaarpSecureKeyStore {
      * Save a KeyStore to a file
      *
      * @param filename
+     *
      * @return True if keyStore is saved to file
      */
     public boolean saveKeyStore(String filename) {
@@ -310,8 +316,8 @@ public class WaarpSecureKeyStore {
      *
      * @param _trustStoreFilename
      * @param _trustStorePasswd
-     * @param needClientAuthent
-     *            True if the TrustStore is also to authenticate clients
+     * @param needClientAuthent True if the TrustStore is also to authenticate clients
+     *
      * @throws CryptoException
      */
     public void initTrustStore(String _trustStoreFilename, String _trustStorePasswd,
@@ -409,6 +415,7 @@ public class WaarpSecureKeyStore {
      * Delete a Key from the TrustStore based on its alias
      *
      * @param alias
+     *
      * @return True if entry is deleted
      */
     public boolean deleteKeyFromTrustStore(String alias) {
@@ -426,6 +433,7 @@ public class WaarpSecureKeyStore {
      *
      * @param alias
      * @param cert
+     *
      * @return True if entry is added
      */
     public boolean setKeytoTrustStore(String alias, Certificate cert) {
@@ -442,6 +450,7 @@ public class WaarpSecureKeyStore {
      * Save the TrustStore to a file
      *
      * @param filename
+     *
      * @return True if keyTrustStore is saved to file
      */
     public boolean saveTrustStore(String filename) {

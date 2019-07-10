@@ -22,7 +22,6 @@ import io.netty.buffer.ByteBuf;
  * Main object implementing Data Block whaveter the mode, type, structure used.
  *
  * @author Frederic Bregier
- *
  */
 public class DataBlock {
     private static final int EOR = 128;
@@ -83,8 +82,8 @@ public class DataBlock {
      * Translate the given array of byte into a string in binary format
      *
      * @param bytes
-     * @param cutted
-     *            True if each Byte should be 'blank' separated or not
+     * @param cutted True if each Byte should be 'blank' separated or not
+     *
      * @return the string
      */
     public static String toBinaryString(byte[] bytes, boolean cutted) {
@@ -118,8 +117,7 @@ public class DataBlock {
     /**
      * Set the block and the byte count according to the block
      *
-     * @param block
-     *            the block to set
+     * @param block the block to set
      */
     public void setBlock(ByteBuf block) {
         if (isRESTART) {
@@ -147,25 +145,21 @@ public class DataBlock {
     }
 
     /**
-     * @param byteCount
-     *            the byteCount to set
+     * @param byteCount the byteCount to set
      */
     public void setByteCount(int byteCount) {
         this.byteCount = byteCount;
     }
 
     /**
-     * @param upper
-     *            upper byte of the 2 bytes length
-     * @param lower
-     *            lower byte of the 2 bytes length
+     * @param upper upper byte of the 2 bytes length
+     * @param lower lower byte of the 2 bytes length
      */
     public void setByteCount(byte upper, byte lower) {
         byteCount = upper << 8 | lower;
     }
 
     /**
-     *
      * @return the Upper byte of the byte count
      */
     public byte getByteCountUpper() {
@@ -173,7 +167,6 @@ public class DataBlock {
     }
 
     /**
-     *
      * @return the Lower byte of the byte count
      */
     public byte getByteCountLower() {
@@ -188,8 +181,7 @@ public class DataBlock {
     }
 
     /**
-     * @param descriptor
-     *            the descriptor to set
+     * @param descriptor the descriptor to set
      */
     public void setDescriptor(int descriptor) {
         this.descriptor = descriptor & 0xFF;
@@ -219,8 +211,7 @@ public class DataBlock {
     }
 
     /**
-     * @param isEOF
-     *            the isEOF to set
+     * @param isEOF the isEOF to set
      */
     public void setEOF(boolean isEOF) {
         this.isEOF = isEOF;
@@ -235,8 +226,7 @@ public class DataBlock {
     }
 
     /**
-     * @param isEOR
-     *            the isEOR to set
+     * @param isEOR the isEOR to set
      */
     public void setEOR(boolean isEOR) {
         this.isEOR = isEOR;
@@ -251,8 +241,7 @@ public class DataBlock {
     }
 
     /**
-     * @param isERROR
-     *            the isERROR to set
+     * @param isERROR the isERROR to set
      */
     public void setERROR(boolean isERROR) {
         this.isERROR = isERROR;
@@ -267,8 +256,7 @@ public class DataBlock {
     }
 
     /**
-     * @param isRESTART
-     *            the isRESTART to set
+     * @param isRESTART the isRESTART to set
      */
     public void setRESTART(boolean isRESTART) {
         this.isRESTART = isRESTART;
@@ -285,8 +273,7 @@ public class DataBlock {
     /**
      * Set the markers and the byte count
      *
-     * @param markers
-     *            the markers to set
+     * @param markers the markers to set
      */
     public void setMarkers(int[] markers) {
         this.markers = markers;
@@ -294,7 +281,6 @@ public class DataBlock {
     }
 
     /**
-     *
      * @return the 6 bytes representation of the markers
      */
     public byte[] getByteMarkers() {
@@ -313,7 +299,6 @@ public class DataBlock {
 
     /**
      * Clear the object
-     *
      */
     public void clear() {
         block = null;

@@ -22,18 +22,17 @@ import java.io.File;
  * Abstract class to allow specific function depending on the underlying JDK to used.
  *
  * @author Frederic Bregier
- *
  */
 public abstract class FilesystemBasedDirJdkAbstract {
     /**
-     * Should the Ftp Server use the Apache Commons Io or not: if not wildcard and freespace (ALLO)
-     * will not be supported.
+     * Should the Ftp Server use the Apache Commons Io or not: if not wildcard and freespace (ALLO) will not be
+     * supported.
      */
     public static boolean ueApacheCommonsIo = true;
 
     /**
-     *
      * @param directory
+     *
      * @return the free space of the given Directory
      */
     public abstract long getFreeSpace(File directory);
@@ -42,6 +41,7 @@ public abstract class FilesystemBasedDirJdkAbstract {
      * Result of ls on FileInterface
      *
      * @param file
+     *
      * @return True if the file is executable
      */
     public abstract boolean canExecute(File file);

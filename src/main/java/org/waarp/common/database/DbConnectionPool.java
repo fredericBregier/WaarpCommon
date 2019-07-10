@@ -31,7 +31,6 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
  * A simple standalone JDBC connection pool manager.
  * <p/>
  * The public methods of this class are thread-safe.
@@ -39,11 +38,8 @@ import java.util.concurrent.TimeUnit;
  * Nothe that JDBC4 is needed and isValid() must be implemented (not yet in PostGre in April 2012)
  * <p/>
  *
- * @author Christian d'Heureuse, Inventec Informatik AG, Zurich, Switzerland<br>
- *         Multi-licensed: EPL/LGPL/MPL.
- * @author Frederic Bregier <br>
- *         Add TimerTask support to close after some "delay" any still connected sessions
- *
+ * @author Christian d'Heureuse, Inventec Informatik AG, Zurich, Switzerland<br> Multi-licensed: EPL/LGPL/MPL.
+ * @author Frederic Bregier <br> Add TimerTask support to close after some "delay" any still connected sessions
  */
 public class DbConnectionPool {
     private ConnectionPoolDataSource dataSource;
@@ -68,8 +64,7 @@ public class DbConnectionPool {
     /**
      * Constructs a MiniConnectionPoolManager object with no timeout and no limit.
      *
-     * @param dataSource
-     *            the data source for the connections.
+     * @param dataSource the data source for the connections.
      */
     public DbConnectionPool(ConnectionPoolDataSource dataSource) {
         this(dataSource, 0, DbConstant.DELAYMAXCONNECTION);
@@ -78,13 +73,9 @@ public class DbConnectionPool {
     /**
      * Constructs a MiniConnectionPoolManager object with no timeout and no limit.
      *
-     * @param dataSource
-     *            the data source for the connections.
+     * @param dataSource the data source for the connections.
      * @param timer
-     * @param delay
-     *            in ms period of time to check existing connections and limit to get a new
-     *            connection
-     *
+     * @param delay in ms period of time to check existing connections and limit to get a new connection
      */
     public DbConnectionPool(ConnectionPoolDataSource dataSource, Timer timer, long delay) {
         this(dataSource, 0, (int) (delay / 1000));
@@ -93,13 +84,10 @@ public class DbConnectionPool {
     }
 
     /**
-     * Constructs a MiniConnectionPoolManager object with a timeout of DbConstant.DELAYMAXCONNECTION
-     * seconds.
+     * Constructs a MiniConnectionPoolManager object with a timeout of DbConstant.DELAYMAXCONNECTION seconds.
      *
-     * @param dataSource
-     *            the data source for the connections.
-     * @param maxConnections
-     *            the maximum number of connections. 0 means no limit
+     * @param dataSource the data source for the connections.
+     * @param maxConnections the maximum number of connections. 0 means no limit
      */
     public DbConnectionPool(ConnectionPoolDataSource dataSource,
                             int maxConnections) {
@@ -109,12 +97,9 @@ public class DbConnectionPool {
     /**
      * Constructs a ConnectionPool object.
      *
-     * @param dataSource
-     *            the data source for the connections.
-     * @param maxConnections
-     *            the maximum number of connections. 0 means no limit
-     * @param timeout
-     *            the maximum time in seconds to wait for a free connection.
+     * @param dataSource the data source for the connections.
+     * @param maxConnections the maximum number of connections. 0 means no limit
+     * @param timeout the maximum time in seconds to wait for a free connection.
      */
     public DbConnectionPool(ConnectionPoolDataSource dataSource,
                             int maxConnections, int timeout) {
@@ -153,7 +138,6 @@ public class DbConnectionPool {
     }
 
     /**
-     *
      * @return the max number of connections
      */
     public int getMaxConnections() {
@@ -161,7 +145,6 @@ public class DbConnectionPool {
     }
 
     /**
-     *
      * @return the Login Timeout in second
      */
     public long getLoginTimeout() {
@@ -169,7 +152,6 @@ public class DbConnectionPool {
     }
 
     /**
-     *
      * @return the Force Close Timeout in ms
      */
     public long getTimeoutForceClose() {
@@ -179,8 +161,7 @@ public class DbConnectionPool {
     /**
      * Closes all unused pooled connections.
      *
-     * @throws java.sql.SQLException
-     *             //
+     * @throws java.sql.SQLException //
      */
     public synchronized void dispose() throws SQLException {
         if (isDisposed) {
@@ -205,16 +186,14 @@ public class DbConnectionPool {
     }
 
     /**
-     * Retrieves a connection from the connection pool. If <code>maxConnections</code> connections
-     * are already in use, the method waits until a connection becomes available or <code>timeout</code> seconds elapsed. When the
-     * application is finished using the connection,
-     * it must close it in order to return it to the pool.
+     * Retrieves a connection from the connection pool. If <code>maxConnections</code> connections are already in use,
+     * the method waits until a connection becomes available or <code>timeout</code> seconds elapsed. When the
+     * application is finished using the connection, it must close it in order to return it to the pool.
      *
      * @return a new Connection object.
-     * @throws TimeoutException
-     *             when no connection becomes available within <code>timeout</code> seconds.
-     * @throws java.sql.SQLException
-     *             //
+     *
+     * @throws TimeoutException when no connection becomes available within <code>timeout</code> seconds.
+     * @throws java.sql.SQLException //
      */
     public Connection getConnection() throws SQLException {
         // This routine is unsynchronized, because semaphore.tryAcquire() may
@@ -341,8 +320,9 @@ public class DbConnectionPool {
     }
 
     /**
-     * Returns the number of active (open) connections of this pool. This is the number of <code>Connection</code> objects that
-     * have been issued by {@link #getConnection()} for which <code>Connection.close()</code> has not yet been called.
+     * Returns the number of active (open) connections of this pool. This is the number of <code>Connection</code>
+     * objects that have been issued by {@link #getConnection()} for which <code>Connection.close()</code> has not yet
+     * been called.
      *
      * @return the number of active connections.
      */
@@ -384,7 +364,6 @@ public class DbConnectionPool {
      * Class to check validity of connections in the pool
      *
      * @author Frederic Bregier
-     *
      */
     private static class TimerTaskCheckConnections extends TimerTask {
         DbConnectionPool pool;
@@ -392,7 +371,6 @@ public class DbConnectionPool {
         long delay;
 
         /**
-         *
          * @param timer
          * @param delay
          * @param pool

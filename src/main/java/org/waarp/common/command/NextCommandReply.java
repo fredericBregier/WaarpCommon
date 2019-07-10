@@ -17,12 +17,10 @@
 package org.waarp.common.command;
 
 /**
- * Used by Authentication step in order to allow a specific command to be accepted after the current
- * command. If null is specified, any command is valid. Specify also the reply code and the
- * associated message.
+ * Used by Authentication step in order to allow a specific command to be accepted after the current command. If null is
+ * specified, any command is valid. Specify also the reply code and the associated message.
  *
  * @author Frederic Bregier
- *
  */
 public class NextCommandReply {
     /**

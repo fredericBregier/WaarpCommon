@@ -19,7 +19,6 @@ package org.waarp.common.lru;
 /**
  * @author Frederic Bregier
  * @author Damian Momot
- *
  */
 class StrongReferenceCacheEntry<V> implements InterfaceLruCacheEntry<V> {
     private final V value;
@@ -30,10 +29,9 @@ class StrongReferenceCacheEntry<V> implements InterfaceLruCacheEntry<V> {
      * Creates StrongReferencyCacheEntry with desired ttl
      *
      * @param value
-     * @param ttl
-     *            time to live in milliseconds
-     * @throws IllegalArgumentException
-     *             if ttl is not positive
+     * @param ttl time to live in milliseconds
+     *
+     * @throws IllegalArgumentException if ttl is not positive
      */
     StrongReferenceCacheEntry(V value, long ttl) {
         if (ttl <= 0) {
@@ -46,7 +44,7 @@ class StrongReferenceCacheEntry<V> implements InterfaceLruCacheEntry<V> {
 
     /**
      * Returns value if entry is valid, null otherwise.
-     *
+     * <p>
      * Entry is invalid if it's expired
      *
      * @return value if entry is valid
