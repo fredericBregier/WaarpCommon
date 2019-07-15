@@ -410,7 +410,7 @@ public class DbSession {
         // ignore
       }
     }
-    logger.info("Current cached connection: "
+    logger.debug("Current cached connection: "
                 + getAdmin().getDbModel().currentNumberOfPooledConnections());
   }
 

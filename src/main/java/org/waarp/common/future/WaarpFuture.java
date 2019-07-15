@@ -64,7 +64,7 @@ public class WaarpFuture {
    *
    * @return True if the future is successful
    */
-  public synchronized boolean isSuccess() {
+  public boolean isSuccess() {
     return done && cause == null;
   }
 
@@ -74,7 +74,7 @@ public class WaarpFuture {
    *
    * @return True if the future is done but unsuccessful
    */
-  public synchronized boolean isFailed() {
+  public boolean isFailed() {
     return cause != null;
   }
 
@@ -84,7 +84,7 @@ public class WaarpFuture {
    *
    * @return True if the future was canceled
    */
-  public synchronized boolean isCancelled() {
+  public boolean isCancelled() {
     return cause == CANCELLED;
   }
 
@@ -120,7 +120,7 @@ public class WaarpFuture {
    *
    * @return True if the future is complete
    */
-  public synchronized boolean isDone() {
+  public boolean isDone() {
     return done;
   }
 
@@ -130,11 +130,120 @@ public class WaarpFuture {
    * @return the cause of the failure. {@code null} if succeeded or this future
    *     is not completed yet.
    */
-  public synchronized Throwable getCause() {
+  public Throwable getCause() {
     if (cause != CANCELLED) {
       return cause;
     }
     return null;
+  }
+
+  /**
+   * @return True if the Future is done or False if interrupted
+   */
+  public boolean awaitForDoneOrInterruptible() {
+    return awaitForDoneOrInterruptible(10000);
+  }
+
+  /**
+   * @param timeoutMillis
+   *
+   * @return True if the Future is done or False if interrupted
+   */
+  public boolean awaitForDoneOrInterruptible(long timeoutMillis) {
+    try {
+      while (!Thread.interrupted()) {
+        if (await(timeoutMillis)) {
+          return true;
+        }
+      }
+    } catch (InterruptedException e) {
+      // ignore
+    }
+    return false;
+  }
+
+  /**
+   * Waits for this future to be completed within the specified time limit.
+   *
+   * @param timeoutMillis
+   *
+   * @return {@code true} if and only if the future was completed within the
+   *     specified time limit
+   *
+   * @throws InterruptedException if the current thread was interrupted
+   */
+  public boolean await(long timeoutMillis) throws InterruptedException {
+    return await0(MILLISECONDS.toNanos(timeoutMillis), true);
+  }
+
+  private boolean await0(long timeoutNanos, boolean interruptable)
+      throws InterruptedException {
+    if (done) {
+      return done;
+    }
+    if (timeoutNanos <= 0) {
+      return done;
+    }
+
+    if (interruptable && Thread.interrupted()) {
+      throw new InterruptedException();
+    }
+
+    long startTime = System.nanoTime();
+    long waitTime = timeoutNanos;
+    boolean interrupted = false;
+
+    try {
+      for (; ; ) {
+
+        synchronized (this) {
+          if (done) {
+            return done;
+          }
+
+          waiters++;
+          try {
+            wait(waitTime / 1000000, (int) (waitTime % 1000000));
+          } catch (InterruptedException e) {
+            if (interruptable) {
+              throw e;
+            } else {
+              interrupted = true;
+            }
+          } finally {
+            waiters--;
+          }
+
+          if (done) {
+            return true;
+          }
+          waitTime = timeoutNanos - (System.nanoTime() - startTime);
+          if (waitTime <= 0) {
+            return done;
+          }
+        }
+      }
+    } finally {
+      if (interrupted) {
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
+
+  /**
+   * @param timeoutMillis
+   *
+   * @return True if the Future is done or False if interrupted or not done
+   */
+  public boolean awaitOrInterruptible(long timeoutMillis) {
+    try {
+      if (await(timeoutMillis)) {
+        return true;
+      }
+    } catch (InterruptedException e) {
+      // ignore
+    }
+    return false;
   }
 
   /**
@@ -178,71 +287,6 @@ public class WaarpFuture {
     return await0(unit.toNanos(timeout), true);
   }
 
-  private boolean await0(long timeoutNanos, boolean interruptable)
-      throws InterruptedException {
-    if (interruptable && Thread.interrupted()) {
-      throw new InterruptedException();
-    }
-
-    long startTime = timeoutNanos <= 0? 0 : System.nanoTime();
-    long waitTime = timeoutNanos;
-    boolean interrupted = false;
-
-    try {
-      synchronized (this) {
-        if (done) {
-          return done;
-        } else if (waitTime <= 0) {
-          return done;
-        }
-
-        waiters++;
-        try {
-          for (; ; ) {
-            try {
-              this.wait(waitTime / 1000000,
-                        (int) (waitTime % 1000000));
-            } catch (InterruptedException e) {
-              if (interruptable) {
-                throw e;
-              } else {
-                interrupted = true;
-              }
-            }
-
-            if (done) {
-              return true;
-            }
-            waitTime = timeoutNanos - (System.nanoTime() - startTime);
-            if (waitTime <= 0) {
-              return done;
-            }
-          }
-        } finally {
-          waiters--;
-        }
-      }
-    } finally {
-      if (interrupted) {
-        Thread.currentThread().interrupt();
-      }
-    }
-  }
-
-  /**
-   * Waits for this future to be completed within the specified time limit.
-   *
-   * @param timeoutMillis
-   *
-   * @return {@code true} if and only if the future was completed within the
-   *     specified time limit
-   *
-   * @throws InterruptedException if the current thread was interrupted
-   */
-  public boolean await(long timeoutMillis) throws InterruptedException {
-    return await0(MILLISECONDS.toNanos(timeoutMillis), true);
-  }
-
   /**
    * Waits for this future to be completed without interruption. This method
    * catches an {@link InterruptedException}
@@ -256,7 +300,7 @@ public class WaarpFuture {
       while (!done) {
         waiters++;
         try {
-          this.wait();
+          wait();
         } catch (InterruptedException e) {
           interrupted = true;
         } finally {
@@ -388,8 +432,8 @@ public class WaarpFuture {
    */
   public void reset() {
     synchronized (this) {
-      this.done = false;
-      this.cause = null;
+      done = false;
+      cause = null;
     }
   }
 }

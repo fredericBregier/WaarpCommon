@@ -122,7 +122,7 @@ public class WaarpSslUtility {
   public static Channel waitforChannelReady(ChannelFuture future) {
     // Wait until the connection attempt succeeds or fails.
     try {
-      future.await(10000);
+      future.await();
     } catch (InterruptedException e1) {
     }
     if (!future.isSuccess()) {
@@ -219,7 +219,7 @@ public class WaarpSslUtility {
           future.addListener(new GenericFutureListener() {
             public void operationComplete(Future future) throws Exception {
               logger.debug("Found SslHandler and wait for Ssl.close()");
-              sslHandler.close().addListener(
+              sslHandler.closeOutbound().addListener(
                   new GenericFutureListener<Future<? super Void>>() {
                     public void operationComplete(Future<? super Void> future)
                         throws Exception {
@@ -236,7 +236,7 @@ public class WaarpSslUtility {
         } else {
           logger
               .debug("Found SslHandler and wait for Ssl.close() : " + channel);
-          sslHandler.close().addListener(
+          sslHandler.closeOutbound().addListener(
               new GenericFutureListener<Future<? super Void>>() {
                 public void operationComplete(Future<? super Void> future)
                     throws Exception {

@@ -17,10 +17,9 @@
  *  You should have received a copy of the GNU General Public License along with
  *  Waarp . If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.waarp.common.utility.test;
+package org.waarp.common.utility;
 
 import org.junit.Test;
-import org.waarp.common.utility.LongUuid;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,14 +28,14 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class LongUuidTest {
-  private static int NB = 1000000;
+  private static final int NB = 1000000;
 
   @Test
   public void testStructure() {
     LongUuid id = new LongUuid();
     String str = id.toString();
 
-    assertEquals(str.length(), 16);
+    assertEquals(16, str.length());
   }
 
   @Test
@@ -63,7 +62,7 @@ public class LongUuidTest {
     }
 
     for (int i = 1; i < n; i++) {
-      assertTrue(ids[i - 1] != (ids[i]));
+      assertTrue(ids[i - 1] != ids[i]);
     }
   }
 
@@ -76,7 +75,7 @@ public class LongUuidTest {
     bytes[1] = 0;
     bytes[2] = 0;
 
-    assertTrue(Arrays.equals(id.getBytes(), original));
+    assertArrayEquals(id.getBytes(), original);
   }
 
   @Test
@@ -89,7 +88,7 @@ public class LongUuidTest {
     bytes[0] = 0;
     bytes[1] = 0;
 
-    assertTrue(Arrays.equals(id2.getBytes(), original));
+    assertArrayEquals(id2.getBytes(), original);
   }
 
   @Test
@@ -111,7 +110,7 @@ public class LongUuidTest {
     }
     long stop = System.currentTimeMillis();
     System.out.println(
-        "Time = " + (stop - start) + " so " + (n * 1000 / (stop - start)) +
+        "Time = " + (stop - start) + " so " + n * 1000 / (stop - start) +
         " Uuids/s");
 
     for (int i = 0; i < n; i++) {
@@ -144,8 +143,7 @@ public class LongUuidTest {
                        uuidArray[0].getLong() + ") - " +
                        uuidArray[n - 1] + "(" +
                        uuidArray[n - 1].getTimestamp() + ":" +
-                       uuidArray[n - 1].getLong() +
-                       ") = "
+                       uuidArray[n - 1].getLong() + ") = "
                        + (uuidArray[n - 1].getLong() - uuidArray[0].getLong() +
                           1));
     System.out.println(largest + " different consecutive elements");
@@ -169,7 +167,7 @@ public class LongUuidTest {
     }
     long stop = System.currentTimeMillis();
     System.out.println(
-        "Time = " + (stop - start) + " so " + (n * 1000 / (stop - start)) +
+        "Time = " + (stop - start) + " so " + n * 1000 / (stop - start) +
         " Uuids/s");
 
     Set<LongUuid> uuidSet = new HashSet<LongUuid>();
@@ -183,10 +181,10 @@ public class LongUuidTest {
   }
 
   private static class Generator extends Thread {
+    private final LongUuid[] uuids;
     int id;
     int n;
     int numThreads;
-    private LongUuid[] uuids;
 
     public Generator(int n, LongUuid[] uuids, int id, int numThreads) {
       this.n = n;

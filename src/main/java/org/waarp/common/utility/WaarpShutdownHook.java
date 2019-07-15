@@ -136,7 +136,7 @@ public abstract class WaarpShutdownHook extends Thread {
       terminate();
     } else {
       logger.error("No ShutdownHook setup");
-      System.exit(1);
+      DetectionUtils.SystemExit(1);
     }
   }
 
@@ -183,7 +183,7 @@ public abstract class WaarpShutdownHook extends Thread {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
       }
-      Runtime.getRuntime().halt(0);
+      DetectionUtils.SystemExit(0);
     } else {
       shutdownHook.launchFinalExit();
       immediate = true;
@@ -376,7 +376,7 @@ public abstract class WaarpShutdownHook extends Thread {
       }
       // Already stopped
       System.err.println("Halt System now - services already stopped -");
-      Runtime.getRuntime().halt(0);
+      DetectionUtils.SystemExit(0);
       return;
     }
     try {
@@ -390,7 +390,7 @@ public abstract class WaarpShutdownHook extends Thread {
       }
     }
     System.err.println("Halt System now");
-    Runtime.getRuntime().halt(0);
+    DetectionUtils.SystemExit(0);
   }
 
   /**
@@ -440,7 +440,7 @@ public abstract class WaarpShutdownHook extends Thread {
           printStackTrace(thread, map.get(thread));
         }
       }
-      Runtime.getRuntime().halt(0);
+      DetectionUtils.SystemExit(0);
     }
   }
 }

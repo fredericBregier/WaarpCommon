@@ -21,7 +21,6 @@ package org.waarp.common.utility;
 
 import java.lang.management.ManagementFactory;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -157,111 +156,6 @@ public final class LongUuid {
       e.printStackTrace();
       return RANDOM.nextInt(MAX_PID);
     }
-  }
-
-  @SuppressWarnings("unused")
-  public static void main(String[] args) {
-    long pseudoMax = Long.MAX_VALUE >> 16;
-    System.out.println(new Date(pseudoMax));
-    System.out.println(new LongUuid().toString());
-
-    for (int i = 0; i < 10; i++) {
-      LongUuid uuid = new LongUuid();
-      System.out.println(
-          System.currentTimeMillis() + " " + uuid + "=" + uuid.getLong() + ":"
-          + uuid.getProcessId() + ":" + uuid.getTimestamp());
-    }
-    for (int i = 0; i < 10; i++) {
-      LongUuid uuid = new LongUuid();
-      System.out.println(
-          System.currentTimeMillis() + " " + uuid + "=" + uuid.getLong() + ":"
-          + uuid.getProcessId() + ":" + uuid.getTimestamp());
-      try {
-        Thread.sleep(500);
-      } catch (InterruptedException e) {
-      }
-    }
-
-    final int n = 100000000;
-
-    for (int i = 0; i < n; i++) {
-      LongUuid uuid = new LongUuid();
-    }
-
-    long start = System.currentTimeMillis();
-    for (int i = 0; i < n; i++) {
-      LongUuid uuid = new LongUuid();
-    }
-    long stop = System.currentTimeMillis();
-    System.out.println(
-        "TimeW = " + (stop - start) + " so " + (n * 1000 / (stop - start)) +
-        " Uuids/s");
-
-    start = System.currentTimeMillis();
-    for (int i = 0; i < n; i++) {
-      LongUuid uuid = new LongUuid();
-      uuid.getLong();
-    }
-    stop = System.currentTimeMillis();
-    System.out.println("TimeW+getLong = " + (stop - start) + " so " +
-                       (n * 1000 / (stop - start)) + " Uuids/s");
-
-    start = System.currentTimeMillis();
-    for (int i = 0; i < n; i++) {
-      LongUuid uuid = new LongUuid();
-      uuid = new LongUuid(uuid.getLong());
-    }
-    stop = System.currentTimeMillis();
-    System.out.println("TimeW+reloadFromgetLong = " + (stop - start) + " so " +
-                       (n * 1000 / (stop - start))
-                       + " Uuids/s");
-
-    int count = 0;
-    start = System.currentTimeMillis();
-    for (int i = 0; i < n; i++) {
-      LongUuid uuid = new LongUuid();
-      LongUuid uuid2 = new LongUuid(uuid.getLong());
-      if (uuid2.equals(uuid)) {
-        count++;
-      }
-    }
-    stop = System.currentTimeMillis();
-    System.out.println("TimeWAndTest = " + (stop - start) + " so " +
-                       (n * 1000 / (stop - start)) + " Uuids/s "
-                       + count);
-
-    start = System.currentTimeMillis();
-    for (int i = 0; i < n; i++) {
-      LongUuid uuid = new LongUuid();
-      uuid.getBytes();
-    }
-    stop = System.currentTimeMillis();
-    System.out.println("TimeW+getBytes = " + (stop - start) + " so " +
-                       (n * 1000 / (stop - start)) + " Uuids/s");
-
-    start = System.currentTimeMillis();
-    for (int i = 0; i < n; i++) {
-      LongUuid uuid = new LongUuid();
-      uuid = new LongUuid(uuid.getBytes());
-    }
-    stop = System.currentTimeMillis();
-    System.out.println("TimeW+reloadFromgetBytes = " + (stop - start) + " so " +
-                       (n * 1000 / (stop - start))
-                       + " Uuids/s");
-
-    count = 0;
-    start = System.currentTimeMillis();
-    for (int i = 0; i < n; i++) {
-      LongUuid uuid = new LongUuid();
-      LongUuid uuid2 = new LongUuid(uuid.getBytes());
-      if (uuid2.equals(uuid)) {
-        count++;
-      }
-    }
-    stop = System.currentTimeMillis();
-    System.out.println("TimeWAndTest = " + (stop - start) + " so " +
-                       (n * 1000 / (stop - start)) + " Uuids/s "
-                       + count);
   }
 
   @Override

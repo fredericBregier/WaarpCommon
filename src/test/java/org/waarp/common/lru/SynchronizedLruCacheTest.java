@@ -17,42 +17,14 @@
  *  You should have received a copy of the GNU General Public License along with
  *  Waarp . If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.waarp.common.command.exception;
 
-import org.waarp.common.command.ReplyCode;
+package org.waarp.common.lru;
 
-/**
- * 550 Requested action not taken. File unavailable (e.g., file not found, no
- * access).
- *
- * @author Frederic Bregier
- */
-public class Reply550Exception extends CommandAbstractException {
 
-  /**
-   * serialVersionUID of long:
-   */
-  private static final long serialVersionUID = 550L;
-
-  /**
-   * 550 Requested action not taken. File unavailable (e.g., file not found, no
-   * access).
-   *
-   * @param message
-   */
-  public Reply550Exception(String message) {
-    super(ReplyCode.REPLY_550_REQUESTED_ACTION_NOT_TAKEN, message);
+public class SynchronizedLruCacheTest extends LruCacheTest {
+  @Override
+  protected InterfaceLruCache<String, String> createCache(int capacity,
+                                                          long ttl) {
+    return new SynchronizedLruCache<String, String>(capacity, ttl);
   }
-
-  /**
-   * 550 Requested action not taken. File unavailable (e.g., file not found, no
-   * access).
-   *
-   * @param message
-   * @param e
-   */
-  public Reply550Exception(String message, Throwable e) {
-    super(ReplyCode.REPLY_550_REQUESTED_ACTION_NOT_TAKEN, message, e);
-  }
-
 }

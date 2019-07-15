@@ -24,8 +24,7 @@ import java.util.Iterator;
 
 /**
  * Threadsafe synchronized implementation of LruCache based on LinkedHashMap.
- * Threadsafety is provided by method
- * synchronization.
+ * Threadsafety is provided by method synchronization.
  * <p>
  * This cache implementation should be used with low number of threads.
  *

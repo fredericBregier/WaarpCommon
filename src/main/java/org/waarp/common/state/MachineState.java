@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This is the base class for the basic support of Finite State Machine in
- * GoldenGate. One need to implement an Enum
+ * Waarp. One need to implement an Enum
  * class to use with it. <br>
  * <br>
  * Note: the type EnumSet< ? > is in fact of type EnumSet< EnumState >

@@ -25,6 +25,7 @@ import org.apache.commons.daemon.DaemonController;
 import org.waarp.common.logging.WaarpLogger;
 import org.waarp.common.logging.WaarpLoggerFactory;
 import org.waarp.common.logging.WaarpSlf4JLoggerFactory;
+import org.waarp.common.utility.DetectionUtils;
 import org.waarp.common.utility.WaarpThreadFactory;
 
 import java.util.Scanner;

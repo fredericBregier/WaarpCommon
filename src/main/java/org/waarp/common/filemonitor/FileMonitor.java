@@ -326,8 +326,11 @@ public class FileMonitor {
       timerWaarp.stop();
     }
     if (internalfuture != null) {
-      internalfuture
-          .awaitUninterruptibly(elapseTime * 2, TimeUnit.MILLISECONDS);
+      try {
+        internalfuture.await(elapseTime * 2);
+      } catch (InterruptedException e) {
+        // ignore
+      }
       internalfuture.setSuccess();
     }
     if (timer != null) {

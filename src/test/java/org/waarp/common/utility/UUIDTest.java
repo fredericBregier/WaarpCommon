@@ -17,10 +17,9 @@
  *  You should have received a copy of the GNU General Public License along with
  *  Waarp . If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.waarp.common.utility.test;
+package org.waarp.common.utility;
 
 import org.junit.Test;
-import org.waarp.common.utility.UUID;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -31,8 +30,8 @@ import java.util.TreeSet;
 import static org.junit.Assert.*;
 
 public class UUIDTest {
-  private static final int VERSION = (1 & 0x0F);
-  private static int NB = 1000000;
+  private static final int VERSION = 1 & 0x0F;
+  private static final int NB = 1000000;
 
   @Test
   public void testStructure() {
@@ -42,6 +41,29 @@ public class UUIDTest {
     assertEquals('0', str.charAt(0));
     assertEquals('0', str.charAt(1));
     assertEquals(40, str.length());
+    long least = id.getLeastSignificantBits();
+    long most = id.getMostSignificantBits();
+    UUID id2 = new UUID(most, least);
+    assertTrue(id2.getLeastSignificantBits() == least);
+    assertTrue(id2.getMostSignificantBits() == most);
+    java.util.UUID id3 = new java.util.UUID(most, least);
+    UUID id4 = new UUID(id3);
+    assertTrue(id3.getLeastSignificantBits() == least);
+    assertTrue(id3.getMostSignificantBits() == most);
+    assertTrue(id4.getLeastSignificantBits() == least);
+    assertTrue(id4.getMostSignificantBits() == most);
+    java.util.UUID id5 = id4.getJavaUuid();
+    assertTrue(id5.getLeastSignificantBits() == least);
+    assertTrue(id5.getMostSignificantBits() == most);
+    UUID id6 = new UUID(id.javaUuidGetBytes());
+    assertTrue(id6.getLeastSignificantBits() == least);
+    assertTrue(id6.getMostSignificantBits() == most);
+
+    byte[] random = UUID.getRandom(6);
+    UUID.setMAC(random);
+    UUID id7 = new UUID(1);
+    assertArrayEquals(id7.getMacFragment(), random);
+    assertTrue(id7.getVersion() == 1);
   }
 
   @Test
@@ -73,7 +95,7 @@ public class UUIDTest {
     }
 
     for (int i = 1; i < n; i++) {
-      assertTrue(!ids[i - 1].equals(ids[i]));
+      assertFalse(ids[i - 1].equals(ids[i]));
     }
   }
 
@@ -86,7 +108,7 @@ public class UUIDTest {
     bytes[1] = 0;
     bytes[2] = 0;
 
-    assertTrue(Arrays.equals(id.getBytes(), original));
+    assertArrayEquals(id.getBytes(), original);
   }
 
   @Test
@@ -99,7 +121,7 @@ public class UUIDTest {
     bytes[0] = 0;
     bytes[1] = 0;
 
-    assertTrue(Arrays.equals(id2.getBytes(), original));
+    assertArrayEquals(id2.getBytes(), original);
   }
 
   @Test
@@ -160,7 +182,7 @@ public class UUIDTest {
     }
     long stop = System.currentTimeMillis();
     System.out.println(
-        "Time = " + (stop - start) + " so " + (n * 1000 / (stop - start)) +
+        "Time = " + (stop - start) + " so " + n * 1000 / (stop - start) +
         " Uuids/s");
 
     for (int i = 0; i < n; i++) {
@@ -172,7 +194,7 @@ public class UUIDTest {
     checkConsecutive(uuidArray);
   }
 
-  private void checkConsecutive(final UUID[] UUIDArray) {
+  private static void checkConsecutive(final UUID[] UUIDArray) {
     final int n = UUIDArray.length;
     int i = 1;
     int largest = 0;
@@ -181,7 +203,7 @@ public class UUIDTest {
         int j = i + 1;
         final long time = UUIDArray[i].getTimestamp();
         for (; j < n; j++) {
-          if (UUIDArray[i].compareTo(UUIDArray[j]) != -1) {
+          if (UUIDArray[i].compareTo(UUIDArray[j]) >= 0) {
             for (int k = i; k <= j; k++) {
               System.out.println(k + "=" + UUIDArray[k].getId() + ":" +
                                  UUIDArray[k].getCounter() + ":" +
@@ -200,7 +222,7 @@ public class UUIDTest {
           }
         }
       } else {
-        if (UUIDArray[i - 1].compareTo(UUIDArray[i]) != -1) {
+        if (UUIDArray[i - 1].compareTo(UUIDArray[i]) >= 0) {
           for (int k = i - 1; k <= i; k++) {
             System.out.println(k + "=" + UUIDArray[k].getId() + ":" +
                                UUIDArray[k].getCounter() + ":" +
@@ -213,7 +235,7 @@ public class UUIDTest {
         int j = i + 1;
         final long time = UUIDArray[i].getTimestamp();
         for (; j < n; j++) {
-          if (UUIDArray[i - 1].compareTo(UUIDArray[j]) != -1) {
+          if (UUIDArray[i - 1].compareTo(UUIDArray[j]) >= 0) {
             for (int k = i - 1; k <= j; k++) {
               System.out.println(k + "=" + UUIDArray[k].getId() + ":" +
                                  UUIDArray[k].getCounter() + ":" +
@@ -222,7 +244,7 @@ public class UUIDTest {
                                  UUIDArray[k].getProcessId());
             }
           }
-          assertEquals(-1, UUIDArray[i - 1].compareTo(UUIDArray[j]));
+          assertNotEquals(0, UUIDArray[i - 1].compareTo(UUIDArray[j]));
           if (UUIDArray[j].getTimestamp() > time) {
             if (largest < j - i + 1) {
               largest = j - i + 1;
@@ -265,7 +287,7 @@ public class UUIDTest {
     uuidSet.clear();
     System.out.println(
         "TimeConcurrent = " + (stop - start) + " so " +
-        (uuids.length * 1000 / (stop - start)) + " UUIDs/s");
+        uuids.length * 1000 / (stop - start) + " UUIDs/s");
     final TreeSet<UUID> set = new TreeSet<UUID>();
     for (int i = 0; i < uuids.length; i++) {
       set.add(uuids[i]);
@@ -275,10 +297,10 @@ public class UUIDTest {
   }
 
   private static class Generator extends Thread {
+    private final UUID[] uuids;
     int id;
     int n;
     int numThreads;
-    private UUID[] uuids;
 
     public Generator(int n, UUID[] uuids, int id, int numThreads) {
       this.n = n;

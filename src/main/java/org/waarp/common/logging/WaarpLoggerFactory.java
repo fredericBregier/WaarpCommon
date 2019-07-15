@@ -149,9 +149,9 @@ public abstract class WaarpLoggerFactory {
     }
     WaarpLoggerFactory.defaultFactory = defaultFactory;
     if (defaultFactory instanceof WaarpJdkLoggerFactory) {
-      InternalLoggerFactory.setDefaultFactory(new JdkLoggerFactory());
+      InternalLoggerFactory.setDefaultFactory(JdkLoggerFactory.INSTANCE);
     } else if (defaultFactory instanceof WaarpSlf4JLoggerFactory) {
-      InternalLoggerFactory.setDefaultFactory(new Slf4JLoggerFactory());
+      InternalLoggerFactory.setDefaultFactory(Slf4JLoggerFactory.INSTANCE);
     }
     defaultFactory.seLevelSpecific(defaultFactory.getLevelSpecific());
   }
