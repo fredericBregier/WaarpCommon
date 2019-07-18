@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>WaarpCommon</artifactId>
   <packaging>jar</packaging>
-  <version>3.1.0</version>
+  <version>3.1.1</version>
   <name>Waarp Common</name>
   <description>
 	  The Waarp Common project contains several classes that are common with different
@@ -166,7 +166,7 @@
     <dependency>
       <groupId>Waarp</groupId>
       <artifactId>WaarpDigest</artifactId>
-      <version>3.0.6</version>
+      <version>3.1.0</version>
     </dependency>
 
     <dependency>
@@ -324,7 +324,7 @@
             <source>1.6</source>
             <target>1.6</target>
             <optimize>true</optimize>
-            <showDeprecations>true</showDeprecations>
+            <showDeprecation>true</showDeprecation>
           </configuration>
       </plugin>
       <plugin>

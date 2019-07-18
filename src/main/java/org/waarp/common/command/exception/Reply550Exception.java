@@ -41,4 +41,14 @@ public class Reply550Exception extends CommandAbstractException {
         super(ReplyCode.REPLY_550_REQUESTED_ACTION_NOT_TAKEN, message);
     }
 
+    /**
+     * 550 Requested action not taken. File unavailable (e.g., file not found, no access).
+     *
+     * @param message
+     * @param e
+     */
+    public Reply550Exception(String message, Throwable e) {
+        super(ReplyCode.REPLY_550_REQUESTED_ACTION_NOT_TAKEN, message, e);
+    }
+
 }

@@ -24,6 +24,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.Future;
 
 /**
  * Utility class for Netty usage
@@ -38,12 +39,13 @@ public class WaarpNettyUtil {
 
     /**
      * Add default configuration for client bootstrap
-     * 
+     *
      * @param bootstrap
      * @param group
      * @param timeout
      */
-    public static void setBootstrap(Bootstrap bootstrap, EventLoopGroup group, int timeout) {
+    public static void setBootstrap(Bootstrap bootstrap, EventLoopGroup group,
+                                    int timeout) {
         bootstrap.channel(NioSocketChannel.class);
         bootstrap.group(group);
         bootstrap.option(ChannelOption.TCP_NODELAY, true);
@@ -52,24 +54,24 @@ public class WaarpNettyUtil {
         bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout);
         bootstrap.option(ChannelOption.SO_RCVBUF, 1048576);
         bootstrap.option(ChannelOption.SO_SNDBUF, 1048576);
-        bootstrap.option(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 10*65536);
-        bootstrap.option(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 2*65536);
         bootstrap.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
     }
 
     /**
      * Add default configuration for server bootstrap
-     * 
+     *
      * @param bootstrap
      * @param groupBoss
      * @param groupWorker
      * @param timeout
      */
-    public static void setServerBootstrap(ServerBootstrap bootstrap, EventLoopGroup groupBoss,
-            EventLoopGroup groupWorker, int timeout) {
+    public static void setServerBootstrap(ServerBootstrap bootstrap,
+                                          EventLoopGroup groupBoss,
+                                          EventLoopGroup groupWorker,
+                                          int timeout) {
         bootstrap.channel(NioServerSocketChannel.class);
         bootstrap.group(groupBoss, groupWorker);
-        bootstrap.option(ChannelOption.TCP_NODELAY, true);
+        // bootstrap.option(ChannelOption.TCP_NODELAY, true);
         bootstrap.option(ChannelOption.SO_REUSEADDR, true);
         bootstrap.childOption(ChannelOption.TCP_NODELAY, true);
         bootstrap.childOption(ChannelOption.SO_REUSEADDR, true);
@@ -77,8 +79,48 @@ public class WaarpNettyUtil {
         bootstrap.childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout);
         bootstrap.childOption(ChannelOption.SO_RCVBUF, 1048576);
         bootstrap.childOption(ChannelOption.SO_SNDBUF, 1048576);
-        bootstrap.childOption(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 10*65536);
-        bootstrap.childOption(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 2*65536);
-        bootstrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+        bootstrap
+                .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+    }
+
+    /**
+     * Add default configuration for server bootstrap
+     *
+     * @param bootstrap
+     * @param group
+     * @param timeout
+     */
+    public static void setServerBootstrap(ServerBootstrap bootstrap,
+                                          EventLoopGroup group,
+                                          int timeout) {
+        bootstrap.channel(NioServerSocketChannel.class);
+        bootstrap.group(group);
+        // bootstrap.option(ChannelOption.TCP_NODELAY, true);
+        bootstrap.option(ChannelOption.SO_REUSEADDR, true);
+        bootstrap.childOption(ChannelOption.TCP_NODELAY, true);
+        bootstrap.childOption(ChannelOption.SO_REUSEADDR, true);
+        bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+        bootstrap.childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout);
+        bootstrap.childOption(ChannelOption.SO_RCVBUF, 1048576);
+        bootstrap.childOption(ChannelOption.SO_SNDBUF, 1048576);
+        bootstrap
+                .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
+    }
+
+    /**
+     * @param future
+     *
+     * @return True if await done, else interruption occurs
+     */
+    public static boolean awaitDoneOrInterrupted(Future<?> future) {
+        try {
+            while (!Thread.interrupted()) {
+                if (future.await(10000)) {
+                    return true;
+                }
+            }
+        } catch (InterruptedException e) {
+        }
+        return false;
     }
 }

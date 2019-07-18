@@ -17,6 +17,7 @@
  *  You should have received a copy of the GNU General Public License along with
  *  Waarp . If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+
 package org.waarp.common.crypto;
 
 import org.junit.Test;
@@ -25,34 +26,31 @@ import org.waarp.common.crypto.DynamicKeyObject.INSTANCESMAX;
 
 import static org.junit.Assert.*;
 
-/**
- * @author "Frederic Bregier"
- */
-public class KeyTest {
+public class DynamicKeyObjectTest {
 
-  /**
-   * Test method
-   */
   @Test
-  public void testToCrypt() {
-    String plaintext =
+  public void simpleTest() {
+    String plaintext = null;
+    plaintext =
         "This is a try for a very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long String";
+    System.out.println("plaintext = " + plaintext);
+    System.out.println("=====================================");
     // Can implements with KeyGenerator AES, ARCFOUR, Blowfish, DES, DESede,
     // RC2, RC4
     for (INSTANCES instance : INSTANCES.values()) {
       try {
         test(plaintext, instance.size, instance.name());
       } catch (Exception e) {
+        e.printStackTrace();
         fail(e.getMessage());
-        return;
       }
     }
     for (INSTANCESMAX instance : INSTANCESMAX.values()) {
       try {
         test(plaintext, instance.size, instance.name());
       } catch (Exception e) {
+        e.printStackTrace();
         fail(e.getMessage());
-        return;
       }
     }
   }
@@ -75,24 +73,30 @@ public class KeyTest {
     byte[] secretKey = dyn.getSecretKeyInBytes();
     // crypt one text
     byte[] ciphertext = dyn.crypt(plaintext);
+    // print the cipher
+    System.out.println("ciphertext = " + dyn.encodeHex(ciphertext));
+
     // Test the set Key
     dyn.setSecretKey(secretKey);
     // decrypt the cipher
     String plaintext2 = dyn.decryptInString(ciphertext);
     // print the result
-    assertArrayEquals(plaintext.getBytes(), plaintext2.getBytes());
+    if (!plaintext2.equals(plaintext)) {
+      fail("Error: plaintext2 != plaintext");
+    }
 
     // same on String only
-    int nb = 1000;
+    int nb = 100;
     long time1 = System.currentTimeMillis();
     for (int i = 0; i < nb; i++) {
       String cipherString = dyn.cryptToHex(plaintext);
-      // System.out.println("cipherString = " + cipherString);
       String plaintext3 = dyn.decryptHexInString(cipherString);
-      assertArrayEquals(plaintext.getBytes(), plaintext3.getBytes());
+      if (!plaintext3.equals(plaintext)) {
+        fail("Error: plaintext3 != plaintext");
+      }
     }
     long time2 = System.currentTimeMillis();
     System.out.println(algo + ": Total time: " + (time2 - time1) + " ms, " +
-                       (nb * 1000 / (time2 - time1)) + " crypt or decrypt/s");
+                       (nb * 1000 / (time2 + 1 - time1)) + " crypt or decrypt/s");
   }
 }

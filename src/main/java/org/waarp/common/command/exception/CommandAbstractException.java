@@ -38,13 +38,26 @@ public abstract class CommandAbstractException extends Exception {
     public String message = null;
 
     /**
-     * Unique constructor
+     * Simplest constructor
      * 
      * @param code
      * @param message
      */
     public CommandAbstractException(ReplyCode code, String message) {
         super(code.getMesg());
+        this.code = code;
+        this.message = message;
+    }
+
+    /**
+     * Constructor with Throwable
+     *
+     * @param code
+     * @param message
+     * @param e
+     */
+    public CommandAbstractException(ReplyCode code, String message, Throwable e) {
+        super(code.getMesg(), e);
         this.code = code;
         this.message = message;
     }

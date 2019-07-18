@@ -25,6 +25,8 @@ import org.waarp.common.file.AuthInterface;
 import org.waarp.common.file.DirInterface;
 import org.waarp.common.file.SessionInterface;
 
+import java.util.regex.Pattern;
+
 /**
  * Authentication implementation for Filesystem Based
  * 
@@ -32,6 +34,10 @@ import org.waarp.common.file.SessionInterface;
  * 
  */
 public abstract class FilesystemBasedAuthImpl implements AuthInterface {
+    /**
+     * DOUBLE SLASH pattern
+     */
+    private static final Pattern DOUBLE_SLASH = Pattern.compile("//");
     /**
      * User name
      */
@@ -244,7 +250,9 @@ public abstract class FilesystemBasedAuthImpl implements AuthInterface {
      */
     public String getRelativePath(String file) {
         // Work around Windows path '\'
-        return file.replaceFirst(FilesystemBasedDirImpl
-                .normalizePath(getBaseDirectory()), "");
+        return DOUBLE_SLASH.matcher(
+                file.replaceFirst(
+                        FilesystemBasedDirImpl.normalizePath(getBaseDirectory()), ""))
+                           .replaceAll("/");
     }
 }

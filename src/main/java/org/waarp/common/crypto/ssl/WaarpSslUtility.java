@@ -124,7 +124,8 @@ public class WaarpSslUtility {
             }
             return true;
         } else {
-            logger.error("SSL Not found but connected: " + handler.getClass().getName());
+            logger.info("SSL Not found but connected: {} {}",
+                         handler.getClass().getName());
             return true;
         }
     }

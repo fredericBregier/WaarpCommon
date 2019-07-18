@@ -248,6 +248,31 @@ public class WaarpFuture {
         }
     }
 
+    /**
+     * @return True if the Future is done or False if interrupted
+     */
+    public boolean awaitForDoneOrInterruptible() {
+        return awaitForDoneOrInterruptible(10000);
+    }
+
+    /**
+     * @param timeoutMillis
+     *
+     * @return True if the Future is done or False if interrupted
+     */
+    public boolean awaitForDoneOrInterruptible(long timeoutMillis) {
+        try {
+            while (!Thread.interrupted()) {
+                if (await(timeoutMillis)) {
+                    return true;
+                }
+            }
+        } catch (InterruptedException e) {
+            // ignore
+        }
+        return false;
+    }
+
     private boolean await0(long timeoutNanos, boolean interruptable)
             throws InterruptedException {
         if (interruptable && Thread.interrupted()) {

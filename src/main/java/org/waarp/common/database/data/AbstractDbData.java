@@ -195,7 +195,6 @@ public abstract class AbstractDbData {
             preparedStatement.executeQuery();
             if (preparedStatement.getNext()) {
                 getValues(preparedStatement, allFields);
-                setFromArray();
                 isSaved = true;
             } else {
                 throw new WaarpDatabaseNoDataException("No row found");
@@ -565,6 +564,7 @@ public abstract class AbstractDbData {
         for (DbValue value : values) {
             getTrueValue(rs, value);
         }
+        setFromArray();
     }
 
     /**
@@ -576,7 +576,6 @@ public abstract class AbstractDbData {
     public boolean get(DbPreparedStatement preparedStatement) {
         try {
             getValues(preparedStatement, allFields);
-            setFromArray();
         } catch (WaarpDatabaseNoConnectionException e1) {
             return false;
         } catch (WaarpDatabaseSqlException e1) {

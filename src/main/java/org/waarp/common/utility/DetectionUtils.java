@@ -34,6 +34,7 @@ public class DetectionUtils {
     private static final boolean IS_WINDOWS;
     private static final boolean IS_UNIX_IBM;
     private static final int NUMBERTHREAD;
+    private static boolean isJunit;
 
     static {
         String os = SystemPropertyUtil.get("os.name").toLowerCase();
@@ -48,6 +49,46 @@ public class DetectionUtils {
         }
         NUMBERTHREAD = Math.max(1, SystemPropertyUtil.getInt(
                 "org.waarp.numThreads", Runtime.getRuntime().availableProcessors() * 2));
+    }
+
+    /**
+     * Replacement for System.exit(value)
+     *
+     * @param value
+     */
+    public static void SystemExit(int value) {
+        if (!isJunit()) {
+            System.exit(value);
+        }
+    }
+
+    /**
+     * Replacement for Runtime.getRuntime().halt(value)
+     *
+     * @param value
+     */
+    public static void RuntimeGetRuntimeHalt(int value) {
+        if (!isJunit()) {
+            Runtime.getRuntime().halt(value);
+        }
+    }
+
+    /**
+     * JUnit usage only
+     *
+     * @return True if in JUnit role
+     */
+    public static boolean isJunit() {
+        return isJunit;
+    }
+
+    /**
+     * JUnit usage only
+     *
+     * @param isJunit
+     */
+    public static void setJunit(boolean isJunit) {
+        DetectionUtils.isJunit = isJunit;
     }
 
     /**

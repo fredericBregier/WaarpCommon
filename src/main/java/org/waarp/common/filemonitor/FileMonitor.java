@@ -238,8 +238,10 @@ public class FileMonitor {
      * @param directory
      */
     public void addDirectory(File directory) {
-        if (!this.directories.contains(directory)) {
-            this.directories.add(directory);
+        synchronized (directories) {
+            if (!this.directories.contains(directory)) {
+                this.directories.add(directory);
+            }
         }
     }
 
@@ -249,7 +251,9 @@ public class FileMonitor {
      * @param directory
      */
     public void removeDirectory(File directory) {
-        this.directories.remove(directory);
+        synchronized (directories) {
+            this.directories.remove(directory);
+        }
     }
 
     protected void setThreadName() {
@@ -509,9 +513,11 @@ public class FileMonitor {
         if (checkStop()) {
             return false;
         }
-        for (File directory : directories) {
-            logger.info("Scan: " + directory);
-            fileItemsChanged = checkOneDir(fileItemsChanged, directory);
+        synchronized (directories) {
+            for (File directory : directories) {
+                logger.info("Scan: " + directory);
+                fileItemsChanged = checkOneDir(fileItemsChanged, directory);
+            }
         }
         setThreadName();
         boolean error = false;
