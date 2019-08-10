@@ -1,24 +1,28 @@
 /**
-   This file is part of Waarp Project.
-
-   Copyright 2009, Frederic Bregier, and individual contributors by the @author
-   tags. See the COPYRIGHT.txt in the distribution for a full listing of
-   individual contributors.
-
-   All Waarp Project is free software: you can redistribute it and/or 
-   modify it under the terms of the GNU General Public License as published 
-   by the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   Waarp is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of Waarp Project.
+ * <p>
+ * Copyright 2009, Frederic Bregier, and individual contributors by the @author
+ * tags. See the COPYRIGHT.txt in the distribution for a full listing of
+ * individual contributors.
+ * <p>
+ * All Waarp Project is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * Waarp is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with Waarp .  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.waarp.common.utility;
+
+import org.waarp.common.future.WaarpFuture;
+import org.waarp.common.logging.WaarpLogger;
+import org.waarp.common.logging.WaarpLoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,10 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import org.waarp.common.future.WaarpFuture;
-import org.waarp.common.logging.WaarpLogger;
-import org.waarp.common.logging.WaarpLoggerFactory;
 
 /**
  * @author "Frederic Bregier"
@@ -78,15 +78,15 @@ public abstract class WaarpShutdownHook extends Thread {
   public WaarpShutdownHook(ShutdownConfiguration configuration) {
     if (initialized) {
       shutdownHook.shutdownConfiguration = configuration;
-      this.setName("WaarpShutdownHook");
-      this.setDaemon(true);
+      setName("WaarpShutdownHook");
+      setDaemon(true);
       shutdownHook = this;
-      this.shutdownConfiguration = configuration;
+      shutdownConfiguration = configuration;
       return;
     }
-    this.shutdownConfiguration = configuration;
-    this.setName("WaarpShutdownHook");
-    this.setDaemon(true);
+    shutdownConfiguration = configuration;
+    setName("WaarpShutdownHook");
+    setDaemon(true);
     shutdownHook = this;
     initialized = true;
   }
@@ -136,9 +136,10 @@ public abstract class WaarpShutdownHook extends Thread {
     if (shutdownHook != null) {
       removeShutdownHook();
       terminate();
+      shutdownHook = null;
     } else {
       logger.error("No ShutdownHook setup");
-      DetectionUtils.SystemExit(1);
+      //FBGEXIT DetectionUtils.SystemExit(1);
     }
   }
 
@@ -185,7 +186,7 @@ public abstract class WaarpShutdownHook extends Thread {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
       }
-      DetectionUtils.SystemExit(0);
+      //FBGEXIT DetectionUtils.SystemExit(0);
     } else {
       shutdownHook.launchFinalExit();
       immediate = true;
@@ -203,6 +204,10 @@ public abstract class WaarpShutdownHook extends Thread {
       System.err.println("Exit System");
       //Runtime.getRuntime().halt(0);
     }
+    shutdown = false;
+    shutdownStarted = false;
+    isShutdownOver = false;
+    initialized = false;
   }
 
   /**
@@ -218,12 +223,12 @@ public abstract class WaarpShutdownHook extends Thread {
    */
   static private void printStackTrace(Thread thread,
                                       StackTraceElement[] stacks) {
-    System.err.print(thread.toString() + " : ");
+    System.err.print(thread + " : ");
     for (int i = 0; i < stacks.length - 1; i++) {
-      System.err.print(stacks[i].toString() + " ");
+      System.err.print(stacks[i] + " ");
     }
     if (stacks.length >= 1) {
-      System.err.println(stacks[stacks.length - 1].toString());
+      System.err.println(stacks[stacks.length - 1]);
     } else {
       System.err.println();
     }
@@ -305,6 +310,8 @@ public abstract class WaarpShutdownHook extends Thread {
     }
     Timer timer = new Timer("R66FinalExit", true);
     ShutdownTimerTask timerTask = new ShutdownTimerTask();
+    logger.warn("Launch Timer R66 Final Exit in {}",
+                shutdownConfiguration.timeout * 4);
     timer.schedule(timerTask, shutdownConfiguration.timeout * 4);
   }
 
@@ -381,11 +388,11 @@ public abstract class WaarpShutdownHook extends Thread {
       }
       // Already stopped
       System.err.println("Halt System now - services already stopped -");
-      DetectionUtils.SystemExit(0);
+      //FBGEXIT DetectionUtils.SystemExit(0);
       return;
     }
     try {
-      terminate();
+      terminate(false);
     } catch (Throwable t) {
       if (shutdownHook != null && shutdownHook.serviceStopped()) {
         try {
@@ -395,7 +402,7 @@ public abstract class WaarpShutdownHook extends Thread {
       }
     }
     System.err.println("Halt System now");
-    DetectionUtils.SystemExit(0);
+    //FBGEXIT DetectionUtils.SystemExit(0);
   }
 
   /**
@@ -443,7 +450,7 @@ public abstract class WaarpShutdownHook extends Thread {
           printStackTrace(thread, map.get(thread));
         }
       }
-      DetectionUtils.SystemExit(0);
+      //FBGEXIT DetectionUtils.SystemExit(0);
     }
   }
 }
